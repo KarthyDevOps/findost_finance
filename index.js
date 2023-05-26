@@ -61,8 +61,8 @@ const port = process.env.PORT;
 app.use("/finance", routerService);
 
 
-let cron = require('./app/cron/cron.js')
-cron.CRMTicketStatusUpdateCron()
+//let cron = require('./app/cron/cron.js')
+//cron.CRMTicketStatusUpdateCron()
 
 app.listen(port, () => {
   console.log(

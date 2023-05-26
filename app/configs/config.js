@@ -1,18 +1,18 @@
 module.exports = function (env) {
   const DEV_CONSTANTS = {
-    PORT: 2274,
+    PORT: 2276,
     MONGO_URI: "mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_communication",
     NODE_ENV: "development",
-    SERVICE_NAME : "Findost-CMS-Service",
+    SERVICE_NAME : "Findost-Finance-Service",
     USER_URL : "http://doodlebluelive.com:2811",
     200: "success"
   };
 
   const LOCAL_CONSTANTS = {
-    PORT: 2274,
+    PORT: 2276,
     MONGO_URI: "mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_communication",
     NODE_ENV: "development",
-    SERVICE_NAME : "Findost-CMS-Service",
+    SERVICE_NAME : "Findost-Finance-Service",
     USER_URL : "http://doodlebluelive.com:2811",
     200: "success"
   };

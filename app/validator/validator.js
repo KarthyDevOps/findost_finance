@@ -57,7 +57,7 @@ const queryParamValidation = (req, res, next, schama) => {
 };
 
 
-const notificationTemplateListValidation = (req, res, next) => {
+const crmTicketListValidation = (req, res, next) => {
   const schema = joi.object({
     search: joi.allow(null).allow(""),
     isActive: joi.allow(null).allow(""),
@@ -67,120 +67,32 @@ const notificationTemplateListValidation = (req, res, next) => {
   return queryParamValidation(req, res, next, schema);
 };
 
-const createNotificationTemplateValidation = (req, res, next) => {
+const createCrmTicketValidation = (req, res, next) => {
   const schema = joi.object({
-    title: joi.string().required(),
+    source: joi.string().required(),
+    priorityScore: joi.string().required(),
+    customerEmailId: joi.string().required(),
+    subject: joi.string().required(),
     description: joi.string().required(),
-    isActive: joi.boolean()
+    status: joi.string().required(),
+    attachmentExtension: joi.string(),
+    attachmentExtension: joi.string(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
 
-const getNotificationTemplateValidation = (req, res, next) => {
-  const querySchema = joi.object({
-    notificationTemplateId: joi.string().allow(null).allow(""),
-  });
-  req.bodyParam = false;
-  queryParamValidation(req, res, next, querySchema);
-};
-
-const updateNotificationTemplateValidation = (req, res, next) => {
-  const querySchema = joi.object({
-    notificationTemplateId: joi.string().allow(null).allow(""),
-  });
-  req.bodyParam = true;
-  queryParamValidation(req, res, next, querySchema);
-
-  const schema = joi.object({
-    title: joi.string().required(),
-    description: joi.string().required(),
-    isActive: joi.boolean()
-  });
-  return bodyParamValidation(req, res, next, schema);
-};
-
-const deleteNotificationTemplateValidation = (req, res, next) => {
-  const querySchema = joi.object({
-    notificationTemplateId: joi.string().allow(null).allow(""),
-  });
-  req.bodyParam = false;
-  queryParamValidation(req, res, next, querySchema);
-};
-
-
-
-//schedule module
-
-const scheduleListValidation = (req, res, next) => {
-  const schema = joi.object({
-    search: joi.allow(null).allow(""),
-    isActive: joi.allow(null).allow(""),
-    limit: joi.number(),
-    page: joi.number(),
-  });
-  return queryParamValidation(req, res, next, schema);
-};
-
-const createScheduleValidation = (req, res, next) => {
-  const schema = joi.object({
-    scheduleName: joi.string().required(),
-    date: joi.string().required(),
-    time: joi.string().required(),
-    agenda: joi.string().required(),
-    notes: joi.string().required(),
-    isActive: joi.string().required(),
-  });
-  return bodyParamValidation(req, res, next, schema);
-};
-
-const getScheduleValidation = (req, res, next) => {
+const getCrmTicketeValidation = (req, res, next) => {
   const querySchema = joi.object({
     id: joi.string().allow(null).allow(""),
   });
   req.bodyParam = false;
   queryParamValidation(req, res, next, querySchema);
 };
-
-const updateScheduleValidation = (req, res, next) => {
-  const querySchema = joi.object({
-    id: joi.string().allow(null).allow(""),
-
-  });
-  req.bodyParam = true;
-  queryParamValidation(req, res, next, querySchema);
-
-  const schema = joi.object({
-    scheduleName: joi.string().optional(),
-    date: joi.string().optional(),
-    time: joi.string().optional(),
-    agenda: joi.string().optional(),
-    notes: joi.string().optional(),
-    isActive: joi.string().optional(),
-  });
-  return bodyParamValidation(req, res, next, schema);
-};
-
-const deleteScheduleValidation = (req, res, next) => {
-  const querySchema = joi.object({
-    id: joi.string().allow(null).allow(""),
-  });
-  req.bodyParam = false;
-  queryParamValidation(req, res, next, querySchema);
-};
-
-
 
 module.exports = {
   bodyParamValidation,
   queryParamValidation,
-  notificationTemplateListValidation,
-  createNotificationTemplateValidation,
-  getNotificationTemplateValidation,
-  updateNotificationTemplateValidation,
-  deleteNotificationTemplateValidation,
-  scheduleListValidation, //<----schedule module
-  createScheduleValidation,
-  getScheduleValidation,
-  updateScheduleValidation,
-  deleteScheduleValidation,
+  crmTicketListValidation,
+  createCrmTicketValidation,
+  getCrmTicketeValidation
 };

@@ -22,6 +22,115 @@
     }
   },
   "paths": {
+    "/CRMTicket-management/create": {
+      "post": {
+        "tags": ["CRM TICKET MANAGEMENT"],
+        "security": [{ "Bearer": [] }],
+        "summary": "Create new CRM management type",
+        "parameters": [
+          {
+            "name": "createHistoryManagementTemplate",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/createCRMTemplateSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    
+    "/CRMTicket-management/get": {
+      "get": {
+        "tags": ["CRM TICKET MANAGEMENT"],
+        "security": [{ "Bearer": [] }],
+        "summary": "get createNotificationTemplate details",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/CRMTicket-management/list": {
+      "get": {
+        "tags": ["CRM TICKET MANAGEMENT"],
+        "security": [{ "Bearer": [] }],
+        "summary": "List all categories",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    }
   },
   "definitions": {
     "error": {
@@ -45,6 +154,31 @@
       "properties": {
         "code": { "type": "string" },
         "message": { "type": "string" }
+      }
+    },
+    "createCRMTemplateSchema": {
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "priorityScore": {
+          "type": "string"
+        },
+        "customerEmailId": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "attachmentExtension": {
+          "type": "string"
+        }
       }
     },
     "createNotificationTemplateSchema": {

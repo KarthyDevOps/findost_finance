@@ -85,8 +85,7 @@ const verifyAdminRole = (roles, action) =>
   
   const verifyAPToken = async (req, res, next) => {
     try {
-      next(); 
-      return 
+     
       if (
         req.headers["x-access-token"] ||
         req.headers["authorization"] ||
@@ -94,8 +93,8 @@ const verifyAdminRole = (roles, action) =>
       ) {
         const token = req.header("Authorization").replace("Bearer ", "");
         let decode, user;
-        decode = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
-        const userData = await InternalServices.getUserById({ _id: decode?._id });
+        decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+        const userData = await InternalServices.getAPById({ _id: decode?._id });
         if (userData?.data) {
           if (!userData?.data.isActive) {
             return sendErrorResponse(
@@ -107,7 +106,7 @@ const verifyAdminRole = (roles, action) =>
             );
           } else {
             req.user = userData?.data;
-            req.user.userType = "admin";
+            req.user.userType = "AP";
             next();
           }
         } else {

@@ -83,7 +83,7 @@ const getCrmTicketService = async (params) => {
 const crmTicketListService = async (params) => {
   params.all = true;
   const allList = await getCrmTicketList(params);
-  params.all = false;
+  params.all = params.returnAll ==true ? true : false;
   var result = await getCrmTicketList(params);
   let finalResult = [];
   let token = await ThirdPartyServices.crmTicketTokenCreate();

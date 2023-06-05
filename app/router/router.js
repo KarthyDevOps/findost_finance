@@ -2,7 +2,7 @@
 const express = require("express");
 const Router = express.Router;
 const { routes } = require("../routes/routes");
-const { verifyAdminToken,verifyAdminRole,verifyAPToken } = require("../middlewares/authentication");
+const { verifyToken } = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
   createCrmTicketValidation,
@@ -21,17 +21,17 @@ const router = Router();
 //Ticket Management
 router.get(
   routes.v1.CRMTicketManagenent.list,
-  [verifyAPToken, crmTicketListValidation],
+  [verifyToken("AP"), crmTicketListValidation],
   errHandle(crmTicketList)
 );
 router.post(
   routes.v1.CRMTicketManagenent.create,
-  [verifyAPToken, createCrmTicketValidation],
+  [verifyToken("AP"), createCrmTicketValidation],
   errHandle(createCrmTicket)
 );
 router.get(
   routes.v1.CRMTicketManagenent.get,
-  [verifyAPToken, getCrmTicketeValidation],
+  [verifyToken("AP"), getCrmTicketeValidation],
   errHandle(getCrmTicket)
 );
 

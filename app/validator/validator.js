@@ -89,10 +89,26 @@ const getCrmTicketeValidation = (req, res, next) => {
   queryParamValidation(req, res, next, querySchema);
 };
 
+const leadCreateValidation = (req, res, next) => {
+  const schema = joi.object({
+    apId: joi.string().required(),
+    isExistUser: joi.boolean().required(),
+    userId: joi.string(),
+    name: joi.string(),
+    mobileNumber: joi.string(),
+    emailId: joi.string(),
+    aditionalInfo: joi.string(),
+    productId: joi.string(),
+    productName: joi.string(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+
+};
 module.exports = {
   bodyParamValidation,
   queryParamValidation,
   crmTicketListValidation,
   createCrmTicketValidation,
-  getCrmTicketeValidation
+  getCrmTicketeValidation,
+  leadCreateValidation
 };

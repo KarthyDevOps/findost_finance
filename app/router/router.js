@@ -6,7 +6,9 @@ const { verifyToken } = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
   createCrmTicketValidation,
-  getCrmTicketeValidation
+  getCrmTicketeValidation,
+
+  leadCreateValidation
 } = require("../validator/validator");
 
 const {
@@ -14,6 +16,10 @@ const {
   crmTicketList,
   getCrmTicket
 } = require("../controllers/crmTicketManagement.controller");
+
+const {
+  createLeads
+} = require("../controllers/leads.controller");
 
 const { errHandle } = require("../helpers/index");
 
@@ -34,5 +40,12 @@ router.get(
   [verifyToken("AP"), getCrmTicketeValidation],
   errHandle(getCrmTicket)
 );
+
+router.get(
+  routes.v1.Leads.create,
+  [verifyToken("AP"), leadCreateValidation],
+  errHandle(createLeads)
+);
+
 
 module.exports = router;

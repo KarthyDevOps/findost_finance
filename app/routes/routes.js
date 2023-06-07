@@ -8,6 +8,9 @@ const routes = {
       delete: "/v1/CRMTicket-management/delete",
       export: "/v1/CRMTicket-management/export",
     },
+    Leads: {
+      create: "/v1/leads/create",     
+    },
   },
 };
 

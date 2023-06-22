@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { InternalServices } = require('../apiServices/index');
 const leadsSchema = new mongoose.Schema(
   {
     leadId: {
@@ -49,5 +50,14 @@ const leadsSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+leadsSchema.pre('save', async function (next) {
+  InternalServices.getSequenceId({ type: "leads" });
+  var doc = this;
+  let counter = await InternalServices.getSequenceId({ type: "leads" });
+  doc.leadId = (counter?.data?.count + 1).toString().padStart(6, '0').toString();;
+  next();
+
+});
+
 const Leads = mongoose.model("leads", leadsSchema);
 module.exports = { Leads };

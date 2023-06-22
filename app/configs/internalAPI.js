@@ -14,5 +14,12 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    getSequenceId: {
+        method: 'GET',
+        url: "",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
     
 }

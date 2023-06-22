@@ -1,15 +1,9 @@
 const mongoose = require("mongoose");
+const { InternalServices } = require('../apiServices/index');
 const crmTicketSchema = new mongoose.Schema(
   {
     crmTicketId: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      default: () => {
-        const now = Date.now().toString();
-        return now.slice(0, 3) + now.slice(10, 13);
-      },
+      type: String
     },
     ticketId: {
       type: String,
@@ -56,5 +50,14 @@ const crmTicketSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+crmTicketSchema.pre('save', async function (next) {
+  InternalServices.getSequenceId({ type: "crmTicket" });
+  var doc = this;
+  let counter = await InternalServices.getSequenceId({ type: "crmTicket" });
+  doc.crmTicketId = (counter?.data?.count + 1).toString().padStart(6, '0').toString();;
+  next();
+
+});
+
 const CrmTicket = mongoose.model("crmTicket", crmTicketSchema);
 module.exports = { CrmTicket };

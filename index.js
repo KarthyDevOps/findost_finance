@@ -26,7 +26,6 @@ let CONFIG = require('./app/configs/config')(args)
 process.env = { ...process.env,...CONFIG}
 
 
-
 app.use(urlencoded({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());

@@ -10,6 +10,12 @@ module.exports = function (env) {
     COMMUNICATION_URL: process.env.COMMUNICATION_URL,
     CMS_URL: process.env.CMS_URL,
     FINANCE_URL: process.env.FINANCE_URL,
+
+    ACCORD_FINTECH_LOGIN_TOKEN : "VhbjCOV2kEQQIYY8KgcNETS6SmoPp2v4",
+    KORP_BASE_URL :"http://122.160.148.72:15000/api",
+    KORP_USER_NAME :"API_RS",
+    KORP_PASSWORD : "FinDoc3Gzd&$"
+
   };
 
   const LOCAL_CONSTANTS = {
@@ -23,6 +29,10 @@ module.exports = function (env) {
     COMMUNICATION_URL: process.env.COMMUNICATION_URL,
     CMS_URL: process.env.CMS_URL,
     FINANCE_URL: process.env.FINANCE_URL,
+    ACCORD_FINTECH_LOGIN_TOKEN : process.env.ACCORD_FINTECH_LOGIN_TOKEN,
+    KORP_BASE_URL :process.env.KORP_BASE_URL,
+    KORP_USER_NAME :process.env.KORP_USER_NAME,
+    KORP_PASSWORD :process.env.KORP_PASSWORD
   };
 
   const PROD_CONSTANTS = {
@@ -31,7 +41,15 @@ module.exports = function (env) {
     NODE_ENV: process.env.NODE_ENV,
     SERVICE_NAME :  process.env.SERVICE_NAME,
     USER_URL : process.env.USER_URL,
-    200: "success"
+    200: "success",
+    USER_URL: process.env.USER_URL,
+    COMMUNICATION_URL: process.env.COMMUNICATION_URL,
+    CMS_URL: process.env.CMS_URL,
+    FINANCE_URL: process.env.FINANCE_URL,
+    ACCORD_FINTECH_LOGIN_TOKEN : process.env.ACCORD_FINTECH_LOGIN_TOKEN,
+    KORP_BASE_URL :process.env.KORP_BASE_URL,
+    KORP_USER_NAME :process.env.KORP_USER_NAME,
+    KORP_PASSWORD :process.env.KORP_PASSWORD
   };
   let envType;
 

@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { InternalServices } = require("./../apiServices");
+const { KORPAPIServices } = require("./../externalServices");
+
 const { sendErrorResponse } = require("../response/response");
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
@@ -101,7 +103,28 @@ const verifyAdminRole = (roles, action) =>
       next();
     }
   };
+  const korpAuthentication = async(req, res, next) =>{
+    let resp = await KORPAPIServices.authenticationAPI();
+    if(resp?.access_token)
+    {
+      if(!req.user) req.user = {}
+      req.user.korpAccessToken = resp?.access_token
+      next()
+    }
+    else{
+      return sendErrorResponse(
+        req,
+        res,
+        statusCodes.HTTP_UNAUTHORIZED,
+        messages.accessDenied,
+        []
+      );
+    }
+  };
+  
+  
 module.exports = {
   verifyToken,
   verifyAdminRole,
+  korpAuthentication
 };

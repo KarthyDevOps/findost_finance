@@ -59,19 +59,21 @@ const getCrmTicketService = async (params) => {
     isDeleted: false,
   };
   var resp = await CrmTicket.findOne(payload);
+  console.log('resp',resp)
   if (resp) {
-    let token = await ThirdPartyServices.crmTicketTokenCreate();
+    let token = params.token;
     let payload = {
       ticketid: resp.ticketId,
-      userid: process.env.CRM_TICKET_USER_ID,
+      userid: resp.userId,
     };
-    let apiResp = await ThirdPartyServices.crmTicketStatus(token, payload);
+    let apiResp = await CRMTicketAPIServices.ticketStatusAPI(token, payload);
     apiResp = apiResp
       .replace('"[', '[')
       .replace(']"', ']')
       apiResp = JSON.parse(apiResp)
+      console.log('apiResp',apiResp)
     if (apiResp?.data[0]) {
-      resp.status = apiResp?.data[0].status;
+      resp.status = apiResp?.data[0].Status;
       return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
@@ -85,6 +87,14 @@ const getCrmTicketService = async (params) => {
         message: messages?.error,
       };
     }
+  }
+  else
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_NOT_FOUND,
+      message: '',
+    };
   }
 };
 const crmTicketListService = async (params) => {

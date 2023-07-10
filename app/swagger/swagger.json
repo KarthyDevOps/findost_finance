@@ -130,7 +130,107 @@
           }
         }
       }
+    },
+
+
+
+
+
+
+    "/accord-fintech/mf/categoryList": {
+      "get": {
+        "tags": ["ACCORD-FINTECH MANAGEMENT"],
+        "security": [{ "Bearer": [] }],
+        "summary": "",
+        "parameters": [
+          {
+            "name": "Fund",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/categoryReturnsList": {
+      "get": {
+        "tags": ["ACCORD-FINTECH MANAGEMENT"],
+        "security": [{ "Bearer": [] }],
+        "summary": "",
+        "parameters": [
+          {
+            "name": "OptionType",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Type",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PageNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Pagesize",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortExpression",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": { "$ref": "#/definitions/response" }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
     }
+
+
+
+
+    
   },
   "definitions": {
     "error": {

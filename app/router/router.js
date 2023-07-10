@@ -83,73 +83,75 @@ router.get(
 //ACCORD FINTECH Management
 router.get(
   routes.v1.ACCORD_FINTECH.MF.CATEGORY_LIST,
-  [],
+  [verifyToken("AP")],
   errHandle(categoryList)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.CATEGORY_RETURNS,
-  [],
+  [verifyToken("AP")],
   errHandle(categoryReturnsList)
 );
 
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST,
-  
+  [verifyToken("AP")],
   errHandle(schemesList)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_SCHEME_FILTERED_LIST,
-  
+  [verifyToken("AP")],
   errHandle(getSchemesFilteredList)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_SCHEME_NAV_DETAILS,
- 
+  [verifyToken("AP")],
   errHandle(getSchemeNAVDetails)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.MF_SNAPSHOT_SUMMARY,
- 
+  [verifyToken("AP")],
   errHandle(getMFSnapshotDetails)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SYSTEMATIC_INVESTMENT_PATTERN,
- 
+  [verifyToken("AP")],
   errHandle(getSystematicInvestmentpattern)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.ALL_HOLDINGS,
- 
+  [verifyToken("AP")],
   errHandle(allHoldings)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.NFO_UPDATES,
+  [verifyToken("AP")],
   errHandle(nfoUpdates)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_ISSUE,
- 
+  [verifyToken("AP")],
   errHandle(ipoIssue)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_NEW_LISTING,
- 
+  [verifyToken("AP")],
   errHandle(ipoNewListing)
 );
 
 
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_SNAPSHOT,
-  
+  [verifyToken("AP")],
   errHandle(ipoSnapshot)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_FUND_FACT_SHEET,
+  [verifyToken("AP")],
   errHandle(getFundFactsheet)
 );
 

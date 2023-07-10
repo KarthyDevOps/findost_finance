@@ -8,6 +8,7 @@ const categoryListAPI = async (data) => {
   );
   const queryString = `?token=${data.token || ""}&Fund=${data.Fund || ""}`;
   apiConfig.url = apiConfig.url + queryString;
+  console.log('apiConfig=>',apiConfig)
   return await Rest.callApi(apiConfig);
 };
 
@@ -15,8 +16,9 @@ const categoryReturnsAPI = async (data) => {
     let apiConfig = JSON.parse(
       JSON.stringify(AccordFintechAPI.categoryReturnsAPI)
     );
-    const queryString = `?token=${data.token || ""}&OptionType=${data.OptionType || ""}&Type=${data.Type || "Commodity"}&PageNo=${data.PageNo || 1}&Pagesize=${data.Pagesize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}`;
+    const queryString = `?token=${data.token || ""}&OptionType=${data.OptionType || 1}&Type=${data.Type || "Commodity"}&PageNo=${data.PageNo || 1}&Pagesize=${data.Pagesize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
   };
 
@@ -26,6 +28,16 @@ const schemesListAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&Fund=${data.Fund || ""}&Category=${data.Category || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
+    return await Rest.callApi(apiConfig);
+};
+const getFundFactsheetAPI = async (data) => {
+    let apiConfig = JSON.parse(
+      JSON.stringify(AccordFintechAPI.getFundFactsheetAPI)
+    );
+    const queryString = `?token=${data.token || ""}&SchemeCode=${data.SchemeCode || ""}}`;
+    apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -33,11 +45,9 @@ const getSchemesFilteredListAPI = async (data) => {
     let apiConfig = JSON.parse(
       JSON.stringify(AccordFintechAPI.getSchemesFilteredListAPI)
     );
-    const queryString = `?SchemeCode=${data.SchemeCode  || ""}&AmcCo
-    de=${data.AmcCode || ""}&AssetType=${data.AssetType || ""}&CatCode=${data.Catcode || ""}&Risk=${data.Risk || ""}&OptCode=${OptCode || ""}&PlanTy
-    pe=${data.PlanType || ""}&SortExp=${data.SortExp || ""}&SortDir=${data.SortDir || ""}&PageNo=${data.PageNo || 1}&PageSize=${PageSize || 1000000}&token=${
-        data.token || ""}`;
+    const queryString = `?SchemeCode=${data.SchemeCode  || ""}&AmcCode=${data.AmcCode || ""}&AssetType=${data.AssetType || "Equity"}&CatCode=${data.Catcode || ""}&Risk=${data.Risk || "Low"}&OptCode=${data.OptCode || "Growth"}&PlanType=${data.PlanType || "Regular"}&SortExp=${data.SortExp || ""}&SortDir=${data.SortDir || ""}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 1000000}&token=${data.token || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -55,6 +65,7 @@ const getMFSnapshotDetailsAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&SchemeCode=${data.SchemeCode || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 const getSystematicInvestmentpatternAPI = async (data) => {
@@ -63,6 +74,7 @@ const getSystematicInvestmentpatternAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&SchemeCode=${data.SchemeCode || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 const allHoldingsAPI = async (data) => {
@@ -71,6 +83,7 @@ const allHoldingsAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&SchemeCode=${data.SchemeCode || ""}&Top=${data.Top || ""}&PageNo=${data.PageNo || 1}&Pagesize=${data.Pagesize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || 'Desc'}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -80,6 +93,7 @@ const ipoIssueAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}&Proc=${data.Proc || "IPO_GET_FORTHCOMINGISSUE"}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -90,6 +104,7 @@ const NFOUpdatesAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&SortExp=${data.SortExp || ""}&SortDirect=${data.SortDirect || "Desc"}&FundCode=${data.FundCode || ""}&CatCode=${data.CatCode || ""}&Option=${data.Option || "ENFO"}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -99,6 +114,7 @@ const ipoNewListingAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&EXCHG=${data.EXCHG || "NSE"}&Top=${data.Top || ""}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -108,6 +124,7 @@ const ipoSnapshotAPI = async (data) => {
     );
     const queryString = `?token=${data.token || ""}&FinCode=${data.FinCode || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
 
@@ -115,6 +132,7 @@ module.exports = {
     categoryListAPI,
     categoryReturnsAPI,
     schemesListAPI,
+    getFundFactsheetAPI,
     getSchemesFilteredListAPI,
     getSchemeNAVDetailsAPI,
     getMFSnapshotDetailsAPI,

@@ -7,6 +7,14 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    categoryReturnsAPI: {
+        method: 'GET',
+        url: "http://mf.accordwebservices.com/MF/GetCategoryReturns",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
+    
     schemesListAPI: {
         method: 'GET',
         url: "http://mf.accordwebservices.com/MF/GetScheme",
@@ -14,6 +22,14 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    getFundFactsheetAPI: {
+        method: 'GET',
+        url: "https://mf.accordwebservices.com/MF/GetFundFactsheet",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
+    
     getSchemesFilteredListAPI: {
         method: 'GET',
         url: "https://mf.accordwebservices.com/MF/GetSchemeDetails_Filter",

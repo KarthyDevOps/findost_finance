@@ -5,20 +5,22 @@ const {
 } = require("../externalServices");
 const categoryListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryListAPI(params);
+    //console.log(resp)
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 const categoryReturnsListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryReturnsAPI(params);
+      //  console.log(resp)
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 
@@ -28,16 +30,26 @@ const schemesListService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
+const getFundFactsheetService = async (params) => {
+    let resp = await AccordFintechAPIServices.getFundFactsheetAPI(params);
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: resp || null
+    };
+};
+
 const getSchemesFilteredListService = async (params) => {
     let resp = await AccordFintechAPIServices.getSchemesFilteredListAPI(params);
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 const getSchemeNAVDetailsService = async (params) => {
@@ -46,7 +58,7 @@ const getSchemeNAVDetailsService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 const getMFSnapshotDetailsService = async (params) => {
@@ -55,7 +67,7 @@ const getMFSnapshotDetailsService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 const getSystematicInvestmentpatternService = async (params) => {
@@ -64,7 +76,7 @@ const getSystematicInvestmentpatternService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 const allHoldingsService = async (params) => {
@@ -73,7 +85,7 @@ const allHoldingsService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 
@@ -83,7 +95,7 @@ const ipoIssueService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 
@@ -93,7 +105,7 @@ const ipoNewListingService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 
@@ -103,7 +115,7 @@ const ipoSnapshotService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 
@@ -113,7 +125,7 @@ const nfoUpdatesService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.data || null
+      data: resp || null
     };
 };
 
@@ -122,6 +134,7 @@ module.exports = {
     categoryListService,
     categoryReturnsListService,
     schemesListService,
+    getFundFactsheetService,
     getSchemesFilteredListService,
     getSchemeNAVDetailsService,
     getMFSnapshotDetailsService,

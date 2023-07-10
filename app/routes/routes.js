@@ -27,7 +27,9 @@ const routes = {
         MF_SNAPSHOT_SUMMARY : "/v1/accord-fintech/mf/getMFSnapshotSummary",
         SYSTEMATIC_INVESTMENT_PATTERN  : "/v1/accord-fintech/mf/getSystematicInvestmentpattern",
         ALL_HOLDINGS : "/v1/accord-fintech/mf/allHoldings",
-        NFO_UPDATES : "/v1/accord-fintech/mf/nfoUpdates"
+        NFO_UPDATES : "/v1/accord-fintech/mf/nfoUpdates",
+        GET_FUND_FACT_SHEET : "/v1/accord-fintech/mf/getFundFactsheet"
+
       },
       IPO :{
         IPO_ISSUE : "/v1/accord-fintech/ipo/ipoIssue",
@@ -37,7 +39,11 @@ const routes = {
     },
     KORP: {
       AUTHENTICATION : "/v1/korp/authentication",
-      CLIENT_LIST : "/v1/korp/clientList"
+      CLIENT_LIST : "/v1/korp/clientList",
+      CLIENT_PROFILE : "/v1/korp/clientProfile",
+      CLIENT_DASHBOARD : "/v1/korp/clientDashboard",
+      CLIENT_MASTER : "/v1/korp/clientMaster"
+
     }
   },
 };

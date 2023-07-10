@@ -14,7 +14,36 @@ const authenticationService = async (params) => {
     };
 };
 
+const clientProfileService = async (params) => {
+    let resp = await KORPAPIServices.clientProfileAPI(params);
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: resp
+    };
+};
+const clientDashboardService = async (params) => {
+    let resp = await KORPAPIServices.clientDashboardAPI(params);
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: resp
+    };
+};
+const clientMasterService = async (params) => {
+    let resp = await KORPAPIServices.clientMasterAPI(params);
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data:resp
+    };
+};
 module.exports = {
     authenticationService,
-    
+    clientProfileService,
+    clientDashboardService,
+    clientMasterService
 };

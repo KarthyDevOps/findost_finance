@@ -38,14 +38,17 @@ const {
   getMFSnapshotDetails,
   getSystematicInvestmentpattern,
   allHoldings,
-
+  getFundFactsheet,
   ipoIssue,
   ipoNewListing,
   ipoSnapshot,
   nfoUpdates
 } = require("../controllers/accordFintech.controller");
 const {
-  authentication
+  authentication,
+  clientProfile,
+  clientDashboard,
+  clientMaster
 } = require("../controllers/korp.controller");
 
 
@@ -80,72 +83,75 @@ router.get(
 //ACCORD FINTECH Management
 router.get(
   routes.v1.ACCORD_FINTECH.MF.CATEGORY_LIST,
-  [verifyToken("AP")],
+  [],
   errHandle(categoryList)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.CATEGORY_RETURNS,
-  [verifyToken("AP")],
+  [],
   errHandle(categoryReturnsList)
 );
 
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST,
-  [verifyToken("AP")],
+  
   errHandle(schemesList)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_SCHEME_FILTERED_LIST,
-  [verifyToken("AP")],
+  
   errHandle(getSchemesFilteredList)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_SCHEME_NAV_DETAILS,
-  [verifyToken("AP")],
+ 
   errHandle(getSchemeNAVDetails)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.MF_SNAPSHOT_SUMMARY,
-  [verifyToken("AP")],
+ 
   errHandle(getMFSnapshotDetails)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SYSTEMATIC_INVESTMENT_PATTERN,
-  [verifyToken("AP")],
+ 
   errHandle(getSystematicInvestmentpattern)
 );
 router.get(
   routes.v1.ACCORD_FINTECH.MF.ALL_HOLDINGS,
-  [verifyToken("AP")],
+ 
   errHandle(allHoldings)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.NFO_UPDATES,
-  [verifyToken("AP")],
   errHandle(nfoUpdates)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_ISSUE,
-  [verifyToken("AP")],
+ 
   errHandle(ipoIssue)
 );
 
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_NEW_LISTING,
-  [verifyToken("AP")],
+ 
   errHandle(ipoNewListing)
 );
 
 
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_SNAPSHOT,
-  [verifyToken("AP")],
+  
   errHandle(ipoSnapshot)
 );
 
+router.get(
+  routes.v1.ACCORD_FINTECH.MF.GET_FUND_FACT_SHEET,
+  errHandle(getFundFactsheet)
+);
 
 
 
@@ -156,6 +162,22 @@ router.get(
   [korpAuthentication],
   errHandle(authentication)
 );
+router.get(
+  routes.v1.KORP.CLIENT_PROFILE,
+  [korpAuthentication],
+  errHandle(clientProfile)
+);
+router.get(
+  routes.v1.KORP.CLIENT_DASHBOARD,
+  [korpAuthentication],
+  errHandle(clientDashboard)
+);
+router.get(
+  routes.v1.KORP.CLIENT_MASTER,
+  [korpAuthentication],
+  errHandle(clientMaster)
+);
+
 
 
 

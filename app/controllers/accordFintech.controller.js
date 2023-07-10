@@ -6,6 +6,7 @@ const {
     categoryListService,
     categoryReturnsListService,
     schemesListService,
+    getFundFactsheetService,
     getSchemesFilteredListService,
     getSchemeNAVDetailsService,
     getMFSnapshotDetailsService,
@@ -81,7 +82,28 @@ const {
       result?.data
     );
   };
-
+  
+  const getFundFactsheet = async (req, res) => {
+    const params = req?.query;
+    params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    const result = await getFundFactsheetService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   const getSchemesFilteredList = async (req, res) => {
     const params = req?.query;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
@@ -282,6 +304,7 @@ const {
     categoryList,
     categoryReturnsList,
     schemesList,
+    getFundFactsheet,
     getSchemesFilteredList,
     getSchemeNAVDetails,
     getMFSnapshotDetails,

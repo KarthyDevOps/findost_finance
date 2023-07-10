@@ -26,6 +26,7 @@ const clientProfileAPI = async (data) => {
     apiConfig.url = process.env.KORP_BASE_URL+"/Reports/ClientProfile/Get"
     const queryString = `?ClientCode=${data.ClientCode || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    apiConfig.headers.Authorization = `?Bearer ${data.token || ""}`;
     return await Rest.callApi(apiConfig);
   };
 
@@ -36,6 +37,7 @@ const clientProfileAPI = async (data) => {
     apiConfig.url = process.env.KORP_BASE_URL+"/Common/ClientDashBoard/Get"
     const queryString = `?ClientCode=${data.ClientCode || ""}`;
     apiConfig.url = apiConfig.url + queryString;
+    apiConfig.headers.Authorization = `?Bearer ${data.token || ""}`;
     console.log('apiConfig====',apiConfig)
     return await Rest.callApi(apiConfig);
   };
@@ -47,6 +49,7 @@ const clientProfileAPI = async (data) => {
     apiConfig.url = process.env.KORP_BASE_URL+"/Masters/ClientMasterDetail/Get"
     const queryString = `?Code=${data.Code || ""}&ClientType=${data.ClientType || "A"}`;
     apiConfig.url = apiConfig.url + queryString;
+    apiConfig.headers.Authorization = `?Bearer ${data.token || ""}`;
     console.log('apiConfig====',apiConfig)
     return await Rest.callApi(apiConfig);
   };

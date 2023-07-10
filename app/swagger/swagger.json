@@ -272,12 +272,6 @@
         },
         "description": {
           "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "attachmentExtension": {
-          "type": "string"
         }
       }
     },

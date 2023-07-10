@@ -37,7 +37,15 @@ const crmTicketSchema = new mongoose.Schema(
     attachmentExtension: {
       type: String,
     },
-    UserId: {
+    userId: {
+      type: String,
+      required: true,
+    },
+    APId: {
+      type: String,
+      required: true,
+    },
+    APName: {
       type: String,
       required: true,
     },

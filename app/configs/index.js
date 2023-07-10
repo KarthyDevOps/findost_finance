@@ -3,5 +3,5 @@ module.exports = {
   thirdPartyAPI: require("./thirdPartyAPI"),
   AccordFintechAPI: require("./accordFintechAPI"),
   KorpAPI: require("./korpAPI"),
-
+  CRMTicketAPI: require("./CRMTicketAPI"),
 };

@@ -11,6 +11,9 @@ const {
   
   const createCrmTicket = async (req, res) => {
     const params = req.body;
+    params.token = req.user.CRMAccessToken
+    params.userId = req.user.authorizedPersonId
+    params.userName = req.user.name
     const result = await createCrmTicketService(params);
     if (!result.status) {
       return sendErrorResponse(
@@ -32,6 +35,7 @@ const {
   
   const getCrmTicket = async (req, res) => {
     const params = req.body;
+    params.token = req.user.CRMAccessToken
     params.crmTicketId = req?.query?.crmTicketId;
     const result = await getCrmTicketService(params);
     if (!result.status) {
@@ -54,6 +58,7 @@ const {
   
   const crmTicketList = async (req, res) => {
     const params = req?.query;
+    params.token = req.user.CRMAccessToken
     if(!params.limit) params.limit =10
     if(!params.page) params.page =1
     const result = await crmTicketListService(params);

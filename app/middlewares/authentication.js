@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { InternalServices } = require("./../apiServices");
-const { KORPAPIServices } = require("./../externalServices");
+const { KORPAPIServices,CRMTicketAPIServices } = require("./../externalServices");
 
 const { sendErrorResponse } = require("../response/response");
 const { statusCodes } = require("../response/httpStatusCodes");
@@ -121,10 +121,29 @@ const verifyAdminRole = (roles, action) =>
       );
     }
   };
+  const CRMTicketAuthentication = async(req, res, next) =>{
+    let resp = await CRMTicketAPIServices.CRMTicketAuthenticationAPI();
+    if(resp)
+    {
+      if(!req.user) req.user = {}
+      req.user.CRMAccessToken = resp
+      next()
+    }
+    else{
+      return sendErrorResponse(
+        req,
+        res,
+        statusCodes.HTTP_UNAUTHORIZED,
+        messages.accessDenied,
+        []
+      );
+    }
+  };
   
   
 module.exports = {
   verifyToken,
   verifyAdminRole,
-  korpAuthentication
+  korpAuthentication,
+  CRMTicketAuthentication
 };

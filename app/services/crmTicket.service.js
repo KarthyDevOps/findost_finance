@@ -2,7 +2,7 @@ const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMesages");
 const { CrmTicket } = require("../models/crmTicket");
-const { ThirdPartyServices } = require("./../externalServices");
+const { ThirdPartyServices ,CRMTicketAPIServices} = require("./../externalServices");
 const {
   convert_JSON_to_file,
   formatDataList,
@@ -11,27 +11,30 @@ const {
 } = require("../helpers/index");
 const { getCrmTicketList } = require("./list.service");
 const createCrmTicketService = async (params) => {
-  let token = await ThirdPartyServices.crmTicketTokenCreate();
-  let payload = {
-    source: "API",
-    priorityscore: params.priorityScore || 1,
-    customeremailid: params.priorityScore,
-    subject: params.priorityScore,
-    issuedescription: params.priorityScore,
-    UserID: process.env.CRM_TICKET_USER_ID,
-  };
-  if (params.attachment) {
-    payload.attachmentextension = params.attachmentextension;
-    payload.attachment = await imageToBase64(params.attachment);
-  }
-  let apiResp = await ThirdPartyServices.crmTicketCreateNewTicket(
-    token,
-    payload
-  );
-  if (apiResp?.data[0]) {
+  console.log(params,'params')
+  let token = params.token
+  let payload ={
+      "source": params.source || "API",
+      "priorityscore": params.priorityscore || "1" ,
+      "customeremailid": params.customerEmailId,
+      "subject":  params.source,
+      "issuedescription": params.issuedescription || "I have been facing issue while logging into the system",
+      "UserID":  "13"
+    }
+
+  let apiResp = await CRMTicketAPIServices.createTicketAPI(token,payload)
+  console.log(apiResp["code"] ,'apiResp')
+  apiResp = apiResp
+      .replace('"[', '[')
+      .replace(']"', ']')
+  apiResp = JSON.parse(apiResp)
+  if (apiResp && apiResp.code == "200") {
+    console.log(apiResp?.data)
     params.ticketId = apiResp?.data[0]?.TicketID;
-    params.UserID = process.env.CRM_TICKET_USER_ID;
-    params.status = "Ticket Open";
+    params.APId = params.userId;
+    params.userId = "13";
+    params.APName =  params.userName;
+    params.status = "New";
     var newvalues = params;
     const resp = await CrmTicket.create(newvalues);
     return {
@@ -56,15 +59,21 @@ const getCrmTicketService = async (params) => {
     isDeleted: false,
   };
   var resp = await CrmTicket.findOne(payload);
+  console.log('resp',resp)
   if (resp) {
-    let token = await ThirdPartyServices.crmTicketTokenCreate();
+    let token = params.token;
     let payload = {
       ticketid: resp.ticketId,
-      userid: process.env.CRM_TICKET_USER_ID,
+      userid: resp.userId,
     };
-    let apiResp = await ThirdPartyServices.crmTicketStatus(token, payload);
+    let apiResp = await CRMTicketAPIServices.ticketStatusAPI(token, payload);
+    apiResp = apiResp
+      .replace('"[', '[')
+      .replace(']"', ']')
+      apiResp = JSON.parse(apiResp)
+      console.log('apiResp',apiResp)
     if (apiResp?.data[0]) {
-      resp.status = apiResp?.data[0].status;
+      resp.status = apiResp?.data[0].Status;
       return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
@@ -79,6 +88,14 @@ const getCrmTicketService = async (params) => {
       };
     }
   }
+  else
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_NOT_FOUND,
+      message: '',
+    };
+  }
 };
 const crmTicketListService = async (params) => {
   params.all = true;
@@ -86,14 +103,19 @@ const crmTicketListService = async (params) => {
   params.all = params.returnAll ==true ? true : false;
   var result = await getCrmTicketList(params);
   let finalResult = [];
-  let token = await ThirdPartyServices.crmTicketTokenCreate();
+  let token = params.token;
   for (let item of result.data) {
     let resp = { ...item };
     let payload = {
       ticketid: resp.ticketId,
-      userid: process.env.CRM_TICKET_USER_ID,
+      userid: resp.userId,
     };
-    let apiResp = await ThirdPartyServices.crmTicketStatus(token, payload);
+    console.log('apiResp',token)
+    let apiResp = await CRMTicketAPIServices.ticketStatusAPI(token, payload);
+    apiResp = apiResp
+        .replace('"[', '[')
+        .replace(']"', ']') 
+    apiResp = JSON.parse(apiResp)
     if (apiResp?.data[0]) {
       resp.status = apiResp?.data[0].status;
     }

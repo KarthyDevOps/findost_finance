@@ -84,7 +84,7 @@
         "summary": "get createNotificationTemplate details",
         "parameters": [
           {
-            "name": "id",
+            "name": "crmTicketId",
             "in": "query",
             "type": "string"
           }
@@ -834,12 +834,6 @@
           "type": "string"
         },
         "description": {
-          "type": "string"
-        },
-        "status": {
-          "type": "string"
-        },
-        "attachmentExtension": {
           "type": "string"
         }
       }

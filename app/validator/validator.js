@@ -74,9 +74,9 @@ const createCrmTicketValidation = (req, res, next) => {
     customerEmailId: joi.string().required(),
     subject: joi.string().required(),
     description: joi.string().required(),
-    status: joi.string().required(),
-    attachmentExtension: joi.string(),
-    attachmentExtension: joi.string(),
+   // status: joi.string().required(),
+   // attachmentExtension: joi.string(),
+   // attachmentExtension: joi.string(),
   });
   return bodyParamValidation(req, res, next, schema);
 };

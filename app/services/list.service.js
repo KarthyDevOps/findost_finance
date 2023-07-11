@@ -12,11 +12,11 @@ const getCrmTicketList = async (params) => {
           { content: { $regex: `${params?.search}`, $options: "i" } },
           { type: { $regex: `${params?.search}`, $options: "i" } },
         ],
-      }).sort({ createdAt: -1 });
+      }).sort({ createdAt: -1 }).lean();
     } else {
       data = await CrmTicket.find({
         isDeleted: false,
-      });
+      }).lean();
     }
   } else if (params?.search) {
     data = await CrmTicket.find({
@@ -29,14 +29,14 @@ const getCrmTicketList = async (params) => {
     })
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }).lean();
   } else {
     data = await CrmTicket.find({
       isDeleted: false,
     })
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }).lean();
   }
   if (data && data.length) {
     return { status: true, data: data };

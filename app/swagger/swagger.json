@@ -10,9 +10,16 @@
     }
   },
   "basePath": "/finance/v1/",
-  "schemes": ["http", "https"],
-  "consumes": ["application/json"],
-  "produces": ["application/json"],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
   "securityDefinitions": {
     "Bearer": {
       "name": "Authorization",
@@ -24,8 +31,14 @@
   "paths": {
     "/CRMTicket-management/create": {
       "post": {
-        "tags": ["CRM TICKET MANAGEMENT"],
-        "security": [{ "Bearer": [] }],
+        "tags": [
+          "CRM TICKET MANAGEMENT"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "summary": "Create new CRM management type",
         "parameters": [
           {
@@ -39,7 +52,9 @@
         "responses": {
           "200": {
             "description": "Return a JSON response with submitted Aman form details.",
-            "schema": { "$ref": "#/definitions/response" }
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
           },
           "404": {
             "description": "Validation failure.",
@@ -56,11 +71,16 @@
         }
       }
     },
-    
     "/CRMTicket-management/get": {
       "get": {
-        "tags": ["CRM TICKET MANAGEMENT"],
-        "security": [{ "Bearer": [] }],
+        "tags": [
+          "CRM TICKET MANAGEMENT"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "summary": "get createNotificationTemplate details",
         "parameters": [
           {
@@ -72,7 +92,9 @@
         "responses": {
           "200": {
             "description": "Return a JSON response with submitted Aman form details.",
-            "schema": { "$ref": "#/definitions/response" }
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
           },
           "404": {
             "description": "Validation failure.",
@@ -91,8 +113,14 @@
     },
     "/CRMTicket-management/list": {
       "get": {
-        "tags": ["CRM TICKET MANAGEMENT"],
-        "security": [{ "Bearer": [] }],
+        "tags": [
+          "CRM TICKET MANAGEMENT"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "summary": "List all categories",
         "parameters": [
           {
@@ -114,7 +142,9 @@
         "responses": {
           "200": {
             "description": "Return a JSON response with submitted Aman form details.",
-            "schema": { "$ref": "#/definitions/response" }
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
           },
           "404": {
             "description": "Validation failure.",
@@ -131,16 +161,16 @@
         }
       }
     },
-
-
-
-
-
-
     "/accord-fintech/mf/categoryList": {
       "get": {
-        "tags": ["ACCORD-FINTECH MANAGEMENT"],
-        "security": [{ "Bearer": [] }],
+        "tags": [
+          "ACCORD-FINTECH MANAGEMENT"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "summary": "",
         "parameters": [
           {
@@ -152,7 +182,9 @@
         "responses": {
           "200": {
             "description": "Return a JSON response with submitted Aman form details.",
-            "schema": { "$ref": "#/definitions/response" }
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
           },
           "404": {
             "description": "Validation failure.",
@@ -171,8 +203,14 @@
     },
     "/accord-fintech/mf/categoryReturnsList": {
       "get": {
-        "tags": ["ACCORD-FINTECH MANAGEMENT"],
-        "security": [{ "Bearer": [] }],
+        "tags": [
+          "ACCORD-FINTECH MANAGEMENT"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
         "summary": "",
         "parameters": [
           {
@@ -209,7 +247,527 @@
         "responses": {
           "200": {
             "description": "Return a JSON response with submitted Aman form details.",
-            "schema": { "$ref": "#/definitions/response" }
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/schemeList": {
+      "get": {
+        "tags": [
+          "SCHEME-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "",
+        "parameters": [
+          {
+            "name": "Fund",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Category",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/schemeFilteredList": {
+      "get": {
+        "tags": [
+          "SCHEME-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "scheme filtere list",
+        "parameters": [
+          {
+            "name": "SchemeCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "AmcCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "AssetType",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Catcode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Risk",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PlanType",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortExp",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortDir",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "OptCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PageNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/getSchemeNAVDetails": {
+      "get": {
+        "tags": [
+          "SCHEME-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get scheme code",
+        "parameters": [
+          {
+            "name": "SchemeCode",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/getSystematicInvestmentpattern": {
+      "get": {
+        "tags": [
+          "SCHEME-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get investment details",
+        "parameters": [
+          {
+            "name": "SchemeCode",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/allHoldings": {
+      "get": {
+        "tags": [
+          "SCHEME-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get holiday details",
+        "parameters": [
+          {
+            "name": "SchemeCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Top",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PageNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Pagesize",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortExpression",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/mf/nfoUpdates": {
+      "get": {
+        "tags": [
+          "SCHEME-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get nfo update details",
+        "parameters": [
+          {
+            "name": "FundCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "CatCode",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Option",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PageNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Pagesize",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortExp",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortDir",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    
+
+    "/accord-fintech/ipo/ipoIssue": {
+      "get": {
+        "tags": [
+          "IPO-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get ipo issue details",
+        "parameters": [
+          
+          {
+            "name": "PageNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Pagesize",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortExpression",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Proc",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/ipo/ipoNewListing": {
+      "get": {
+        "tags": [
+          "IPO-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get new listing details",
+        "parameters": [
+          {
+            "name": "EXCHG",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Top",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortExpression",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SortDirection",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "PageNo",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Pagesize",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
+    "/accord-fintech/ipo/ipoSnapshot": {
+      "get": {
+        "tags": [
+          "IPO-LIST"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "get ipo snapshot details",
+        "parameters": [
+          {
+            "name": "FinCode",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
           },
           "404": {
             "description": "Validation failure.",
@@ -226,19 +784,20 @@
         }
       }
     }
-
-
-
-
-    
   },
   "definitions": {
     "error": {
       "type": "object",
       "properties": {
-        "code": { "type": "string" },
-        "details": { "type": "string" },
-        "message": { "type": "string" }
+        "code": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
       }
     },
     "response": {
@@ -252,8 +811,12 @@
     "validationError": {
       "type": "object",
       "properties": {
-        "code": { "type": "string" },
-        "message": { "type": "string" }
+        "code": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
       }
     },
     "createCRMTemplateSchema": {

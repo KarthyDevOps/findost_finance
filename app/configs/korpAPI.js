@@ -28,6 +28,13 @@ module.exports = {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
     },
+    clientHoldingAPI: {
+        method: 'POST',
+        url: "",
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+    },
     
     
     

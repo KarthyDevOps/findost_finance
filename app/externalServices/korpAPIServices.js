@@ -54,9 +54,23 @@ const clientProfileAPI = async (data) => {
     return await Rest.callApi(apiConfig);
   };
 
+  
+  const clientHoldingAPI = async (data) => {
+    let apiConfig = JSON.parse(
+      JSON.stringify(KorpAPI.clientHoldingAPI)
+    );
+    apiConfig.url = process.env.KORP_BASE_URL+"/Reports/ClientHolding/Post"
+    apiConfig.headers.Authorization = `?Bearer ${data.token || ""}`;
+    delete data.token
+    apiConfig.data =data
+    console.log('apiConfig====',apiConfig)
+    return await Rest.callApi(apiConfig);
+  };
+
 module.exports = {
     authenticationAPI,
     clientProfileAPI,
     clientDashboardAPI,
-    clientMasterAPI
+    clientMasterAPI,
+    clientHoldingAPI
 };

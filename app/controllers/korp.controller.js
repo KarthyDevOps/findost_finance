@@ -4,6 +4,10 @@ const {
   } = require("../response/response");
   const {
     authenticationService,
+    clientProfileService,
+    clientDashboardService,
+    clientMasterService,
+    clientHoldingService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -90,10 +94,34 @@ const {
       result?.data
     );
   };
+  
+  const clientHolding = async (req, res) => {
+    const params = req?.body;
+    params.token = req.user.korpAccessToken
+    const result = await clientHoldingService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+
   module.exports = {
     authentication,
     clientProfile,
     clientDashboard,
-    clientMaster
+    clientMaster,
+    clientHolding
   };
   

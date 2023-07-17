@@ -41,9 +41,20 @@ const clientMasterService = async (params) => {
       data:resp
     };
 };
+const clientHoldingService = async (params) => {
+  let resp = await KORPAPIServices.clientHoldingAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data:resp
+  };
+};
+
 module.exports = {
     authenticationService,
     clientProfileService,
     clientDashboardService,
-    clientMasterService
+    clientMasterService,
+    clientHoldingService
 };

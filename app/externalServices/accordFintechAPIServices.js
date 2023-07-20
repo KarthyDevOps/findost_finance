@@ -128,6 +128,27 @@ const ipoSnapshotAPI = async (data) => {
     return await Rest.callApi(apiConfig);
 };
 
+
+const getEconomyNewsAPI = async (data) => {
+  let apiConfig = JSON.parse(
+    JSON.stringify(AccordFintechAPI.getEconomyNewsAPI)
+  );
+
+  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "5"}&SubSecId=${data.SubSecId || '23,24,25,26,36,43,44,49'}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;
+  apiConfig.url = apiConfig.url + queryString;
+  console.log('apiConfig=>',apiConfig)
+  return await Rest.callApi(apiConfig);
+};
+
+const getCorporateNewsAPI = async (data) => {
+  let apiConfig = JSON.parse(
+    JSON.stringify(AccordFintechAPI.getCorporateNewsAPI)
+  );
+  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "7"}&SubSecId=${data.SubSecId || '15'}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;  apiConfig.url = apiConfig.url + queryString;
+  console.log('apiConfig=>',apiConfig)
+  return await Rest.callApi(apiConfig);
+};
+
 module.exports = {
     categoryListAPI,
     categoryReturnsAPI,
@@ -142,5 +163,7 @@ module.exports = {
     ipoIssueAPI,
     ipoNewListingAPI,
     ipoSnapshotAPI,
-    NFOUpdatesAPI
+    NFOUpdatesAPI,
+    getEconomyNewsAPI,
+    getCorporateNewsAPI
 };

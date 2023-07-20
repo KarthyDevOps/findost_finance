@@ -130,6 +130,28 @@ const nfoUpdatesService = async (params) => {
 };
 
 
+const getCorporateNewsService = async (params) => {
+  let resp = await AccordFintechAPIServices.getCorporateNewsAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp || null
+  };
+};
+
+const getEconomyNewsService = async (params) => {
+  let resp = await AccordFintechAPIServices.getEconomyNewsAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp || null
+  };
+};
+
+    
+
 module.exports = {
     categoryListService,
     categoryReturnsListService,
@@ -143,5 +165,7 @@ module.exports = {
     ipoIssueService,
     ipoNewListingService,
     ipoSnapshotService,
-    nfoUpdatesService
+    nfoUpdatesService,
+    getCorporateNewsService,
+    getEconomyNewsService
 };

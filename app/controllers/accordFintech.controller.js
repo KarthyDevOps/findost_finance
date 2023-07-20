@@ -15,7 +15,9 @@ const {
     ipoIssueService,
     ipoNewListingService,
     ipoSnapshotService,
-    nfoUpdatesService
+    nfoUpdatesService,
+    getCorporateNewsService,
+    getEconomyNewsService
   } = require("../services/accordFintech.service");
   
   const categoryList = async (req, res) => {
@@ -300,6 +302,50 @@ const {
     );
   };
   
+
+  const getCorporateNews = async (req, res) => {
+    const params = req?.query;
+    params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    const result = await getCorporateNewsService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+
+  const getEconomyNews = async (req, res) => {
+    const params = req?.query;
+    params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    const result = await getEconomyNewsService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   module.exports = {
     categoryList,
     categoryReturnsList,
@@ -313,6 +359,8 @@ const {
     ipoIssue,
     ipoNewListing,
     ipoSnapshot,
-    nfoUpdates
+    nfoUpdates,
+    getCorporateNews,
+    getEconomyNews
   };
   

@@ -35,6 +35,10 @@ const routes = {
         IPO_ISSUE : "/v1/accord-fintech/ipo/ipoIssue",
         IPO_NEW_LISTING : "/v1/accord-fintech/ipo/ipoNewListing",
         IPO_SNAPSHOT : "/v1/accord-fintech/ipo/ipoSnapshot"
+      },
+      NEWS : {
+        ECONOMY_NEWS : "/v1/accord-fintech/news/getEconomyNews",
+        CORPORATE_NEWS : "/v1/accord-fintech/news/getCorporateNews",
       }
     },
     KORP: {

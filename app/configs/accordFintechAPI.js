@@ -94,6 +94,19 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    getCorporateNewsAPI: {
+        method: 'GET',
+        url: "http://news.accordwebservices.com/News/GetNewsSection",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
     
-    
+    getEconomyNewsAPI: {
+        method: 'GET',
+        url: "http://news.accordwebservices.com/News/GetNewsSection",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
 }

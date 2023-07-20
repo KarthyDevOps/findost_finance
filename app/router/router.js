@@ -42,7 +42,9 @@ const {
   ipoIssue,
   ipoNewListing,
   ipoSnapshot,
-  nfoUpdates
+  nfoUpdates,
+  getCorporateNews,
+  getEconomyNews
 } = require("../controllers/accordFintech.controller");
 const {
   authentication,
@@ -59,7 +61,7 @@ const router = Router();
 //Ticket Management
 router.get(
   routes.v1.CRMTicketManagenent.list,
-  [verifyToken("AP"),CRMTicketAuthentication, crmTicketListValidation],
+  [CRMTicketAuthentication, crmTicketListValidation],
   errHandle(crmTicketList)
 );
 router.post(
@@ -69,7 +71,7 @@ router.post(
 );
 router.get(
   routes.v1.CRMTicketManagenent.get,
-  [verifyToken("AP"), CRMTicketAuthentication,getCrmTicketeValidation,],
+  [CRMTicketAuthentication,getCrmTicketeValidation,],
   errHandle(getCrmTicket)
 );
 
@@ -155,7 +157,17 @@ router.get(
   errHandle(getFundFactsheet)
 );
 
+router.get(
+  routes.v1.ACCORD_FINTECH.NEWS.CORPORATE_NEWS,
+  [verifyToken("AP")],
+  errHandle(getCorporateNews)
+);
 
+router.get(
+  routes.v1.ACCORD_FINTECH.NEWS.ECONOMY_NEWS,
+  [verifyToken("AP")],
+  errHandle(getEconomyNews)
+);
 
 //KORP Management
 

@@ -2,7 +2,7 @@
 const express = require("express");
 const Router = express.Router;
 const { routes } = require("../routes/routes");
-const { verifyToken,korpAuthentication,CRMTicketAuthentication } = require("../middlewares/authentication");
+const { verifyToken,korpAuthentication,CRMTicketAuthentication,BSEStarAuthentication} = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
   createCrmTicketValidation,
@@ -54,6 +54,11 @@ const {
 } = require("../controllers/korp.controller");
 
 
+const {
+  bseStarAuthentication,
+    bseStarSipCreate,
+    bseStarLumpsumCreate
+} = require("../controllers/bseStar.controller");
 
 const { errHandle } = require("../helpers/index");
 
@@ -75,7 +80,7 @@ router.get(
   errHandle(getCrmTicket)
 );
 
-router.get(
+router.post(
   routes.v1.Leads.create,
   [verifyToken("AP"), leadCreateValidation],
   errHandle(createLeads)
@@ -218,5 +223,29 @@ router.get(
   [verifyToken("AP")],
   errHandle(updateWatchList)
 );
+
+
+
+
+
+
+//BSE STAR Management
+
+router.get(
+  routes.v1.BSE_STAR.AUTHENTICATION,
+  [BSEStarAuthentication],
+  errHandle(bseStarAuthentication)
+);
+router.get(
+  routes.v1.BSE_STAR.SIP_CREATE,
+  [verifyToken("AP")],
+  errHandle(bseStarSipCreate)
+);
+router.get(
+  routes.v1.BSE_STAR.LUMPSUM_CREATE,
+  [verifyToken("AP")],
+  errHandle(bseStarLumpsumCreate)
+);
+
 
 module.exports = router;

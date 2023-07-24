@@ -91,7 +91,6 @@ const getCrmTicketeValidation = (req, res, next) => {
 
 const leadCreateValidation = (req, res, next) => {
   const schema = joi.object({
-    apId: joi.string().required(),
     isExistUser: joi.boolean().required(),
     userId: joi.string(),
     name: joi.string(),

@@ -29,6 +29,48 @@
     }
   },
   "paths": {
+    "/leads/create": {
+      "post": {
+        "tags": [
+          "Leads MANAGEMENT"
+        ],
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "summary": "Create new CRM management type",
+        "parameters": [
+          {
+            "name": "leads create",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/createLeadsSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a JSON response with submitted Aman form details.",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          },
+          "404": {
+            "description": "Validation failure.",
+            "schema": {
+              "$ref": "#/definitions/validationError"
+            }
+          },
+          "default": {
+            "description": "Unexpected error.",
+            "schema": {
+              "$ref": "#/definitions/error"
+            }
+          }
+        }
+      }
+    },
     "/CRMTicket-management/create": {
       "post": {
         "tags": [
@@ -850,6 +892,35 @@
           "type": "boolean"
         }
       }
+    },
+    "createLeadsSchema": {
+      "properties": {
+        "isExistUser": {
+          "type": "boolean"
+        },
+        "userId": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mobileNumber": {
+          "type": "string"
+        },
+        "emailId": {
+          "type": "string"
+        },
+        "aditionalInfo": {
+          "type": "string"
+        },
+        "productId": {
+          "type": "string"
+        },
+        "productName": {
+          "type": "string"
+        }
+      }
     }
+    
   }
 }

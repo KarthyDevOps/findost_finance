@@ -8,6 +8,7 @@ const {
   
   const createLeads = async (req, res) => {
     const params = req.body;
+    params.apId = req.user.authorizedPersonId
     const result = await createLeadsService(params);
     if (!result.status) {
       return sendErrorResponse(

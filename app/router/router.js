@@ -8,7 +8,8 @@ const {
   createCrmTicketValidation,
   getCrmTicketeValidation,
 
-  leadCreateValidation
+  leadCreateValidation,
+  createWatchListValidation
 } = require("../validator/validator");
 
 const {
@@ -218,9 +219,9 @@ router.get(
 
 //WATCHLIST Management
 
-router.get(
+router.post(
   routes.v1.WATCH_LIST.ADD,
-  [verifyToken("AP")],
+  [verifyToken("AP"),createWatchListValidation],
   errHandle(createWatchList)
 );
 router.get(

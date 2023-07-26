@@ -2,20 +2,42 @@ const mongoose = require("mongoose");
 const { InternalServices } = require('../apiServices/index');
 const watchListSchema = new mongoose.Schema(
   {
-    watchListId: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true
-    },
+   
     apId: {
         type: String,
     },
-    type: {
+    schemeCode: {
       type: String,
     },
-    extra: {
-      type: Object,
+    schemeName: {
+      type: String,
+    },
+    categoryCode: {
+      type: String,
+    },
+    categoryName: {
+      type: String,
+    },
+    one_MONTHRET: {
+      type: String,
+    },
+    three_MONTHRET: {
+      type: String,
+    },
+    six_MONTHRET: {
+      type: String,
+    },
+    one_YRRET: {
+      type: String,
+    },
+    three_YEARRET: {
+      type: String,
+    },
+    five_YEARRET: {
+      type: String,
+    },
+    INCRET: {
+      type: String,
     },
     isDeleted: {
       type: Boolean,
@@ -26,14 +48,7 @@ const watchListSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-watchListSchema.pre('save', async function (next) {
-  InternalServices.getSequenceId({ type: "watchList" });
-  var doc = this;
-  let counter = await InternalServices.getSequenceId({ type: "watchList" });
-  doc.watchListId = (counter?.data?.count + 1).toString().padStart(6, '0').toString();;
-  next();
 
-});
 
 const WatchList = mongoose.model("watchList", watchListSchema);
 module.exports = { WatchList };

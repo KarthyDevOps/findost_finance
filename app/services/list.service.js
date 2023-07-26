@@ -51,6 +51,7 @@ const getWatchListList = async (params) => {
     if (params?.search) {
       data = await WatchList.find({
         isDeleted: false,
+        apId : params.apId,
         $or: [
           { title: { $regex: `${params?.search}`, $options: "i" } },
           { content: { $regex: `${params?.search}`, $options: "i" } },
@@ -60,11 +61,13 @@ const getWatchListList = async (params) => {
     } else {
       data = await WatchList.find({
         isDeleted: false,
+        apId : params.apId,
       });
     }
   } else if (params?.search) {
     data = await WatchList.find({
       isDeleted: false,
+      apId : params.apId,
       $or: [
         { title: { $regex: `${params?.search}`, $options: "i" } },
         { content: { $regex: `${params?.search}`, $options: "i" } },
@@ -77,6 +80,7 @@ const getWatchListList = async (params) => {
   } else {
     data = await WatchList.find({
       isDeleted: false,
+      apId : params.apId,
     })
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)

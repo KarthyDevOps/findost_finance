@@ -19,7 +19,7 @@ const createCrmTicketService = async (params) => {
       "customeremailid": params.customerEmailId,
       "subject":  params.source,
       "issuedescription": params.issuedescription || "I have been facing issue while logging into the system",
-      "UserID":  "13"
+      "UserID":  process.env.CRM_TICKET_USER_ID
     }
 
   let apiResp = await CRMTicketAPIServices.createTicketAPI(token,payload)
@@ -32,7 +32,7 @@ const createCrmTicketService = async (params) => {
     console.log(apiResp?.data)
     params.ticketId = apiResp?.data[0]?.TicketID;
     params.APId = params.userId;
-    params.userId = "13";
+    params.userId = process.env.CRM_TICKET_USER_ID;
     params.APName =  params.userName;
     params.status = "New";
     var newvalues = params;

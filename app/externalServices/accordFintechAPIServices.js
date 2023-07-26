@@ -1,6 +1,7 @@
 
 let { Rest } = require("./../restCalls");
 let { AccordFintechAPI } = require("../configs");
+const moment = require("moment");
 
 const categoryListAPI = async (data) => {
   let apiConfig = JSON.parse(
@@ -134,7 +135,7 @@ const getEconomyNewsAPI = async (data) => {
     JSON.stringify(AccordFintechAPI.getEconomyNewsAPI)
   );
   
-  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "5"}&Top=${data.Top || ""}&NewsID=${data.NewsID || ""}&Fincode=${data.Fincode || ""}&SubSecId=${data.SubSecId || '23'}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;
+  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "5"}&Top=${data.Top || ""}&NewsID=${data.NewsID || ""}&Fincode=${data.Fincode || ""}&SubSecId=${data.SubSecId || '23'}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&FromDate=${moment(data.FromDate).format('YYYY.MM.DD') || ""}&ToDate=${moment(data.ToDate).format('YYYY.MM.DD') || ""}`;
   apiConfig.url = apiConfig.url + queryString;
   console.log('apiConfig=>',apiConfig)
   return await Rest.callApi(apiConfig);
@@ -144,7 +145,7 @@ const getCorporateNewsAPI = async (data) => {
   let apiConfig = JSON.parse(
     JSON.stringify(AccordFintechAPI.getCorporateNewsAPI)
   );
-  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "7"}&Top=${data.Top || ""}&NewsID=${data.NewsID || ""}&Fincode=${data.Fincode || ""}&SubSecId=${data.SubSecId || '15'}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;
+  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "7"}&Top=${data.Top || ""}&NewsID=${data.NewsID || ""}&Fincode=${data.Fincode || ""}&SubSecId=${data.SubSecId || '15'}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&FromDate=${moment(data.FromDate).format('YYYY.MM.DD') || ""}&ToDate=${moment(data.ToDate).format('YYYY.MM.DD')  || ""}`;
    apiConfig.url = apiConfig.url + queryString;
   console.log('apiConfig=>',apiConfig)
   return await Rest.callApi(apiConfig);

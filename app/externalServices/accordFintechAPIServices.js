@@ -133,8 +133,8 @@ const getEconomyNewsAPI = async (data) => {
   let apiConfig = JSON.parse(
     JSON.stringify(AccordFintechAPI.getEconomyNewsAPI)
   );
-
-  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "5"}&SubSecId=${data.SubSecId || '23,24,25,26,36,43,44,49'}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;
+  
+  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "5"}&Top=${data.Top || ""}&NewsID=${data.NewsID || ""}&Fincode=${data.Fincode || ""}&SubSecId=${data.SubSecId || '23'}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;
   apiConfig.url = apiConfig.url + queryString;
   console.log('apiConfig=>',apiConfig)
   return await Rest.callApi(apiConfig);
@@ -144,7 +144,8 @@ const getCorporateNewsAPI = async (data) => {
   let apiConfig = JSON.parse(
     JSON.stringify(AccordFintechAPI.getCorporateNewsAPI)
   );
-  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "7"}&SubSecId=${data.SubSecId || '15'}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;  apiConfig.url = apiConfig.url + queryString;
+  const queryString = `?token=${data.token || ""}&SecId=${data.SecId || "7"}&Top=${data.Top || ""}&NewsID=${data.NewsID || ""}&Fincode=${data.Fincode || ""}&SubSecId=${data.SubSecId || '15'}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&FromDate=${data.FromDate || ""}&ToDate=${data.ToDate || ""}`;
+   apiConfig.url = apiConfig.url + queryString;
   console.log('apiConfig=>',apiConfig)
   return await Rest.callApi(apiConfig);
 };

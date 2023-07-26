@@ -85,8 +85,6 @@ router.post(
   [verifyToken("AP"), leadCreateValidation],
   errHandle(createLeads)
 );
-
-
 //ACCORD FINTECH Management
 router.get(
   routes.v1.ACCORD_FINTECH.MF.CATEGORY_LIST,

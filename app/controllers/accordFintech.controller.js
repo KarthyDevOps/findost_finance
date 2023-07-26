@@ -305,6 +305,8 @@ const {
 
   const getCorporateNews = async (req, res) => {
     const params = req?.query;
+    if (!params.limit) params.limit = 10;
+    if (!params.page) params.page = 1;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
     const result = await getCorporateNewsService(params);
     if (!result.status) {
@@ -327,6 +329,8 @@ const {
 
   const getEconomyNews = async (req, res) => {
     const params = req?.query;
+    if (!params.limit) params.limit = 10;
+    if (!params.page) params.page = 1;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
     const result = await getEconomyNewsService(params);
     if (!result.status) {

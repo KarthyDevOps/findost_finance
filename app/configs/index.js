@@ -4,4 +4,5 @@ module.exports = {
   AccordFintechAPI: require("./accordFintechAPI"),
   KorpAPI: require("./korpAPI"),
   CRMTicketAPI: require("./CRMTicketAPI"),
+  bseStarAPI :  require("./bseStarAPI"),
 };

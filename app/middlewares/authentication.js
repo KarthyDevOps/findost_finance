@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { InternalServices } = require("./../apiServices");
-const { KORPAPIServices,CRMTicketAPIServices } = require("./../externalServices");
+const { KORPAPIServices,CRMTicketAPIServices,BSESTARAPIServices } = require("./../externalServices");
 
 const { sendErrorResponse } = require("../response/response");
 const { statusCodes } = require("../response/httpStatusCodes");
@@ -140,10 +140,29 @@ const verifyAdminRole = (roles, action) =>
     }
   };
   
-  
+  const BSEStarAuthentication = async(req, res, next) =>{
+    let resp = await BSESTARAPIServices.bseStarauthenticationAPI();
+    console.log('resp',resp)
+    if(resp)
+    {
+      if(!req.user) req.user = {}
+      req.user.CRMAccessToken = resp
+      next()
+    }
+    else{
+      return sendErrorResponse(
+        req,
+        res,
+        statusCodes.HTTP_UNAUTHORIZED,
+        messages.accessDenied,
+        []
+      );
+    }
+  };
 module.exports = {
   verifyToken,
   verifyAdminRole,
   korpAuthentication,
-  CRMTicketAuthentication
+  CRMTicketAuthentication,
+  BSEStarAuthentication
 };

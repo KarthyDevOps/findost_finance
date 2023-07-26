@@ -48,6 +48,12 @@ const routes = {
       CLIENT_DASHBOARD : "/v1/korp/clientDashboard",
       CLIENT_MASTER : "/v1/korp/clientMaster"
 
+    },
+    BSE_STAR: {
+      AUTHENTICATION : "/v1/bse-star/authentication",
+      SIP_CREATE : "/v1/bse-star/sipCreate",
+      LUMPSUM_CREATE : "/v1/bse-star/lumpsumCreate",
+
     }
   },
 };

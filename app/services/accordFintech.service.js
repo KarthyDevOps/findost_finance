@@ -3,6 +3,11 @@ const { messages } = require("../response/customMesages");
 const {
     AccordFintechAPIServices,KORPAPIServices
 } = require("../externalServices");
+const {
+  
+  pageMetaService,
+} = require("../helpers/index");
+
 const categoryListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryListAPI(params);
     //console.log(resp)
@@ -132,22 +137,25 @@ const nfoUpdatesService = async (params) => {
 
 const getCorporateNewsService = async (params) => {
   let resp = await AccordFintechAPIServices.getCorporateNewsAPI(params);
+  console.log(resp)
+  const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
-    message: messages?.success,
-    data: resp || null
+    data: { list:  resp?.Table || [], pageMeta },
   };
+
 };
 
 const getEconomyNewsService = async (params) => {
   let resp = await AccordFintechAPIServices.getEconomyNewsAPI(params);
+  const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
-    message: messages?.success,
-    data: resp || null
+    data: { list:  resp?.Table || [], pageMeta },
   };
+ 
 };
 
     

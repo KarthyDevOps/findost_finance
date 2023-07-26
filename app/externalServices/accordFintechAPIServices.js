@@ -3,6 +3,16 @@ let { Rest } = require("./../restCalls");
 let { AccordFintechAPI } = require("../configs");
 const moment = require("moment");
 
+
+const GetFundsListAPI = async (data) => {
+  let apiConfig = JSON.parse(
+    JSON.stringify(AccordFintechAPI.GetFundsListAPI)
+  );
+  const queryString = `?token=${data.token || ""}`;
+  apiConfig.url = apiConfig.url + queryString;
+  console.log('apiConfig=>',apiConfig)
+  return await Rest.callApi(apiConfig);
+};
 const categoryListAPI = async (data) => {
   let apiConfig = JSON.parse(
     JSON.stringify(AccordFintechAPI.categoryListAPI)
@@ -17,7 +27,7 @@ const categoryReturnsAPI = async (data) => {
     let apiConfig = JSON.parse(
       JSON.stringify(AccordFintechAPI.categoryReturnsAPI)
     );
-    const queryString = `?token=${data.token || ""}&OptionType=${data.OptionType || 1}&Type=${data.Type || "Commodity"}&PageNo=${data.PageNo || 1}&Pagesize=${data.Pagesize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}`;
+    const queryString = `?token=${data.token || ""}&OptionType=${data.OptionType || 1}&Type=${data.Type || "Hybrid"}&PageNo=${data.page || 1}&Pagesize=${data.limit || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}`;
     apiConfig.url = apiConfig.url + queryString;
     console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
@@ -32,6 +42,17 @@ const schemesListAPI = async (data) => {
     console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
+
+const getSchemeWithInfoAPI = async (data) => {
+  let apiConfig = JSON.parse(
+    JSON.stringify(AccordFintechAPI.getSchemeWithInfoAPI)
+  );
+  const queryString = `?token=${data.token || ""}&schemecode=${data.schemecode || ''}&amccode=${data.amccode || ""}&currentPage=${data.page || 1}&pagesize=${data.limit || 10}&assetcode=${data.assetcode || ""}&catcode=${data.catcode || ""}&optcode=${data.optcode || ""}&aumfrom=${data.aumfrom || ""}&aumto=${data.aumto || ""}&fundagefrom=${data.fundagefrom || ""}&fundageto=${data.fundageto || ""}&SortDirection=${data.SortDirection || ""}&sortexpression=${data.sortexpression || ""}`;
+  apiConfig.url = apiConfig.url + queryString;
+  console.log('apiConfig=>',apiConfig)
+  return await Rest.callApi(apiConfig);
+};
+
 const getFundFactsheetAPI = async (data) => {
     let apiConfig = JSON.parse(
       JSON.stringify(AccordFintechAPI.getFundFactsheetAPI)
@@ -152,9 +173,11 @@ const getCorporateNewsAPI = async (data) => {
 };
 
 module.exports = {
+  GetFundsListAPI,
     categoryListAPI,
     categoryReturnsAPI,
     schemesListAPI,
+    getSchemeWithInfoAPI,
     getFundFactsheetAPI,
     getSchemesFilteredListAPI,
     getSchemeNAVDetailsAPI,

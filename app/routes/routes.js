@@ -19,9 +19,13 @@ const routes = {
     },
     ACCORD_FINTECH: {
       MF:{
+        GET_FUNDS_LIST: "/v1/accord-fintech/mf/GetFunds",     
         CATEGORY_LIST: "/v1/accord-fintech/mf/categoryList",     
         CATEGORY_RETURNS: "/v1/accord-fintech/mf/categoryReturnsList",     
         SCHEME_LIST: "/v1/accord-fintech/mf/schemeList",
+
+        SCHEME_LIST_WITH_INFO: "/v1/accord-fintech/mf/getSchemeListWithInfo",
+
         GET_SCHEME_FILTERED_LIST : "/v1/accord-fintech/mf/schemeFilteredList",
         GET_SCHEME_NAV_DETAILS : "/v1/accord-fintech/mf/getSchemeNAVDetails",
         MF_SNAPSHOT_SUMMARY : "/v1/accord-fintech/mf/getMFSnapshotSummary",

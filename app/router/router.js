@@ -30,9 +30,12 @@ const {
 
 
 const {
+  GetFundsList,
   categoryList,
   categoryReturnsList,
   schemesList,
+  getSchemeWithInfo,
+
   getSchemesFilteredList,
   getSchemeNAVDetails,
   getMFSnapshotDetails,
@@ -86,6 +89,13 @@ router.post(
   errHandle(createLeads)
 );
 //ACCORD FINTECH Management
+
+
+router.get(
+  routes.v1.ACCORD_FINTECH.MF.GET_FUNDS_LIST,
+  [verifyToken("AP")],
+  errHandle(GetFundsList)
+);
 router.get(
   routes.v1.ACCORD_FINTECH.MF.CATEGORY_LIST,
   [verifyToken("AP")],
@@ -103,6 +113,13 @@ router.get(
   [verifyToken("AP")],
   errHandle(schemesList)
 );
+
+router.get(
+  routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST_WITH_INFO,
+  [verifyToken("AP")],
+  errHandle(getSchemeWithInfo)
+);
+
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_SCHEME_FILTERED_LIST,
   [verifyToken("AP")],

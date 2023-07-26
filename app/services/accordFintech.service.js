@@ -8,6 +8,17 @@ const {
   pageMetaService,
 } = require("../helpers/index");
 
+
+const GetFundsListService = async (params) => {
+  let resp = await AccordFintechAPIServices.GetFundsListAPI(params);
+  //console.log(resp)
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp.Table || []
+  };
+};
 const categoryListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryListAPI(params);
     //console.log(resp)
@@ -15,18 +26,18 @@ const categoryListService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp || null
+      data: resp.Table || []
     };
 };
 const categoryReturnsListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryReturnsAPI(params);
-      //  console.log(resp)
+    const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
-      message: messages?.success,
-      data: resp || null
+      data: { list:  resp?.Table || [], pageMeta },
     };
+   
 };
 
 const schemesListService = async (params) => {
@@ -35,16 +46,29 @@ const schemesListService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp || null
+      data: resp.Table || []
     };
 };
+
+
+const getSchemeWithInfoService = async (params) => {
+  let resp = await AccordFintechAPIServices.getSchemeWithInfoAPI(params);
+  const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRecords || 0);
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      data: { list:  resp?.Table || [], pageMeta },
+    };
+};
+
+
 const getFundFactsheetService = async (params) => {
     let resp = await AccordFintechAPIServices.getFundFactsheetAPI(params);
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp || null
+      data: resp.Table || []
     };
 };
 
@@ -161,6 +185,7 @@ const getEconomyNewsService = async (params) => {
     
 
 module.exports = {
+    GetFundsListService,
     categoryListService,
     categoryReturnsListService,
     schemesListService,
@@ -175,5 +200,6 @@ module.exports = {
     ipoSnapshotService,
     nfoUpdatesService,
     getCorporateNewsService,
-    getEconomyNewsService
+    getEconomyNewsService,
+    getSchemeWithInfoService
 };

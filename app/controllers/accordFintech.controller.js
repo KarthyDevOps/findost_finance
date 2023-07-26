@@ -3,9 +3,11 @@ const {
     sendSuccessResponse,
   } = require("../response/response");
   const {
+    GetFundsListService,
     categoryListService,
     categoryReturnsListService,
     schemesListService,
+    getSchemeWithInfoService,
     getFundFactsheetService,
     getSchemesFilteredListService,
     getSchemeNAVDetailsService,
@@ -20,8 +22,31 @@ const {
     getEconomyNewsService
   } = require("../services/accordFintech.service");
   
+  
+  const GetFundsList = async (req, res) => {
+    const params = req?.query;
+    params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    const result = await GetFundsListService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   const categoryList = async (req, res) => {
     const params = req?.query;
+    
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
     const result = await categoryListService(params);
     if (!result.status) {
@@ -43,6 +68,8 @@ const {
   };
   const categoryReturnsList = async (req, res) => {
     const params = req?.query;
+    if (!params.limit) params.limit = 10;
+    if (!params.page) params.page = 1;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
     const result = await categoryReturnsListService(params);
     if (!result.status) {
@@ -85,6 +112,32 @@ const {
     );
   };
   
+  
+  const getSchemeWithInfo = async (req, res) => {
+    const params = req?.query;
+    params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    if (!params.limit) params.limit = 10;
+    if (!params.page) params.page = 1;
+    const result = await getSchemeWithInfoService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
+
   const getFundFactsheet = async (req, res) => {
     const params = req?.query;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
@@ -351,9 +404,11 @@ const {
     );
   };
   module.exports = {
+    GetFundsList,
     categoryList,
     categoryReturnsList,
     schemesList,
+    getSchemeWithInfo,
     getFundFactsheet,
     getSchemesFilteredList,
     getSchemeNAVDetails,

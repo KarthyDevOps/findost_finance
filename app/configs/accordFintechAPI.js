@@ -1,5 +1,13 @@
 
 module.exports = {
+    
+    GetFundsListAPI: {
+        method: 'GET',
+        url: "http://mf.accordwebservices.com/MF/GetFunds",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
     categoryListAPI: {
         method: 'GET',
         url: "http://mf.accordwebservices.com/MF/GetCategory",
@@ -22,6 +30,14 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    getSchemeWithInfoAPI: {
+        method: 'GET',
+        url: "http://mf.accordwebservices.com/MF/GetSchemeFiltered",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
+    
     getFundFactsheetAPI: {
         method: 'GET',
         url: "https://mf.accordwebservices.com/MF/GetFundFactsheet",

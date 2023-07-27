@@ -135,7 +135,7 @@ const ipoIssueService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp || null
+      data: resp.Table || []
     };
 };
 
@@ -165,7 +165,7 @@ const nfoUpdatesService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp || null
+      data: resp.Table || null
     };
 };
 

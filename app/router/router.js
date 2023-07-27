@@ -36,7 +36,7 @@ const {
   categoryReturnsList,
   schemesList,
   getSchemeWithInfo,
-
+  GetMFNAVGraph,
   getSchemesFilteredList,
   getSchemeNAVDetails,
   getMFSnapshotDetails,
@@ -119,6 +119,11 @@ router.get(
   routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST_WITH_INFO,
   [verifyToken("AP")],
   errHandle(getSchemeWithInfo)
+);
+router.get(
+  routes.v1.ACCORD_FINTECH.MF.GET_MF_NAV_GRAPH,
+  [verifyToken("AP")],
+  errHandle(GetMFNAVGraph)
 );
 
 router.get(

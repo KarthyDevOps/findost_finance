@@ -57,11 +57,22 @@ const getFundFactsheetAPI = async (data) => {
     let apiConfig = JSON.parse(
       JSON.stringify(AccordFintechAPI.getFundFactsheetAPI)
     );
-    const queryString = `?token=${data.token || ""}&SchemeCode=${data.SchemeCode || ""}}`;
+    const queryString = `?token=${data.token || ""}&Schemecode=${data.Schemecode || ""}`;
     apiConfig.url = apiConfig.url + queryString;
     console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);
 };
+const GetMFNAVGraphAPI = async (data) => {
+  let apiConfig = JSON.parse(
+    JSON.stringify(AccordFintechAPI.GetMFNAVGraphAPI)
+  );
+  const queryString = `?token=${data.token || ""}&SchemeCode=${data.SchemeCode || ""}&Period=${data.Period || "1Y"}&ChType=${data.ChType || "ADJ"}&DateOption=${data.DateOption || ""}`;
+  apiConfig.url = apiConfig.url + queryString;
+  console.log('apiConfig=>',apiConfig)
+  return await Rest.callApi(apiConfig);
+};
+
+
 
 const getSchemesFilteredListAPI = async (data) => {
     let apiConfig = JSON.parse(
@@ -173,11 +184,12 @@ const getCorporateNewsAPI = async (data) => {
 };
 
 module.exports = {
-  GetFundsListAPI,
+    GetFundsListAPI,
     categoryListAPI,
     categoryReturnsAPI,
     schemesListAPI,
     getSchemeWithInfoAPI,
+    GetMFNAVGraphAPI,
     getFundFactsheetAPI,
     getSchemesFilteredListAPI,
     getSchemeNAVDetailsAPI,

@@ -68,9 +68,20 @@ const getFundFactsheetService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp.Table || []
+      data: resp || []
     };
 };
+
+const GetMFNAVGraphService = async (params) => {
+  let resp = await AccordFintechAPIServices.GetMFNAVGraphAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp.Table || []
+  };
+};
+
 
 const getSchemesFilteredListService = async (params) => {
     let resp = await AccordFintechAPIServices.getSchemesFilteredListAPI(params);
@@ -189,6 +200,7 @@ module.exports = {
     categoryListService,
     categoryReturnsListService,
     schemesListService,
+    GetMFNAVGraphService,
     getFundFactsheetService,
     getSchemesFilteredListService,
     getSchemeNAVDetailsService,

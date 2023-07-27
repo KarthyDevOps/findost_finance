@@ -37,6 +37,13 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    GetMFNAVGraphAPI: {
+        method: 'GET',
+        url: "http://mf.accordwebservices.com/MF/GetMFNAVGraph",
+        headers: {
+            contentType: 'application/json',
+        }
+    },
     
     getFundFactsheetAPI: {
         method: 'GET',

@@ -124,7 +124,7 @@ const ipoIssueAPI = async (data) => {
     let apiConfig = JSON.parse(
       JSON.stringify(AccordFintechAPI.ipoIssueAPI)
     );
-    const queryString = `?token=${data.token || ""}&PageNo=${data.PageNo || 1}&PageSize=${data.PageSize || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}&Proc=${data.Proc || "IPO_GET_FORTHCOMINGISSUE"}`;
+    const queryString = `?token=${data.token || ""}&PageNo=${data.page || 1}&PageSize=${data.limit || 10}&SortExpression=${data.SortExpression || ""}&SortDirection=${data.SortDirection || "Desc"}&Proc=${data.Proc || "IPO_GET_FORTHCOMINGISSUE"}`;
     apiConfig.url = apiConfig.url + queryString;
     console.log('apiConfig=>',apiConfig)
     return await Rest.callApi(apiConfig);

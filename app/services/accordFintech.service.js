@@ -131,11 +131,11 @@ const allHoldingsService = async (params) => {
 
 const ipoIssueService = async (params) => {
     let resp = await AccordFintechAPIServices.ipoIssueAPI(params);
+    const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
-      message: messages?.success,
-      data: resp.Table || []
+      data: { list:  resp?.Table || [], pageMeta },
     };
 };
 

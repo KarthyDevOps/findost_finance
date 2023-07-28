@@ -9,7 +9,9 @@ const {
   getCrmTicketeValidation,
 
   leadCreateValidation,
-  createWatchListValidation
+  createWatchListValidation,
+  createProductIpoValidation,
+  deleteProductIpoValidation
 } = require("../validator/validator");
 
 const {
@@ -65,6 +67,7 @@ const {
 } = require("../controllers/bseStar.controller");
 
 const { errHandle } = require("../helpers/index");
+const { createProductIpo, updateProductIpo, getProductIpo, productIpoList, deleteProductIpo, productIpoCountList } = require("../controllers/productIpo.controller");
 
 const router = Router();
 //Ticket Management
@@ -267,6 +270,17 @@ router.get(
   [verifyToken("AP")],
   errHandle(bseStarLumpsumCreate)
 );
+
+
+// Product-Ipo Mobile Module
+
+router.post(routes.v1.PRODUCT_IPO.create, [verifyToken(["AP"]), createProductIpoValidation], errHandle(createProductIpo));
+router.put(routes.v1.PRODUCT_IPO.update, [verifyToken(["AP"])], errHandle(updateProductIpo));
+router.get(routes.v1.PRODUCT_IPO.get, [verifyToken(["AP"])], errHandle(getProductIpo));
+router.get(routes.v1.PRODUCT_IPO.list, [verifyToken(["AP"])], errHandle(productIpoList));
+router.get(routes.v1.PRODUCT_IPO.countItems, [verifyToken(["AP"])], errHandle(productIpoCountList));
+//router.delete(routes.v1.PRODUCT_IPO.delete, [verifyToken(["AP"]),deleteProductIpoValidation], errHandle(deleteProductIpo)); for future use...
+
 
 
 module.exports = router;

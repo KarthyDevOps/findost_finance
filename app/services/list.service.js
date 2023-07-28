@@ -1,4 +1,5 @@
 const { CrmTicket } = require("../models/crmTicket");
+const { ProductIPO } = require("../models/productIpo");
 const { WatchList } = require("../models/watchList");
 
 const getCrmTicketList = async (params) => {
@@ -44,6 +45,80 @@ const getCrmTicketList = async (params) => {
     return { status: false, data: [] };
   }
 };
+
+
+const getProductIpoList = async (params) => {
+  let data;
+  if (params.all) {
+    if (params?.search) {
+      data = await ProductIPO.find({
+        isDeleted: false,
+        $or: [
+          { clientName: { $regex: `${params?.search}`, $options: "i" } },
+          { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+        ],
+      }).sort({ createdAt: -1 }).lean();
+    } else {
+      data = await ProductIPO.find({
+        isDeleted: false,
+      }).lean();
+    }
+  } else if (params?.search) {
+    data = await ProductIPO.find({
+      isDeleted: false,
+      $or: [
+        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+      ],
+    })
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .sort({ createdAt: -1 }).lean();
+  } else {
+    data = await ProductIPO.find({
+      isDeleted: false,
+    })
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .sort({ createdAt: -1 }).lean();
+  }
+  if (data && data.length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: [] };
+  }
+};
+
+const getProductCountIpoList = async () => {
+
+  let data;
+  let totalApplication = ProductIPO.countDocuments();
+  let pendingApplication =  ProductIPO.countDocuments({currentStatus:"PENDING",  isDeleted:false});
+  let rejectedApplication =  ProductIPO.countDocuments({currentStatus:"REJECTED" ,  isDeleted:true});
+  let ipoAllocatedApplication =  ProductIPO.countDocuments({currentStatus:"IPOALLOCATED" ,  isDeleted:false}) ;
+  let ipoRejectApplication =  ProductIPO.countDocuments({currentStatus:"IPONONALLOCATED",  isDeleted:false}) ;
+
+  data = await Promise.all([totalApplication, pendingApplication, rejectedApplication, ipoAllocatedApplication, ipoRejectApplication]).then(function (values) {
+    let result = {
+      totalApplication: values?.[0],
+      pendingApplication: values?.[1],
+      rejectedApplication: values?.[2],
+      ipoAllocatedApplication: values?.[3],
+      ipoRejectApplication: values?.[4]
+    }
+    return result   
+  });
+
+  console.log("data-->",data)
+
+  if (data) {
+    return { status: true, allValueCount:data };
+  } else {
+    return { status: false, data: [] };
+  }
+
+  
+}
 
 const getWatchListList = async (params) => {
   let data;
@@ -94,5 +169,7 @@ const getWatchListList = async (params) => {
 };
 module.exports = {
   getCrmTicketList,
-  getWatchListList
+  getWatchListList,
+  getProductIpoList,
+  getProductCountIpoList
 };

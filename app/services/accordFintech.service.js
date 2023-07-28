@@ -78,6 +78,11 @@ const getSchemeWithInfoService = async (params) => {
 
 const getFundFactsheetService = async (params) => {
     let resp = await AccordFintechAPIServices.getFundFactsheetAPI(params);
+    let getMyWatchlist =  await WatchList.findOne({apId : params.apId,isDeleted:false,schemeCode:params.Schemecode});
+    if(resp && resp.snapshot_summary[0])
+    {
+      resp.snapshot_summary[0].isAlreadyExistMyWatchlist = getMyWatchlist ? true : false
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,

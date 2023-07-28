@@ -74,9 +74,9 @@ const createCrmTicketValidation = (req, res, next) => {
     customerEmailId: joi.string().required(),
     subject: joi.string().required(),
     description: joi.string().required(),
-   // status: joi.string().required(),
-   // attachmentExtension: joi.string(),
-   // attachmentExtension: joi.string(),
+    // status: joi.string().required(),
+    // attachmentExtension: joi.string(),
+    // attachmentExtension: joi.string(),
   });
   return bodyParamValidation(req, res, next, schema);
 };
@@ -121,6 +121,38 @@ const createWatchListValidation = (req, res, next) => {
   return bodyParamValidation(req, res, next, schema);
 };
 
+const createProductIpoValidation = (req, res, next) => {
+  const schema = joi.object({
+    ipoName: joi.string().required(),
+    clientName: joi.string().required(),
+    clientCode: joi.string().required(),
+    clientNumber: joi.string().required(),
+    appNo: joi.string().required(),
+    upiID: joi.string().required(),
+    upiApprovalStatus: joi.string().required(),
+    bidDetails: joi.array().required(),
+    ipoTimeLine: joi.array().required(),
+    numberOfLots: joi.string().required(),
+    lotsApplied: joi.string().required(),
+    amount: joi.string().required(),
+    currentStatus: joi.string().required(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
+const deleteProductIpoValidation = (req, res, next) => {
+  const querySchema = joi.object({
+    id: joi.string().required()
+  });
+  req.bodyParam = true;
+  queryParamValidation(req, res, next, querySchema);
+
+  const schema = joi.object({
+    cancelReason: joi.string().required()
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
 module.exports = {
   bodyParamValidation,
   queryParamValidation,
@@ -128,5 +160,7 @@ module.exports = {
   createCrmTicketValidation,
   getCrmTicketeValidation,
   leadCreateValidation,
-  createWatchListValidation
+  createWatchListValidation,
+  createProductIpoValidation,
+  deleteProductIpoValidation
 };

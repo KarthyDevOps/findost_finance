@@ -7,6 +7,7 @@ const {
   
   pageMetaService,
 } = require("../helpers/index");
+const { WatchList } = require("../models/watchList");
 
 
 const GetFundsListService = async (params) => {
@@ -53,6 +54,19 @@ const schemesListService = async (params) => {
 
 const getSchemeWithInfoService = async (params) => {
   let resp = await AccordFintechAPIServices.getSchemeWithInfoAPI(params);
+  let getMyWatchlist =  await WatchList.find({apId : params.apId,isDeleted:false});
+  let myschemeCodes = getMyWatchlist.filter((data)=>data.schemeCode)
+  if(resp?.Table)
+  {
+    resp.Table = resp.Table.map((data)=>{
+      data.isAlreadyExistMyWatchlist =false
+      if(myschemeCodes.indexOf(data.schemeCode) > -1)
+      {
+        data.isAlreadyExistMyWatchlist =true
+      }
+      return data
+    })
+  }
   const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRecords || 0);
     return {
       status: true,

@@ -117,6 +117,7 @@ const {
   const getSchemeWithInfo = async (req, res) => {
     const params = req?.query;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    params.apId = req?.user?._id?.toString()
     if (!params.limit) params.limit = 10;
     if (!params.page) params.page = 1;
     const result = await getSchemeWithInfoService(params);

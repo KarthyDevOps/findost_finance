@@ -55,12 +55,12 @@ const schemesListService = async (params) => {
 const getSchemeWithInfoService = async (params) => {
   let resp = await AccordFintechAPIServices.getSchemeWithInfoAPI(params);
   let getMyWatchlist =  await WatchList.find({apId : params.apId,isDeleted:false});
-  let myschemeCodes = getMyWatchlist.filter((data)=>data.schemeCode)
+  let myschemeCodes = getMyWatchlist.map((data)=>data.schemeCode)
   if(resp?.Table)
   {
     resp.Table = resp.Table.map((data)=>{
       data.isAlreadyExistMyWatchlist =false
-      if(myschemeCodes.indexOf(data.schemeCode) > -1)
+      if(myschemeCodes.indexOf(data.SCHEMECODE) > -1)
       {
         data.isAlreadyExistMyWatchlist =true
       }

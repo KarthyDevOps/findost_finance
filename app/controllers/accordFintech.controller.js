@@ -165,6 +165,7 @@ const {
   const getFundFactsheet = async (req, res) => {
     const params = req?.query;
     params.token = process.env.ACCORD_FINTECH_LOGIN_TOKEN
+    params.apId = req?.user?._id?.toString()
     const result = await getFundFactsheetService(params);
     if (!result.status) {
       return sendErrorResponse(

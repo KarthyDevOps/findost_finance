@@ -54,7 +54,8 @@ const clientDetailsService = async (params) => {
     })
     let resp = {
       ledgerBalance : {
-        balance : 0 
+        balance : 0,
+        date : ""
       },
       personalInfo : clientProfile.MasterData[0],
       bankDetails :  clientProfile.BankDetail,

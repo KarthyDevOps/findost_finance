@@ -50,7 +50,8 @@ const routes = {
       CLIENT_DETAILS_API : "/v1/korp/clientDetails",
       CLIENT_PROFILE: "/v1/korp/clientProfile",
       CLIENT_DASHBOARD: "/v1/korp/clientDashboard",
-      CLIENT_MASTER: "/v1/korp/clientMaster"
+      CLIENT_MASTER: "/v1/korp/clientMaster",
+      CLIENT_HOLDINGS : "/v1/korp/clientHoldings"
 
     },
     BSE_STAR: {

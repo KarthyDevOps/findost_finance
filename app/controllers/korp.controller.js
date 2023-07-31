@@ -123,6 +123,8 @@ const {
   const clientHolding = async (req, res) => {
     const params = req?.body;
     params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await clientHoldingService(params);
     if (!result.status) {
       return sendErrorResponse(
@@ -148,6 +150,6 @@ const {
     clientProfile,
     clientDashboard,
     clientMaster,
-    clientHolding
+    clientHolding,
   };
   

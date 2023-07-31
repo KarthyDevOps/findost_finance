@@ -7,7 +7,7 @@ const {
   crmTicketListValidation,
   createCrmTicketValidation,
   getCrmTicketeValidation,
-
+  leadListValidation,
   leadCreateValidation,
   createWatchListValidation,
   createProductIpoValidation,
@@ -21,7 +21,7 @@ const {
 } = require("../controllers/crmTicketManagement.controller");
 
 const {
-  createLeads
+  createLeads,leadList
 } = require("../controllers/leads.controller");
 
 const {
@@ -91,6 +91,13 @@ router.post(
   routes.v1.Leads.create,
   [verifyToken("AP"), leadCreateValidation],
   errHandle(createLeads)
+);
+
+
+router.get(
+  routes.v1.Leads.list,
+  [verifyToken("AP"), leadListValidation],
+  errHandle(leadList)
 );
 //ACCORD FINTECH Management
 

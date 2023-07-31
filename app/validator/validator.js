@@ -67,6 +67,18 @@ const crmTicketListValidation = (req, res, next) => {
   return queryParamValidation(req, res, next, schema);
 };
 
+
+const leadListValidation = (req, res, next) => {
+  const schema = joi.object({
+    search: joi.allow(null).allow(""),
+    isActive: joi.allow(null).allow(""),
+    limit: joi.number(),
+    page: joi.number(),
+  });
+  return queryParamValidation(req, res, next, schema);
+};
+
+
 const createCrmTicketValidation = (req, res, next) => {
   const schema = joi.object({
     source: joi.string().required(),
@@ -162,5 +174,6 @@ module.exports = {
   leadCreateValidation,
   createWatchListValidation,
   createProductIpoValidation,
-  deleteProductIpoValidation
+  deleteProductIpoValidation,
+  leadListValidation
 };

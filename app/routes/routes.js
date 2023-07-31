@@ -10,6 +10,7 @@ const routes = {
     },
     Leads: {
       create: "/v1/leads/create",
+      list: "/v1/leads/list",
     },
     WATCH_LIST: {
       ADD: "/v1/watch-list/add",

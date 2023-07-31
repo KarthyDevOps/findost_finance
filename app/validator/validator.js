@@ -122,13 +122,13 @@ const createWatchListValidation = (req, res, next) => {
     schemeName: joi.string().required(),
     categoryCode: joi.string().required(),
     categoryName: joi.string().required(),
-    one_MONTHRET: joi.string().required(),
-    three_MONTHRET: joi.string().required(),
-    six_MONTHRET: joi.string().required(),
-    one_YRRET: joi.string().required(),
-    three_YEARRET: joi.string().required(),
-    five_YEARRET: joi.string().required(),
-    INCRET: joi.string().required(),
+    one_MONTHRET: joi.allow(null).allow(""),
+    three_MONTHRET: joi.allow(null).allow(""),
+    six_MONTHRET: joi.allow(null).allow(""),
+    one_YRRET: joi.allow(null).allow(""),
+    three_YEARRET: joi.allow(null).allow(""),
+    five_YEARRET:joi.allow(null).allow(""),
+    INCRET: joi.allow(null).allow(""),
   });
   return bodyParamValidation(req, res, next, schema);
 };

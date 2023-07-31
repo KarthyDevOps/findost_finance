@@ -54,6 +54,7 @@ const {
 } = require("../controllers/accordFintech.controller");
 const {
   authentication,
+  clientDetails,
   clientProfile,
   clientDashboard,
   clientMaster
@@ -205,6 +206,14 @@ router.get(
   [korpAuthentication],
   errHandle(authentication)
 );
+
+router.get(
+  routes.v1.KORP.CLIENT_DETAILS_API,
+  [korpAuthentication],
+  errHandle(clientDetails)
+);
+
+
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
   [korpAuthentication],

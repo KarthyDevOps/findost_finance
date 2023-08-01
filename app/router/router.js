@@ -2,7 +2,7 @@
 const express = require("express");
 const Router = express.Router;
 const { routes } = require("../routes/routes");
-const { verifyToken,korpAuthentication,CRMTicketAuthentication,BSEStarAuthentication} = require("../middlewares/authentication");
+const { verifyToken, korpAuthentication, CRMTicketAuthentication, BSEStarAuthentication , verifyAdminRole} = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
   createCrmTicketValidation,
@@ -21,7 +21,7 @@ const {
 } = require("../controllers/crmTicketManagement.controller");
 
 const {
-  createLeads,leadList
+  createLeads, leadList
 } = require("../controllers/leads.controller");
 
 const {
@@ -62,8 +62,8 @@ const {
 
 const {
   bseStarAuthentication,
-    bseStarSipCreate,
-    bseStarLumpsumCreate
+  bseStarSipCreate,
+  bseStarLumpsumCreate
 } = require("../controllers/bseStar.controller");
 
 const { errHandle } = require("../helpers/index");
@@ -78,12 +78,12 @@ router.get(
 );
 router.post(
   routes.v1.CRMTicketManagenent.create,
-  [verifyToken("AP"),CRMTicketAuthentication, createCrmTicketValidation],
+  [verifyToken("AP"), CRMTicketAuthentication, createCrmTicketValidation],
   errHandle(createCrmTicket)
 );
 router.get(
   routes.v1.CRMTicketManagenent.get,
-  [CRMTicketAuthentication,getCrmTicketeValidation,],
+  [CRMTicketAuthentication, getCrmTicketeValidation,],
   errHandle(getCrmTicket)
 );
 
@@ -94,11 +94,8 @@ router.post(
 );
 
 
-router.get(
-  routes.v1.Leads.list,
-  [verifyToken("AP"), leadListValidation],
-  errHandle(leadList)
-);
+router.get(routes.v1.Leads.list,[verifyToken(["AP", "ADMIN"]), verifyAdminRole("leadManagement", "VIEW"), leadListValidation],errHandle(leadList));
+
 //ACCORD FINTECH Management
 
 
@@ -236,7 +233,7 @@ router.get(
 
 router.post(
   routes.v1.WATCH_LIST.ADD,
-  [verifyToken("AP"),createWatchListValidation],
+  [verifyToken("AP"), createWatchListValidation],
   errHandle(createWatchList)
 );
 router.get(

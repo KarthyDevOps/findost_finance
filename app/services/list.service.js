@@ -60,15 +60,18 @@ const getProductIpoList = async (params) => {
     filter.currentStatus = params.currentStatus 
    }
     if (params?.search) {
-      filter.$or = [
-        { categoryId: params?.search },
-        { name: { $regex: `${params?.search}`, $options: "i" } },
-      ];
+      console.log('search', params?.search)
+      filter.$or =[
+        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+        { clientNumber: { $regex: `${params?.search}`, $options: "i" } },
+      ]
     }
     console.log('filter--->', filter)
     data = await ProductIPO.find(filter);
   } else {
     let filter = {
+
     };
     if(params?.currentStatus) {
       console.log('params', params)
@@ -85,10 +88,12 @@ const getProductIpoList = async (params) => {
     }
 
     if (params?.search) {
-      filter.$or = [
-        { categoryId: params?.search },
-        { name: { $regex: `${params?.search}`, $options: "i" } },
-      ];
+      console.log('search', params?.search)
+      filter.$or =[
+        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+        { clientNumber: { $regex: `${params?.search}`, $options: "i" } },
+      ]
     }
     data = await ProductIPO.find(filter)
       .skip((params.page - 1) * params.limit)

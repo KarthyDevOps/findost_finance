@@ -51,37 +51,49 @@ const getCrmTicketList = async (params) => {
 const getProductIpoList = async (params) => {
   let data;
   if (params.all) {
-    if (params?.search) {
-      data = await ProductIPO.find({
-        isDeleted: false,
-        $or: [
-          { clientName: { $regex: `${params?.search}`, $options: "i" } },
-          { clientCode: { $regex: `${params?.search}`, $options: "i" } },
-        ],
-      }).sort({ createdAt: -1 }).lean();
-    } else {
-      data = await ProductIPO.find({
-        isDeleted: false,
-      }).lean();
+    let filter = {
+    };
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
     }
-  } else if (params?.search) {
-    data = await ProductIPO.find({
-      isDeleted: false,
-      $or: [
-        { clientName: { $regex: `${params?.search}`, $options: "i" } },
-        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
-      ],
-    })
-      .skip((params.page - 1) * params.limit)
-      .limit(params.limit)
-      .sort({ createdAt: -1 }).lean();
+   if(params?.currentStatus) {
+    filter.currentStatus = params.currentStatus 
+   }
+    if (params?.search) {
+      filter.$or = [
+        { categoryId: params?.search },
+        { name: { $regex: `${params?.search}`, $options: "i" } },
+      ];
+    }
+    console.log('filter--->', filter)
+    data = await ProductIPO.find(filter);
   } else {
-    data = await ProductIPO.find({
-      isDeleted: false,
-    })
+    let filter = {
+    };
+    if(params?.currentStatus) {
+      console.log('params', params)
+      filter.currentStatus = params.currentStatus 
+     }
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
+    }
+    if (params?.category) {
+      filter.category = params.category;
+    }
+    if (params?.subCategory) {
+      filter.subCategory = params.subCategory;
+    }
+
+    if (params?.search) {
+      filter.$or = [
+        { categoryId: params?.search },
+        { name: { $regex: `${params?.search}`, $options: "i" } },
+      ];
+    }
+    data = await ProductIPO.find(filter)
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
-      .sort({ createdAt: -1 }).lean();
+      .sort({ createdAt: -1 });
   }
   if (data && data.length) {
     return { status: true, data: data };
@@ -89,6 +101,7 @@ const getProductIpoList = async (params) => {
     return { status: false, data: [] };
   }
 };
+
 
 const getProductCountIpoList = async () => {
 
@@ -100,13 +113,39 @@ const getProductCountIpoList = async () => {
   let ipoRejectApplication =  ProductIPO.countDocuments({currentStatus:"IPONONALLOCATED",  isDeleted:false}) ;
 
   data = await Promise.all([totalApplication, pendingApplication, rejectedApplication, ipoAllocatedApplication, ipoRejectApplication]).then(function (values) {
-    let result = {
-      totalApplication: values?.[0],
-      pendingApplication: values?.[1],
-      rejectedApplication: values?.[2],
-      ipoAllocatedApplication: values?.[3],
-      ipoRejectApplication: values?.[4]
-    }
+    let result = [
+      {
+        title : "totalApplication",
+        value : values?.[0],
+        status : "totalApplication",
+        label:"Total Applications"
+      },
+      {
+        title : "pendingApplication",
+        value : values?.[1],
+        status : "pendingApplication",
+        label:"UPI Mandate Approval Pending"
+      },
+      {
+        title : "rejectedApplication",
+        value : values?.[2],
+        status : "rejectedApplication",
+        label:"Application Rejected"
+      },
+      {
+        title : "ipoAllocatedApplication",
+        value : values?.[3],
+        status : "ipoAllocatedApplication",
+        label:"IPO Allotted"
+      },
+      {
+        title : "ipoRejectApplication",
+        value : values?.[4],
+        status : "ipoRejectApplication",
+        label:"IPO Not Allotted"
+
+      }
+    ]
     return result   
   });
 

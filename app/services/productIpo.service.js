@@ -109,8 +109,6 @@ const productIpoListService = async (params) => {
     };
 };
 
-
-
 const deleteProductIpoService = async (params) => {
     let ids = [];
     if (params.id) ids.push(params?.id);

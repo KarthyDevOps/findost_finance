@@ -56,12 +56,12 @@ const getProductIpoList = async (params) => {
     if (params?.isActive) {
       filter.isActive = params.isActive;
     }
-   if(params?.currentStatus) {
-    filter.currentStatus = params.currentStatus 
-   }
+    if (params?.currentStatus) {
+      filter.currentStatus = params.currentStatus
+    }
     if (params?.search) {
       console.log('search', params?.search)
-      filter.$or =[
+      filter.$or = [
         { clientName: { $regex: `${params?.search}`, $options: "i" } },
         { clientCode: { $regex: `${params?.search}`, $options: "i" } },
         { clientNumber: { $regex: `${params?.search}`, $options: "i" } },
@@ -71,18 +71,18 @@ const getProductIpoList = async (params) => {
     data = await ProductIPO.find(filter);
   } else {
     let filter = {
-isDeleted:false
+      isDeleted: false
     };
-    if(params?.currentStatus) {
+    if (params?.currentStatus) {
       console.log('params', params)
-      filter.currentStatus = params.currentStatus 
-     }
+      filter.currentStatus = params.currentStatus
+    }
     if (params?.isActive) {
       filter.isActive = params.isActive;
     }
     if (params?.search) {
       console.log('search', params?.search)
-      filter.$or =[
+      filter.$or = [
         { clientName: { $regex: `${params?.search}`, $options: "i" } },
         { clientCode: { $regex: `${params?.search}`, $options: "i" } },
         { clientNumber: { $regex: `${params?.search}`, $options: "i" } },
@@ -105,57 +105,57 @@ const getProductCountIpoList = async () => {
 
   let data;
   let totalApplication = ProductIPO.countDocuments();
-  let pendingApplication =  ProductIPO.countDocuments({currentStatus:"PENDING",  isDeleted:false});
-  let rejectedApplication =  ProductIPO.countDocuments({currentStatus:"REJECTED" ,  isDeleted:false});
-  let ipoAllocatedApplication =  ProductIPO.countDocuments({currentStatus:"IPOALLOCATED" ,  isDeleted:false}) ;
-  let ipoRejectApplication =  ProductIPO.countDocuments({currentStatus:"IPONONALLOCATED",  isDeleted:false}) ;
+  let pendingApplication = ProductIPO.countDocuments({ currentStatus: "PENDING", isDeleted: false });
+  let rejectedApplication = ProductIPO.countDocuments({ currentStatus: "REJECTED", isDeleted: false });
+  let ipoAllocatedApplication = ProductIPO.countDocuments({ currentStatus: "IPOALLOCATED", isDeleted: false });
+  let ipoRejectApplication = ProductIPO.countDocuments({ currentStatus: "IPONONALLOCATED", isDeleted: false });
 
   data = await Promise.all([totalApplication, pendingApplication, rejectedApplication, ipoAllocatedApplication, ipoRejectApplication]).then(function (values) {
     let result = [
       {
-        title : "totalApplication",
-        value : values?.[0],
-        status : "ACCEPTED",
-        label:"Total Applications"
+        title: "totalApplication",
+        value: values?.[0],
+        status: "ACCEPTED",
+        label: "Total Applications"
       },
       {
-        title : "pendingApplication",
-        value : values?.[1],
-        status : "PENDING",
-        label:"UPI Mandate Approval Pending"
+        title: "pendingApplication",
+        value: values?.[1],
+        status: "PENDING",
+        label: "UPI Mandate Approval Pending"
       },
       {
-        title : "rejectedApplication",
-        value : values?.[2],
-        status : "REJECTED",
-        label:"Application Rejected"
+        title: "rejectedApplication",
+        value: values?.[2],
+        status: "REJECTED",
+        label: "Application Rejected"
       },
       {
-        title : "ipoAllocatedApplication",
-        value : values?.[3],
-        status : "IPOALLOCATED",
-        label:"IPO Allotted"
+        title: "ipoAllocatedApplication",
+        value: values?.[3],
+        status: "IPOALLOCATED",
+        label: "IPO Allotted"
       },
       {
-        title : "ipoRejectApplication",
-        value : values?.[4],
-        status : "IPONONALLOCATED",
-        label:"IPO Not Allotted"
+        title: "ipoRejectApplication",
+        value: values?.[4],
+        status: "IPONONALLOCATED",
+        label: "IPO Not Allotted"
 
       }
     ]
-    return result   
+    return result
   });
 
-  console.log("data-->",data)
+  console.log("data-->", data)
 
   if (data) {
-    return { status: true, allValueCount:data };
+    return { status: true, allValueCount: data };
   } else {
     return { status: false, data: [] };
   }
 
-  
+
 }
 
 const getWatchListList = async (params) => {
@@ -164,7 +164,7 @@ const getWatchListList = async (params) => {
     if (params?.search) {
       data = await WatchList.find({
         isDeleted: false,
-        apId : params.apId,
+        apId: params.apId,
         $or: [
           { title: { $regex: `${params?.search}`, $options: "i" } },
           { content: { $regex: `${params?.search}`, $options: "i" } },
@@ -174,13 +174,13 @@ const getWatchListList = async (params) => {
     } else {
       data = await WatchList.find({
         isDeleted: false,
-        apId : params.apId,
+        apId: params.apId,
       });
     }
   } else if (params?.search) {
     data = await WatchList.find({
       isDeleted: false,
-      apId : params.apId,
+      apId: params.apId,
       $or: [
         { title: { $regex: `${params?.search}`, $options: "i" } },
         { content: { $regex: `${params?.search}`, $options: "i" } },
@@ -193,7 +193,7 @@ const getWatchListList = async (params) => {
   } else {
     data = await WatchList.find({
       isDeleted: false,
-      apId : params.apId,
+      apId: params.apId,
     })
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)

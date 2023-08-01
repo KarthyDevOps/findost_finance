@@ -80,13 +80,6 @@ isDeleted:false
     if (params?.isActive) {
       filter.isActive = params.isActive;
     }
-    if (params?.category) {
-      filter.category = params.category;
-    }
-    if (params?.subCategory) {
-      filter.subCategory = params.subCategory;
-    }
-
     if (params?.search) {
       console.log('search', params?.search)
       filter.$or =[
@@ -122,31 +115,31 @@ const getProductCountIpoList = async () => {
       {
         title : "totalApplication",
         value : values?.[0],
-        status : "totalApplication",
+        status : "ACCEPTED",
         label:"Total Applications"
       },
       {
         title : "pendingApplication",
         value : values?.[1],
-        status : "pendingApplication",
+        status : "PENDING",
         label:"UPI Mandate Approval Pending"
       },
       {
         title : "rejectedApplication",
         value : values?.[2],
-        status : "rejectedApplication",
+        status : "REJECTED",
         label:"Application Rejected"
       },
       {
         title : "ipoAllocatedApplication",
         value : values?.[3],
-        status : "ipoAllocatedApplication",
+        status : "IPOALLOCATED",
         label:"IPO Allotted"
       },
       {
         title : "ipoRejectApplication",
         value : values?.[4],
-        status : "ipoRejectApplication",
+        status : "IPONONALLOCATED",
         label:"IPO Not Allotted"
 
       }

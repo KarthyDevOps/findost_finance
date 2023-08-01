@@ -113,7 +113,7 @@ const getProductCountIpoList = async () => {
   let data;
   let totalApplication = ProductIPO.countDocuments();
   let pendingApplication =  ProductIPO.countDocuments({currentStatus:"PENDING",  isDeleted:false});
-  let rejectedApplication =  ProductIPO.countDocuments({currentStatus:"REJECTED" ,  isDeleted:true});
+  let rejectedApplication =  ProductIPO.countDocuments({currentStatus:"REJECTED" ,  isDeleted:false});
   let ipoAllocatedApplication =  ProductIPO.countDocuments({currentStatus:"IPOALLOCATED" ,  isDeleted:false}) ;
   let ipoRejectApplication =  ProductIPO.countDocuments({currentStatus:"IPONONALLOCATED",  isDeleted:false}) ;
 

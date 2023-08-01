@@ -71,7 +71,7 @@ const getProductIpoList = async (params) => {
     data = await ProductIPO.find(filter);
   } else {
     let filter = {
-
+isDeleted:false
     };
     if(params?.currentStatus) {
       console.log('params', params)

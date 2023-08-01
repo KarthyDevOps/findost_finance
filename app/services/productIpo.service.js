@@ -51,7 +51,7 @@ const updateProductIpoService = async (params) => {
             $set: {
                 cancelReason: params?.cancelReason,
                 currentStatus: params?.currentStatus,
-                isDeleted: true
+                isDeleted: false
             },
         };
         const resp = await ProductIPO.updateOne(payload, newvalues);

@@ -4,6 +4,7 @@ const {
   } = require("../response/response");
   const {
     authenticationService,
+    clientDetailsService,
     clientProfileService,
     clientDashboardService,
     clientMasterService,
@@ -14,6 +15,30 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     const result = await authenticationService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
+  const clientDetails = async (req, res) => {
+    const params = req?.query;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await clientDetailsService(params);
     if (!result.status) {
       return sendErrorResponse(
         req,
@@ -98,6 +123,8 @@ const {
   const clientHolding = async (req, res) => {
     const params = req?.body;
     params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await clientHoldingService(params);
     if (!result.status) {
       return sendErrorResponse(
@@ -119,9 +146,10 @@ const {
 
   module.exports = {
     authentication,
+    clientDetails,
     clientProfile,
     clientDashboard,
     clientMaster,
-    clientHolding
+    clientHolding,
   };
   

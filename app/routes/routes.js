@@ -26,7 +26,6 @@ const routes = {
         SCHEME_LIST: "/v1/accord-fintech/mf/schemeList",
         SCHEME_LIST_WITH_INFO: "/v1/accord-fintech/mf/getSchemeListWithInfo",
         GET_MF_NAV_GRAPH: "/v1/accord-fintech/mf/GetMFNAVGraph",
-
         GET_SCHEME_FILTERED_LIST: "/v1/accord-fintech/mf/schemeFilteredList",
         GET_SCHEME_NAV_DETAILS: "/v1/accord-fintech/mf/getSchemeNAVDetails",
         MF_SNAPSHOT_SUMMARY: "/v1/accord-fintech/mf/getMFSnapshotSummary",
@@ -34,7 +33,6 @@ const routes = {
         ALL_HOLDINGS: "/v1/accord-fintech/mf/allHoldings",
         NFO_UPDATES: "/v1/accord-fintech/mf/nfoUpdates",
         GET_FUND_FACT_SHEET: "/v1/accord-fintech/mf/getFundFactsheet"
-
       },
       IPO: {
         IPO_ISSUE: "/v1/accord-fintech/ipo/ipoIssue",
@@ -49,9 +47,11 @@ const routes = {
     KORP: {
       AUTHENTICATION: "/v1/korp/authentication",
       CLIENT_LIST: "/v1/korp/clientList",
+      CLIENT_DETAILS_API : "/v1/korp/clientDetails",
       CLIENT_PROFILE: "/v1/korp/clientProfile",
       CLIENT_DASHBOARD: "/v1/korp/clientDashboard",
-      CLIENT_MASTER: "/v1/korp/clientMaster"
+      CLIENT_MASTER: "/v1/korp/clientMaster",
+      CLIENT_HOLDINGS : "/v1/korp/clientHoldings"
 
     },
     BSE_STAR: {

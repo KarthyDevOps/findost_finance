@@ -22,6 +22,10 @@ const leadsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    apName: {
+      type: String,
+      required: true,
+    },
     isExistUser: {
       type: Boolean,
       default: false,
@@ -37,6 +41,10 @@ const leadsSchema = new mongoose.Schema(
     },
     emailId: {
       type: String,
+    },
+    clientDetails: {
+      type: Object,
+      trim: true
     },
     aditionalInfo: {
       type: String,

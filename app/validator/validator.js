@@ -103,14 +103,74 @@ const getCrmTicketeValidation = (req, res, next) => {
 
 const leadCreateValidation = (req, res, next) => {
   const schema = joi.object({
-    isExistUser: joi.boolean().required(),
-    userId: joi.string(),
-    name: joi.string(),
-    mobileNumber: joi.string(),
-    emailId: joi.string(),
-    aditionalInfo: joi.string(),
-    productId: joi.string(),
-    productName: joi.string(),
+      isExistUser: joi.boolean().required(),
+      userId: joi.string(),
+      name: joi.string(),
+      mobileNumber: joi.string(),
+      emailId: joi.string(),
+      aditionalInfo: joi.string(),
+      productId: joi.string(),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      productName: joi.string(),
   });
   return bodyParamValidation(req, res, next, schema);
 

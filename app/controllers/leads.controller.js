@@ -10,6 +10,7 @@ const {
 const createLeads = async (req, res) => {
   const params = req.body;
   params.apId = req.user.authorizedPersonId
+  params.apName = req.user.name
   const result = await createLeadsService(params);
   if (!result.status) {
     return sendErrorResponse(
@@ -36,7 +37,6 @@ const leadList = async (req, res) => {
   if (!params?.page) params.page = 1
   params.limit = parseInt(params?.limit);
   params.page = parseInt(params?.page);
-  console.log("req", params);
   params.apId = req.user.authorizedPersonId
   const result = await leadListService(params);
   if (!result.status) {

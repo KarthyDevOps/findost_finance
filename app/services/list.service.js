@@ -206,42 +206,49 @@ const getWatchListList = async (params) => {
   }
 };
 
+
 const getLeadList = async (params) => {
   let data;
   if (params.all) {
-    if (params?.search) {
-      data = await Leads.find({
-        isDeleted: false,
-        $or: [
-          { productName: { $regex: `${params?.search}`, $options: "i" } },
-          { name: { $regex: `${params?.search}`, $options: "i" } },
-          { aditionalInfo: { $regex: `${params?.search}`, $options: "i" } },
-        ],
-      }).sort({ createdAt: -1 }).lean();
-    } else {
-      data = await Leads.find({
-        isDeleted: false,
-      }).lean();
+    let filter = {
+      isDeleted:false
+    };
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
     }
-  } else if (params?.search) {
-    data = await Leads.find({
-      isDeleted: false,
-      $or: [
-        { productName: { $regex: `${params?.search}`, $options: "i" } },
-        { name: { $regex: `${params?.search}`, $options: "i" } },
-        { aditionalInfo: { $regex: `${params?.search}`, $options: "i" } },
-      ],
-    })
-      .skip((params.page - 1) * params.limit)
-      .limit(params.limit)
-      .sort({ createdAt: -1 }).lean();
+    if (params?.productName) {
+      filter.productName = params.productName
+    }
+    if (params?.search) {
+      console.log('search', params?.search)
+      filter.$or = [
+        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+      ]
+    }
+    console.log('filter--->', filter)
+    data = await Leads.find(filter);
   } else {
-    data = await Leads.find({
-      isDeleted: false,
-    })
+    let filter = {
+      isDeleted: false
+    };
+    if (params?.productName) {
+      filter.productName = params.productName
+    }
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
+    }
+    if (params?.search) {
+      console.log('search', params?.search)
+      filter.$or = [
+        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+      ]
+    }
+    data = await Leads.find(filter)
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
-      .sort({ createdAt: -1 }).lean();
+      .sort({ createdAt: -1 });
   }
   if (data && data.length) {
     return { status: true, data: data };
@@ -249,6 +256,7 @@ const getLeadList = async (params) => {
     return { status: false, data: [] };
   }
 };
+
 
 module.exports = {
   getCrmTicketList,

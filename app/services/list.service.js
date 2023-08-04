@@ -1,5 +1,6 @@
 const { CrmTicket } = require("../models/crmTicket");
 const { Leads } = require("../models/leads");
+const { mutualIPO } = require("../models/mutualProductIpo");
 const { ProductIPO } = require("../models/productIpo");
 const { WatchList } = require("../models/watchList");
 
@@ -89,6 +90,37 @@ const getProductIpoList = async (params) => {
       ]
     }
     data = await ProductIPO.find(filter)
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .sort({ createdAt: -1 });
+  }
+  if (data && data.length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: [] };
+  }
+};
+
+const getMutualIpoList = async (params) => {
+  let data;
+  if (params.all) {
+    let filter = {
+    };
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
+    }
+    
+    console.log('filter--->', filter)
+    data = await mutualIPO.find(filter);
+  } else {
+    let filter = {
+      isDeleted: false
+    };
+    
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
+    }
+    data = await mutualIPO.find(filter)
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .sort({ createdAt: -1 });
@@ -221,8 +253,8 @@ const getLeadList = async (params) => {
     }
     if (params?.search) {
       console.log('search', params?.search)
-      filter.$or = [
-        { clientName: { $regex: `${params?.search}`, $options: "i" } },
+      filter.$eq = [
+        {clientName: { $regex: `${params?.search}`, $options: "i" } },
         { clientCode: { $regex: `${params?.search}`, $options: "i" } },
       ]
     }
@@ -240,7 +272,7 @@ const getLeadList = async (params) => {
     }
     if (params?.search) {
       console.log('search', params?.search)
-      filter.$or = [
+      filter.$eq = [
         { clientName: { $regex: `${params?.search}`, $options: "i" } },
         { clientCode: { $regex: `${params?.search}`, $options: "i" } },
       ]
@@ -262,6 +294,7 @@ module.exports = {
   getCrmTicketList,
   getWatchListList,
   getProductIpoList,
+  getMutualIpoList,
   getProductCountIpoList,
   getLeadList
 };

@@ -67,6 +67,13 @@ const routes = {
       update: "/v1/Product-Ipo/update",
       delete: "/v1/Product-Ipo/delete",
       countItems: "/v1/Product-Ipo/count",
+    },
+    MUTUAL_IPO: {
+      list: "/v1/Mutual-Ipo/list",
+      create: "/v1/Mutual-Ipo/create",
+      get: "/v1/Mutual-Ipo/get",
+      update: "/v1/Mutual-Ipo/update",
+      delete: "/v1/Mutual-Ipo/delete",
     }
   },
 };

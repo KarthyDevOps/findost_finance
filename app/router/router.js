@@ -70,6 +70,7 @@ const {
 
 const { errHandle } = require("../helpers/index");
 const { createProductIpo, updateProductIpo, getProductIpo, productIpoList, deleteProductIpo, productIpoCountList } = require("../controllers/productIpo.controller");
+const { createMutualIpo, updateMutualIpo, getMutualIpo, mutualIpoList, deleteMutualIpo } = require("../controllers/mutualIpo.controller");
 
 const router = Router();
 //Ticket Management
@@ -300,6 +301,14 @@ router.get(routes.v1.PRODUCT_IPO.get, [verifyToken(["AP"])], errHandle(getProduc
 router.get(routes.v1.PRODUCT_IPO.list, [verifyToken(["AP"])], errHandle(productIpoList));
 router.get(routes.v1.PRODUCT_IPO.countItems, [verifyToken(["AP"])], errHandle(productIpoCountList));
 //router.delete(routes.v1.PRODUCT_IPO.delete, [verifyToken(["AP"]),deleteProductIpoValidation], errHandle(deleteProductIpo)); for future use...
+
+// Mutual-Ipo Mobile Module
+
+router.post(routes.v1.MUTUAL_IPO.create, [verifyToken(["AP"])], errHandle(createMutualIpo));
+router.put(routes.v1.MUTUAL_IPO.update, [verifyToken(["AP"])], errHandle(updateMutualIpo));
+router.get(routes.v1.MUTUAL_IPO.get, [verifyToken(["AP"])], errHandle(getMutualIpo));
+router.get(routes.v1.MUTUAL_IPO.list, [verifyToken(["AP"])], errHandle(mutualIpoList));
+router.delete(routes.v1.MUTUAL_IPO.delete, [verifyToken(["AP"])], errHandle(deleteMutualIpo));
 
 
 

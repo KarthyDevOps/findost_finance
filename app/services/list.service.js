@@ -253,12 +253,12 @@ const getLeadList = async (params) => {
     }
     if (params?.search) {
       console.log('search', params?.search)
-      filter.$eq = [
-        {clientName: { $regex: `${params?.search}`, $options: "i" } },
-        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+      filter.$or = [
+        {"clientDetails.clientName": { $regex: `${params?.search}`, $options: "i" } },
+        { "clientDetails.clientCode": { $regex: `${params?.search}`, $options: "i" } },
       ]
     }
-    console.log('filter--->', filter)
+  
     data = await Leads.find(filter);
   } else {
     let filter = {
@@ -272,9 +272,9 @@ const getLeadList = async (params) => {
     }
     if (params?.search) {
       console.log('search', params?.search)
-      filter.$eq = [
-        { clientName: { $regex: `${params?.search}`, $options: "i" } },
-        { clientCode: { $regex: `${params?.search}`, $options: "i" } },
+      filter.$or = [
+        {"clientDetails.clientName": { $regex: `${params?.search}`, $options: "i" } },
+        { "clientDetails.clientCode": { $regex: `${params?.search}`, $options: "i" } },
       ]
     }
     data = await Leads.find(filter)

@@ -21,5 +21,12 @@ module.exports = {
             contentType: 'application/json',
         }
     },
+    AddLeadNotification: {
+        method: 'POST',
+        url: "",
+        headers: {
+            contentType: 'application/json'
+        }
+    },
     
 }

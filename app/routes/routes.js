@@ -70,7 +70,7 @@ const routes = {
     },
     MUTUAL_IPO: {
       list: "/v1/Mutual-Ipo/list",
-      create: "/v1/Mutual-Ipo/create",
+      create: "/v1/Mutual-Fund/create",
       get: "/v1/Mutual-Ipo/get",
       update: "/v1/Mutual-Ipo/update",
       delete: "/v1/Mutual-Ipo/delete",

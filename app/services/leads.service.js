@@ -1,6 +1,7 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { Leads } = require("../models/leads");
+const {InternalServices} = require('../apiServices')
 const {
   pageMetaService,
   imageToBase64,
@@ -10,6 +11,14 @@ const { getLeadList } = require('./list.service')
 
 const createLeadsService = async (params) => {
   const resp = await Leads.create(params);
+  let passData = {
+    type:"LEAD_CREATED_NOTIFICATION",
+    leadId : resp.leadId,
+    extra : {
+      leadId:resp.leadId
+    }
+  }
+  await InternalServices.postLeadCreationNotification(passData)
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,

@@ -9,6 +9,7 @@ const {
 
 const createLeads = async (req, res) => {
   const params = req.body;
+  console.log('params', params)
   params.apId = req.user.authorizedPersonId
   params.apName = req.user.name
   const result = await createLeadsService(params);

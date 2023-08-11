@@ -302,7 +302,8 @@ router.get(routes.v1.PRODUCT_IPO.list, [verifyToken(["AP"])], errHandle(productI
 router.get(routes.v1.PRODUCT_IPO.countItems, [verifyToken(["AP"])], errHandle(productIpoCountList));
 //router.delete(routes.v1.PRODUCT_IPO.delete, [verifyToken(["AP"]),deleteProductIpoValidation], errHandle(deleteProductIpo)); for future use...
 
-// Mutual-Ipo Mobile Module
+
+// Mutual- fund Ipo Mobile Module
 
 router.post(routes.v1.MUTUAL_IPO.create, [verifyToken(["AP"])], errHandle(createMutualIpo));
 router.put(routes.v1.MUTUAL_IPO.update, [verifyToken(["AP"])], errHandle(updateMutualIpo));

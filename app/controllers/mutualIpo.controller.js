@@ -8,7 +8,7 @@ const {
     getMutualIpoService,
     deleteMutualIpoService,
     mutualIpoListService
-} = require("../services/mutualIpo.service");
+} = require("../services/mutualFundIpo.service");
 
 const createMutualIpo = async (req, res) => {
     const params = req.body;

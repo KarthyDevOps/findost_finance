@@ -26,7 +26,7 @@ const getSequenceId = async (data) => {
 
 const postLeadCreationNotification = async (data) => {
   let apiConfig = JSON.parse(JSON.stringify(InternalAPIs.AddLeadNotification));
-  apiConfig.url = process.env.COMMUNICATION_URL + process.env.CREATE_LEAD_NOTIFICATION;
+  apiConfig.url = process.env.COMMUNICATION_URL + process.env.ADMIN_NOTIFICATION;
   apiConfig.data = data;
   console.log('apiConfig',apiConfig)
   return await Rest.callApi(apiConfig);

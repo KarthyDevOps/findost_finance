@@ -1,7 +1,7 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMesages");
-const { mutualIPO } = require("../models/mutualProductIpo");
+const { mutualFundIPO } = require("../models/mutualProductIpo");
 
 
 const {
@@ -15,7 +15,7 @@ const { getMutualIpoList } = require("./list.service");
 
 const creatMutualIpoService = async (params) => {
     var newvalues = params;
-    const resp = await mutualIPO.create(newvalues);
+    const resp = await mutualFundIPO.create(newvalues);
     return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
@@ -31,7 +31,7 @@ const getMutualIpoService = async (params) => {
         _id: params?.id,
         isDeleted: false,
     };
-    const resp = await mutualIPO.findOne(payload);
+    const resp = await mutualFundIPO.findOne(payload);
     return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
@@ -49,7 +49,7 @@ const updateMutualIpoService = async (params) => {
     var newvalues = {
         $set: params,
     };
-    const resp = await mutualIPO.updateOne(payload, newvalues);
+    const resp = await mutualFundIPO.updateOne(payload, newvalues);
     if (!resp.modifiedCount) {
         return {
             status: false,
@@ -94,7 +94,7 @@ const deleteMutualIpoService = async (params) => {
         },
     };
 
-    const resp = await mutualIPO.updateMany({ _id: ids }, newvalues);
+    const resp = await mutualFundIPO.updateMany({ _id: ids }, newvalues);
     if (!resp.modifiedCount) {
         return {
             status: false,

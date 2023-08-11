@@ -73,5 +73,5 @@ mutualIpoSchema.pre('save', async function (next) {
 
 });
 
-const mutualIPO = mongoose.model("mutualIpo", mutualIpoSchema);
-module.exports = { mutualIPO };
+const mutualFundIPO = mongoose.model("mutualFundIPO", mutualIpoSchema);
+module.exports = { mutualFundIPO };

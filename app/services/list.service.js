@@ -1,6 +1,6 @@
 const { CrmTicket } = require("../models/crmTicket");
 const { Leads } = require("../models/leads");
-const { mutualIPO } = require("../models/mutualProductIpo");
+const { mutualFundIPO } = require("../models/mutualFundIpo");
 const { ProductIPO } = require("../models/productIpo");
 const { WatchList } = require("../models/watchList");
 
@@ -111,7 +111,7 @@ const getMutualIpoList = async (params) => {
     }
     
     console.log('filter--->', filter)
-    data = await mutualIPO.find(filter);
+    data = await mutualFundIPO.find(filter);
   } else {
     let filter = {
       isDeleted: false
@@ -120,7 +120,7 @@ const getMutualIpoList = async (params) => {
     if (params?.isActive) {
       filter.isActive = params.isActive;
     }
-    data = await mutualIPO.find(filter)
+    data = await mutualFundIPO.find(filter)
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .sort({ createdAt: -1 });

@@ -1,7 +1,7 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMesages");
-const { mutualFundIPO } = require("../models/mutualProductIpo");
+const { mutualFundIPO } = require("../models/mutualFundIpo");
 
 
 const {

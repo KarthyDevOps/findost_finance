@@ -18,7 +18,7 @@ const createProductIpoService = async (params) => {
     var newvalues = params;
     const resp = await ProductIPO.create(newvalues);
     let storeData = {
-        mutualFundId: resp?.productIpoId,
+        IpoId: resp?.productIpoId,
         APId: resp?.APId,
         APName: resp?.APName,
         clientCode: resp?.clientCode,

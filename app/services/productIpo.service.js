@@ -2,6 +2,7 @@ const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMesages");
 const { ProductIPO } = require("../models/productIpo");
+const {authorizedPersonRevenue} = require('../models/authorizedPersonRevenue')
 
 
 const {
@@ -16,6 +17,17 @@ const { getProductIpoList, getProductCountIpoList } = require("./list.service");
 const createProductIpoService = async (params) => {
     var newvalues = params;
     const resp = await ProductIPO.create(newvalues);
+    let storeData = {
+        mutualFundId: resp?.productIpoId,
+        APId: resp?.APId,
+        APName: resp?.APName,
+        clientCode: resp?.clientCode,
+        amount: resp?.amount,
+        type:"prouctIpo"
+    }
+    let createAPRevenue = await authorizedPersonRevenue.create(storeData)
+    console.log('createAPRevenue--->', createAPRevenue)
+
     return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,

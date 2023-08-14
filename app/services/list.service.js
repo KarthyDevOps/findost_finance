@@ -1,6 +1,7 @@
+const { authorizedPersonRevenue } = require("../models/authorizedPersonRevenue");
 const { CrmTicket } = require("../models/crmTicket");
 const { Leads } = require("../models/leads");
-const { mutualFundIPO } = require("../models/mutualFundIpo");
+const { mutualFund } = require("../models/mutualFund");
 const { ProductIPO } = require("../models/productIpo");
 const { WatchList } = require("../models/watchList");
 
@@ -101,7 +102,7 @@ const getProductIpoList = async (params) => {
   }
 };
 
-const getMutualIpoList = async (params) => {
+const getMutualFundList = async (params) => {
   let data;
   if (params.all) {
     let filter = {
@@ -111,7 +112,7 @@ const getMutualIpoList = async (params) => {
     }
     
     console.log('filter--->', filter)
-    data = await mutualFundIPO.find(filter);
+    data = await mutualFund.find(filter);
   } else {
     let filter = {
       isDeleted: false
@@ -120,7 +121,37 @@ const getMutualIpoList = async (params) => {
     if (params?.isActive) {
       filter.isActive = params.isActive;
     }
-    data = await mutualFundIPO.find(filter)
+    data = await mutualFund.find(filter)
+      .skip((params.page - 1) * params.limit)
+      .limit(params.limit)
+      .sort({ createdAt: -1 });
+  }
+  if (data && data.length) {
+    return { status: true, data: data };
+  } else {
+    return { status: false, data: [] };
+  }
+};
+const getAuthorizedPersonSchemaList = async (params) => {
+  let data;
+  if (params.all) {
+    let filter = {
+    };
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
+    }
+    
+    console.log('filter--->', filter)
+    data = await authorizedPersonRevenue.find(filter);
+  } else {
+    let filter = {
+      isDeleted: false
+    };
+    
+    if (params?.isActive) {
+      filter.isActive = params.isActive;
+    }
+    data = await authorizedPersonRevenue.find(filter)
       .skip((params.page - 1) * params.limit)
       .limit(params.limit)
       .sort({ createdAt: -1 });
@@ -294,7 +325,8 @@ module.exports = {
   getCrmTicketList,
   getWatchListList,
   getProductIpoList,
-  getMutualIpoList,
+  getMutualFundList,
   getProductCountIpoList,
-  getLeadList
+  getLeadList,
+  getAuthorizedPersonSchemaList
 };

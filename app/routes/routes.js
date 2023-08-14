@@ -68,12 +68,19 @@ const routes = {
       delete: "/v1/Product-Ipo/delete",
       countItems: "/v1/Product-Ipo/count",
     },
-    MUTUAL_IPO: {
+    MUTUAL_FUND: {
       list: "/v1/Mutual-Ipo/list",
       create: "/v1/Mutual-Fund/create",
       get: "/v1/Mutual-Ipo/get",
       update: "/v1/Mutual-Ipo/update",
       delete: "/v1/Mutual-Ipo/delete",
+    },  
+    AP_REVENUE: {
+      list: "/v1/AP-REVENUE/list",
+      create: "/v1/AP-REVENUE/create",
+      get: "/v1/AP-REVENUE/get",
+      update: "/v1/AP-REVENUE/update",
+      delete: "/v1/AP-REVENUE/delete",
     }
   },
 };

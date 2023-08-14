@@ -3,14 +3,14 @@ const {
     sendSuccessResponse,
 } = require("../response/response");
 const {
-    creatMutualIpoService,
-    updateMutualIpoService,
-    getMutualIpoService,
-    deleteMutualIpoService,
-    mutualIpoListService
+    creatMutualFundService,
+    updateMutualFundService,
+    getMutualFundService,
+    deleteMutualFundService,
+    mutualFundListService
 } = require("../services/mutualFundIpo.service");
 
-const createMutualIpo = async (req, res) => {
+const createMutualFund = async (req, res) => {
     const params = req.body;
     params.createdBy = req?.user?._id?.toString();
     params.updatedBy = req?.user?._id?.toString();
@@ -18,7 +18,7 @@ const createMutualIpo = async (req, res) => {
     params.userType = req?.user?.userType;
     params.APId = req?.user?._id,
     params.APName =  req?.user?.name
-    const result = await creatMutualIpoService(params);
+    const result = await creatMutualFundService(params);
     if (!result.status) {
         return sendErrorResponse(
             req,
@@ -37,10 +37,10 @@ const createMutualIpo = async (req, res) => {
     );
 };
 
-const getMutualIpo = async (req, res) => {
+const getMutualFund = async (req, res) => {
     const params = req.body;
     params.id = req?.query?.id;
-    const result = await getMutualIpoService(params);
+    const result = await getMutualFundService(params);
     if (!result.status) {
         return sendErrorResponse(
             req,
@@ -59,7 +59,7 @@ const getMutualIpo = async (req, res) => {
     );
 };
 
-const updateMutualIpo = async (req, res) => {
+const updateMutualFund = async (req, res) => {
     const params = req.body;
     params.id = req?.query?.id;
     params.updatedBy = req?.user?._id?.toString();
@@ -67,7 +67,7 @@ const updateMutualIpo = async (req, res) => {
     params.userType = req?.user?.userType;
     params.APId = req?.user?._id,
     params.APName =  req?.user?.name
-    const result = await updateMutualIpoService(params);
+    const result = await updateMutualFundService(params);
     if (!result.status) {
         return sendErrorResponse(
             req,
@@ -86,14 +86,14 @@ const updateMutualIpo = async (req, res) => {
     );
 };
 
-const mutualIpoList = async (req, res) => {
+const mutualFundList = async (req, res) => {
     const params = req?.query;
     if (!params?.limit) params.limit = 10
     if (!params?.page) params.page = 1
     params.limit = parseInt(params?.limit);
     params.page = parseInt(params?.page);
     console.log("req", params);
-    const result = await mutualIpoListService(params);
+    const result = await mutualFundListService(params);
     if (!result.status) {
         return sendErrorResponse(
             req,
@@ -112,7 +112,7 @@ const mutualIpoList = async (req, res) => {
     );
 };
 
-const deleteMutualIpo = async (req, res) => {
+const deleteMutualFund = async (req, res) => {
 
     const params = req.body;
     if (req.query.id) {
@@ -123,7 +123,7 @@ const deleteMutualIpo = async (req, res) => {
     params.updatedBy = req?.user?._id?.toString();
     params.lastUpdatedBy = req?.user?.userType;
     params.userType = req?.user?.userType;
-    const result = await deleteMutualIpo(params);
+    const result = await deleteMutualFundService(params);
     if (!result.status) {
         return sendErrorResponse(
             req,
@@ -143,9 +143,9 @@ const deleteMutualIpo = async (req, res) => {
 };
 
 module.exports = {
-    createMutualIpo,
-    getMutualIpo,
-    updateMutualIpo,
-    mutualIpoList,
-    deleteMutualIpo
+    createMutualFund,
+    getMutualFund,
+    updateMutualFund,
+    mutualFundList,
+    deleteMutualFund
 };

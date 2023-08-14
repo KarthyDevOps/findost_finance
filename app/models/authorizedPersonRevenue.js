@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 const { InternalServices } = require('../apiServices/index');
-const mutualIpoSchema = new mongoose.Schema(
+const authorizedPersonRevenueSchema = new mongoose.Schema(
     {
-        mutualIpoId: {
+        authorizedPersonRevenueId: {
             type: String,
             trim: true
         },
-        investmentType: {
+        mutualFundId: {
+            type: String,
+            trim: true
+        },
+        IpoId: {
             type: String,
             trim: true
         },
@@ -18,36 +22,15 @@ const mutualIpoSchema = new mongoose.Schema(
             type: String,
             trim: true
         },
-        clientName: {
-            type: String,
-            trim: true
-        },
         clientCode: {
             type: String,
             trim: true
         },
-        clientNumber: {
+        amount: {
             type: String,
             trim: true
         },
-        SIPAmount: {
-            type: String,
-            trim: true
-        },
-        SIPFrequency: {
-            type: String,
-            trim: true
-        },
-        dayOfInvestment: {
-            type: String,
-            trim: true,
-            default: "PENDING"
-        },
-        numberOfInstallments: {
-            type: String,
-            trim: true
-        },
-        paymentMode: {
+        type: {
             type: String,
             trim: true
         },
@@ -64,14 +47,14 @@ const mutualIpoSchema = new mongoose.Schema(
         timestamps: true,
     }
 );
-mutualIpoSchema.pre('save', async function (next) {
-    InternalServices.getSequenceId({ type: "mutualIpo" });
+authorizedPersonRevenueSchema.pre('save', async function (next) {
+    InternalServices.getSequenceId({ type: "authorizedPersonRevenue" });
     var doc = this;
-    let counter = await InternalServices.getSequenceId({ type: "mutualIpo" });
+    let counter = await InternalServices.getSequenceId({ type: "authorizedPersonRevenue" });
     doc.mutualIpoId = (counter?.data?.count + 1).toString().padStart(6, '0').toString();;
     next();
 
 });
 
-const mutualFundIPO = mongoose.model("mutualFundIPO", mutualIpoSchema);
-module.exports = { mutualFundIPO };
+const authorizedPersonRevenue = mongoose.model("authorizedPersonRevenue", authorizedPersonRevenueSchema);
+module.exports = { authorizedPersonRevenue };

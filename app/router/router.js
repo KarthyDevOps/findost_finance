@@ -70,7 +70,8 @@ const {
 
 const { errHandle } = require("../helpers/index");
 const { createProductIpo, updateProductIpo, getProductIpo, productIpoList, deleteProductIpo, productIpoCountList } = require("../controllers/productIpo.controller");
-const { createMutualIpo, updateMutualIpo, getMutualIpo, mutualIpoList, deleteMutualIpo } = require("../controllers/mutualIpo.controller");
+const { createMutualFund, updateMutualFund, getMutualFund, mutualFundList, deleteMutualFund } = require("../controllers/mutualFund.controller");
+const { createAPRevenue, updateAPRevenue,getAPRevenue ,deleteAPRevenue ,APRevenueList  } = require("../controllers/authorizedPersonRevenue.controller");
 
 const router = Router();
 //Ticket Management
@@ -305,12 +306,19 @@ router.get(routes.v1.PRODUCT_IPO.countItems, [verifyToken(["AP"])], errHandle(pr
 
 // Mutual- fund Ipo Mobile Module
 
-router.post(routes.v1.MUTUAL_IPO.create, [verifyToken(["AP"])], errHandle(createMutualIpo));
-router.put(routes.v1.MUTUAL_IPO.update, [verifyToken(["AP"])], errHandle(updateMutualIpo));
-router.get(routes.v1.MUTUAL_IPO.get, [verifyToken(["AP"])], errHandle(getMutualIpo));
-router.get(routes.v1.MUTUAL_IPO.list, [verifyToken(["AP"])], errHandle(mutualIpoList));
-router.delete(routes.v1.MUTUAL_IPO.delete, [verifyToken(["AP"])], errHandle(deleteMutualIpo));
+router.post(routes.v1.MUTUAL_FUND.create, [verifyToken(["AP"])], errHandle(createMutualFund));
+router.put(routes.v1.MUTUAL_FUND.update, [verifyToken(["AP"])], errHandle(updateMutualFund));
+router.get(routes.v1.MUTUAL_FUND.get, [verifyToken(["AP"])], errHandle(getMutualFund));
+router.get(routes.v1.MUTUAL_FUND.list, [verifyToken(["AP"])], errHandle(mutualFundList));
+router.delete(routes.v1.MUTUAL_FUND.delete, [verifyToken(["AP"])], errHandle(deleteMutualFund));
 
+
+// Mutual- fund Ipo Mobile Module
+router.post(routes.v1.AP_REVENUE.create, [verifyToken(["AP"])], errHandle(createAPRevenue));
+router.put(routes.v1.AP_REVENUE.update, [verifyToken(["AP"])], errHandle(updateAPRevenue));
+router.get(routes.v1.AP_REVENUE.get, [verifyToken(["AP"])], errHandle(getAPRevenue));
+router.get(routes.v1.AP_REVENUE.list, [verifyToken(["AP"])], errHandle(APRevenueList));
+router.delete(routes.v1.AP_REVENUE.delete, [verifyToken(["AP"])], errHandle(deleteAPRevenue));
 
 
 module.exports = router;

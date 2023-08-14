@@ -1,8 +1,7 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { statusMessage } = require("../response/httpStatusMessages");
 const { messages } = require("../response/customMesages");
-const { mutualFund } = require("../models/mutualFund");
-const {authorizedPersonRevenue} = require('../models/authorizedPersonRevenue')
+const { authorizedPersonRevenue } = require("../models/authorizedPersonRevenue");
 
 
 const {
@@ -10,25 +9,13 @@ const {
 } = require("../helpers/index");
 
 
-const { getMutualFundList } = require("./list.service");
+const { getMutualIpoList } = require("./list.service");
 
 
 
-const creatMutualFundService = async (params) => {
+const creatAPRevenueService = async (params) => {
     var newvalues = params;
-    console.log('newvalues--->', newvalues)
-    const resp = await mutualFund.create(newvalues);
-    let storeData = {
-        mutualFundId: resp?.mutualFundId,
-        APId: resp?.APId,
-        APName: resp?.APName,
-        clientCode: resp?.clientCode,
-        amount: resp?.SIPAmount,
-        type:"mutualFund"
-    }
-    let createAPRevenue = await authorizedPersonRevenue.create(storeData)
-    console.log('createAPRevenue--->', createAPRevenue)
-
+    const resp = await authorizedPersonRevenue.create(newvalues);
     return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
@@ -39,12 +26,12 @@ const creatMutualFundService = async (params) => {
     };
 };
 
-const getMutualFundService = async (params) => {
+const getAPRevenueService = async (params) => {
     var payload = {
         _id: params?.id,
         isDeleted: false,
     };
-    const resp = await mutualFund.findOne(payload);
+    const resp = await authorizedPersonRevenue.findOne(payload);
     return {
         status: true,
         statusCode: statusCodes?.HTTP_OK,
@@ -53,7 +40,7 @@ const getMutualFundService = async (params) => {
     };
 };
 
-const updateMutualFundService = async (params) => {
+const updateAPRevenueService = async (params) => {
     var payload = {
         _id: params?.id,
         isDeleted: false,
@@ -62,7 +49,7 @@ const updateMutualFundService = async (params) => {
     var newvalues = {
         $set: params,
     };
-    const resp = await mutualFund.updateOne(payload, newvalues);
+    const resp = await authorizedPersonRevenue.updateOne(payload, newvalues);
     if (!resp.modifiedCount) {
         return {
             status: false,
@@ -79,12 +66,12 @@ const updateMutualFundService = async (params) => {
     };
 };
 
-const mutualFundListService = async (params) => {
+const APRevenueListService = async (params) => {
     params.all = true;
-    const allList = await getMutualFundList(params);
+    const allList = await getMutualIpoList(params);
     params.all = params.returnAll == true ? true : false;
 
-    const result = await getMutualFundList(params);
+    const result = await getMutualIpoList(params);
     const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
     return {
         status: true,
@@ -93,7 +80,7 @@ const mutualFundListService = async (params) => {
     };
 };
 
-const deleteMutualFundService = async (params) => {
+const deleteAPRevenueService = async (params) => {
     let ids = [];
     if (params.id) ids.push(params?.id);
     else if (params.ids) {
@@ -107,7 +94,7 @@ const deleteMutualFundService = async (params) => {
         },
     };
 
-    const resp = await mutualFund.updateMany({ _id: ids }, newvalues);
+    const resp = await authorizedPersonRevenue.updateMany({ _id: ids }, newvalues);
     if (!resp.modifiedCount) {
         return {
             status: false,
@@ -128,9 +115,9 @@ const deleteMutualFundService = async (params) => {
 
 
 module.exports = {
-    creatMutualFundService,
-    getMutualFundService,
-    updateMutualFundService,
-    mutualFundListService,
-    deleteMutualFundService
+    creatAPRevenueService,
+    getAPRevenueService,
+    updateAPRevenueService,
+    APRevenueListService,
+    deleteAPRevenueService
 };

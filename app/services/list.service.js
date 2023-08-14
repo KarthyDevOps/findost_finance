@@ -5,6 +5,8 @@ const { mutualFund } = require("../models/mutualFund");
 const { ProductIPO } = require("../models/productIpo");
 const { WatchList } = require("../models/watchList");
 
+const moment = require('moment')
+
 const getCrmTicketList = async (params) => {
   let data;
   if (params.all) {
@@ -140,6 +142,12 @@ const getAuthorizedPersonSchemaList = async (params) => {
     if (params?.isActive) {
       filter.isActive = params.isActive;
     }
+    if (params.startDate && params.endDate) {
+      console.log("BothDate all-->",params)
+      let formattedStartDate = moment(new Date(params?.startDate)).startOf('day');
+      let formattedEndDate = moment(new Date(params?.endDate)).endOf('day');
+      filter.createdAt = { $gte: formattedStartDate, $lte: formattedEndDate };
+    }
     
     console.log('filter--->', filter)
     data = await authorizedPersonRevenue.find(filter);
@@ -150,6 +158,12 @@ const getAuthorizedPersonSchemaList = async (params) => {
     
     if (params?.isActive) {
       filter.isActive = params.isActive;
+    }
+    if (params.startDate && params.endDate) {
+      console.log("BothDate all-->",params)
+      let formattedStartDate = moment(new Date(params?.startDate)).startOf('day');
+      let formattedEndDate = moment(new Date(params?.endDate)).endOf('day');
+      filter.createdAt = { $gte: formattedStartDate, $lte: formattedEndDate };
     }
     data = await authorizedPersonRevenue.find(filter)
       .skip((params.page - 1) * params.limit)

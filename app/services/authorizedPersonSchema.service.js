@@ -9,7 +9,7 @@ const {
 } = require("../helpers/index");
 
 
-const { getMutualIpoList } = require("./list.service");
+const { getAuthorizedPersonSchemaList } = require("./list.service");
 
 
 
@@ -68,10 +68,10 @@ const updateAPRevenueService = async (params) => {
 
 const APRevenueListService = async (params) => {
     params.all = true;
-    const allList = await getMutualIpoList(params);
+    const allList = await getAuthorizedPersonSchemaList(params);
     params.all = params.returnAll == true ? true : false;
 
-    const result = await getMutualIpoList(params);
+    const result = await getAuthorizedPersonSchemaList(params);
     const pageMeta = await pageMetaService(params, allList?.data?.length || 0);
     return {
         status: true,

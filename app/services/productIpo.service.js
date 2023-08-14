@@ -23,7 +23,7 @@ const createProductIpoService = async (params) => {
         APName: resp?.APName,
         clientCode: resp?.clientCode,
         amount: resp?.amount,
-        type:"prouctIpo"
+        type:"productIpo"
     }
     let createAPRevenue = await authorizedPersonRevenue.create(storeData)
     console.log('createAPRevenue--->', createAPRevenue)

@@ -103,77 +103,22 @@ const getCrmTicketeValidation = (req, res, next) => {
 
 const leadCreateValidation = (req, res, next) => {
   const schema = joi.object({
-      isExistUser: joi.boolean().required(),
-      userId: joi.string(),
-      name: joi.string(),
-      mobileNumber: joi.string(),
-      emailId: joi.string(),
-      aditionalInfo: joi.string(),
-      productId: joi.string(),
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-      productName: joi.string(),
+    isExistUser: joi.boolean().required(),
+    userId: joi.string(),
+    name: joi.string(),
+    mobileNumber: joi.string(),
+    emailId: joi.string(),
+    aditionalInfo: joi.string(),
+    productId: joi.string(),
+    productName: joi.string(),
+    clientDetails: joi.object({
+      clientName: joi.string().required(),
+      clientCode: joi.allow(null).allow(""),
+      clientPhoneNumber: joi.string().required(),
+      clientEmail: joi.string().required()
+    })
   });
   return bodyParamValidation(req, res, next, schema);
-
 };
 
 const createWatchListValidation = (req, res, next) => {

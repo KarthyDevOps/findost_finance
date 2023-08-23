@@ -116,7 +116,7 @@ const leadCreateValidation = (req, res, next) => {
       clientCode: joi.allow(null).allow(""),
       clientPhoneNumber: joi.string().required(),
       clientEmail: joi.string().required()
-    })
+    }).required()
   });
   return bodyParamValidation(req, res, next, schema);
 };

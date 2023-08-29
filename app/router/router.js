@@ -212,29 +212,29 @@ router.get(
 
 router.get(
   routes.v1.KORP.AUTHENTICATION,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(authentication)
 );
 
 router.get(
   routes.v1.KORP.CLIENT_LIST,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientList)
 );
 
 router.get(
   routes.v1.KORP.CLIENT_DETAILS_API,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientDetails)
 );
 router.get(
   routes.v1.KORP.CLIENT_HOLDINGS,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientHolding)
 );
 router.get(
   routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientWithMarginShortFall)
 );
 
@@ -242,17 +242,17 @@ router.get(
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientProfile)
 );
 router.get(
   routes.v1.KORP.CLIENT_DASHBOARD,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientDashboard)
 );
 router.get(
   routes.v1.KORP.CLIENT_MASTER,
-  [korpAuthentication],
+  [verifyToken("AP"),korpAuthentication],
   errHandle(clientMaster)
 );
 

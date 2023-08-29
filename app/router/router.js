@@ -58,7 +58,8 @@ const {
   clientProfile,
   clientDashboard,
   clientMaster,
-  clientHoldings
+  clientHolding,
+  clientList
 } = require("../controllers/korp.controller");
 
 
@@ -215,6 +216,12 @@ router.get(
 );
 
 router.get(
+  routes.v1.KORP.CLIENT_LIST,
+  [korpAuthentication],
+  errHandle(clientList)
+);
+
+router.get(
   routes.v1.KORP.CLIENT_DETAILS_API,
   [korpAuthentication],
   errHandle(clientDetails)
@@ -222,7 +229,7 @@ router.get(
 router.get(
   routes.v1.KORP.CLIENT_HOLDINGS,
   [korpAuthentication],
-  errHandle(clientHoldings)
+  errHandle(clientHolding)
 );
 
 

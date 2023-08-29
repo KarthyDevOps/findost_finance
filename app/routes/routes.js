@@ -51,8 +51,8 @@ const routes = {
       CLIENT_PROFILE: "/v1/korp/clientProfile",
       CLIENT_DASHBOARD: "/v1/korp/clientDashboard",
       CLIENT_MASTER: "/v1/korp/clientMaster",
-      CLIENT_HOLDINGS : "/v1/korp/clientHoldings"
-
+      CLIENT_HOLDINGS : "/v1/korp/clientHoldings",
+      CLIENT_WITH_MARGIN_SHORTFALL : "/v1/korp/clientWithMarginShortFall"
     },
     BSE_STAR: {
       AUTHENTICATION: "/v1/bse-star/authentication",

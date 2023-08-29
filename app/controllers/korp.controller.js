@@ -9,7 +9,8 @@ const {
     clientDashboardService,
     clientMasterService,
     clientHoldingService,
-    clientListService
+    clientListService,
+    clientWithMarginShortFallService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -170,6 +171,32 @@ const {
     );
   };
   
+  const clientWithMarginShortFall = async (req, res) => {
+    const params = req?.body;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = process.env.KORP_BRANCHID
+
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await clientWithMarginShortFallService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
 
   module.exports = {
     authentication,
@@ -178,6 +205,7 @@ const {
     clientDashboard,
     clientMaster,
     clientHolding,
-    clientList
+    clientList,
+    clientWithMarginShortFall
   };
   

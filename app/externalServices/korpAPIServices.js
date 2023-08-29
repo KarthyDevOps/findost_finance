@@ -17,6 +17,7 @@ const authenticationAPI = async (data) => {
 };
 
 const clientProfileAPI = async (data) => {
+  console.log('data------------',data)
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.clientProfileAPI));
   apiConfig.url = process.env.KORP_BASE_URL + "/Reports/ClientProfile/Get";
   const queryString = `?ClientCode=${data.clientCode || ""}`;
@@ -73,7 +74,34 @@ const clientHoldingAPI = async (data) => {
 const clientListAPI = async (data) => {
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.clientListAPI));
   apiConfig.url = process.env.KORP_BASE_URL + "/Masters/ClientDirectory/Post";
-  apiConfig.data ={}
+  apiConfig.data ={
+   
+  }
+  apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
+  if (data.FIRMID) {
+    apiConfig.headers.FIRMID = data.FIRMID;
+    apiConfig.data["FirmID"] = data.FIRMID;
+  }
+  if (data.BRANCH) {
+    apiConfig.data.AccountID = data.BRANCH;
+  }
+  
+  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+
+  
+  delete data.token;
+  apiConfig.data = data;
+  console.log("apiConfig====", apiConfig);
+  return await Rest.callApi(apiConfig);
+};
+const clientWithMarginShortFallAPI = async (data) => {
+  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.clientWithMarginShortFallAPI));
+  apiConfig.url = process.env.KORP_BASE_URL + "/Reports/WEBDebtorCreditorList/Post";
+  apiConfig.data ={
+    'CrDrFlag' : "NONZERO",
+    "IncludeMargin":"Y",
+    'AsOnDate'  : moment().format('YYYY-MM-DD')
+  }
   apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
   if (data.FIRMID) {
     apiConfig.headers.FIRMID = data.FIRMID;
@@ -86,15 +114,17 @@ const clientListAPI = async (data) => {
 
   
   delete data.token;
-  apiConfig.data = data;
+ // apiConfig.data = data;
   console.log("apiConfig====", apiConfig);
   return await Rest.callApi(apiConfig);
 };
+
 module.exports = {
   authenticationAPI,
   clientProfileAPI,
   clientDashboardAPI,
   clientMasterAPI,
   clientHoldingAPI,
-  clientListAPI
+  clientListAPI,
+  clientWithMarginShortFallAPI
 };

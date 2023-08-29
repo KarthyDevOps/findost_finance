@@ -114,13 +114,15 @@ const clientHoldingService = async (params) => {
   };
 };
 const clientListService = async (params) => {
-  let resp = await KORPAPIServices.clientListAPI(params);
+  let newParams = params
+  let resp = await KORPAPIServices.clientListAPI({...params});
   let result = [];
 
   if (resp) {
     for (let res of resp) {
       params.clientCode = res.AccountID;
-      let profileResp = await KORPAPIServices.clientProfileAPI(params);
+      console.log('params',params)
+      let profileResp = await KORPAPIServices.clientProfileAPI({...params});
       res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
       res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
       res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
@@ -130,6 +132,47 @@ const clientListService = async (params) => {
       res.StateCode = profileResp?.MasterData[0]?.StateCode || "";
       res.StateName = profileResp?.MasterData[0]?.StateName || "";
       res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
+
+      if(params.status == "ACTIVE")
+      {
+        if(res.status == "")
+        {
+          result.push(res);
+        }
+      }
+      else if(params.status == "INACTIVE")
+      {
+        if(res.status == "")
+        {
+          result.push(res);
+        }
+      }
+      else
+      {
+        result.push(res);
+      }
+      
+    }
+  }
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
+const clientWithMarginShortFallService = async (params) => {
+  let resp = await KORPAPIServices.clientWithMarginShortFallAPI({...params});
+  let result = [];
+
+  if (resp) {
+    for (let res of resp.DRCRData) {
+      params.clientCode = res.AccountID;
+      let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+      console.log('profileResp',profileResp)
+      res.MobileNo = profileResp?.MasterData[0]?.MobileNo || "";
+      res.PhoneNo = profileResp?.MasterData[0]?.PhoneNo || "";
+     
       result.push(res);
     }
   }
@@ -141,6 +184,7 @@ const clientListService = async (params) => {
   };
 };
 
+
 module.exports = {
   authenticationService,
   clientDetailsService,
@@ -149,4 +193,5 @@ module.exports = {
   clientMasterService,
   clientHoldingService,
   clientListService,
+  clientWithMarginShortFallService
 };

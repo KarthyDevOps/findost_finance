@@ -43,6 +43,14 @@ module.exports = {
         },
         
     },
+    clientWithMarginShortFallAPI: {
+        method: 'POST',
+        url: "",
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        
+    },
     
     
     

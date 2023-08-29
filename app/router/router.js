@@ -59,7 +59,8 @@ const {
   clientDashboard,
   clientMaster,
   clientHolding,
-  clientList
+  clientList,
+  clientWithMarginShortFall
 } = require("../controllers/korp.controller");
 
 
@@ -230,6 +231,11 @@ router.get(
   routes.v1.KORP.CLIENT_HOLDINGS,
   [korpAuthentication],
   errHandle(clientHolding)
+);
+router.get(
+  routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,
+  [korpAuthentication],
+  errHandle(clientWithMarginShortFall)
 );
 
 

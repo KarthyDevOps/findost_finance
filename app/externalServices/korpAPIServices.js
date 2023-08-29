@@ -121,12 +121,22 @@ const clientWithMarginShortFallAPI = async (data) => {
 
 const topPerformingClientAPI = async (data) => {
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.topPerformingClientAPI));
-  apiConfig.url = process.env.KORP_BASE_URL + "/Reports/WEBDebtorCreditorList/Post";
+  apiConfig.url = process.env.KORP_BASE_URL + "/Reports/TurnoverBrokerageWebReport/Post";
   apiConfig.data ={
-    'CrDrFlag' : "NONZERO",
-    "IncludeMargin":"Y",
-    'AsOnDate'  : moment().format('YYYY-MM-DD')
-  }
+    "FromDate":`${ moment().format('YYYY')}-04-01`,
+    "ToDate": moment().format('YYYY-MM-DD'),
+    "Branch":"01AO",
+    // "SubBranch":"RTL",
+    // "RM":"???",
+    // "FamilyGroup":"???",
+    "ReportType":"DETAIL",
+    // ReportType Values - SUMMARY, DETAIL,
+    "ReportSelection":"CLIENT",
+    //ReportSelection values - BRANCH, SUB_BRANCH, TL, RM, CLIENT, BR_SUB_BR, BR_SUB_BR_TL, BR_SUB_BR_TL_RM
+    "AccountID":data.BRANCH
+}
+
+  
   apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
   if (data.FIRMID) {
     apiConfig.headers.FIRMID = data.FIRMID;
@@ -144,6 +154,40 @@ const topPerformingClientAPI = async (data) => {
   return await Rest.callApi(apiConfig);
 };
 
+
+const myBrokerageRevenueAPI = async (data) => {
+  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.myBrokerageRevenueAPI));
+  apiConfig.url = process.env.KORP_BASE_URL + "/Reports/BrokerageSummaryReport/Post";
+  apiConfig.data ={
+    "FromDate":`${ moment().format('YYYY')}-04-01`,
+    "ToDate": moment().format('YYYY-MM-DD'),
+    "Exchange":"BSE",
+    "Segment":"CAP",
+    //"IntroCode": data.BRANCH,
+    "ReportType":"DATE_CLIENT",
+   
+}
+
+  
+  apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
+  if (data.FIRMID) {
+    apiConfig.headers.FIRMID = data.FIRMID;
+    apiConfig.data["FirmID"] = data.FIRMID;
+  }
+  if (data.BRANCH) {
+    apiConfig.data.IntroCode = data.BRANCH;
+  }
+  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+
+  
+  delete data.token;
+ // apiConfig.data = data;
+  console.log("apiConfig====", apiConfig);
+  return await Rest.callApi(apiConfig);
+};
+
+
+
 module.exports = {
   authenticationAPI,
   clientProfileAPI,
@@ -151,5 +195,7 @@ module.exports = {
   clientMasterAPI,
   clientHoldingAPI,
   clientListAPI,
-  clientWithMarginShortFallAPI
+  clientWithMarginShortFallAPI,
+  topPerformingClientAPI,
+  myBrokerageRevenueAPI
 };

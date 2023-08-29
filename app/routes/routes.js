@@ -53,7 +53,8 @@ const routes = {
       CLIENT_MASTER: "/v1/korp/clientMaster",
       CLIENT_HOLDINGS : "/v1/korp/clientHoldings",
       CLIENT_WITH_MARGIN_SHORTFALL : "/v1/korp/clientWithMarginShortFall",
-      TOP_PERFORMING_CLIENT : "/v1/korp/topPerformingClient"
+      TOP_PERFORMING_CLIENT : "/v1/korp/topPerformingClient",
+      MY_BROKERAGE_REVENUE : "/v1/korp/myBrokerageRevenue"
     },
     BSE_STAR: {
       AUTHENTICATION: "/v1/bse-star/authentication",

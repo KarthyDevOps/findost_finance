@@ -51,7 +51,22 @@ module.exports = {
         },
         
     },
-    
+    topPerformingClientAPI: {
+        method: 'POST',
+        url: "",
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        
+    },
+    myBrokerageRevenueAPI: {
+        method: 'POST',
+        url: "",
+        headers: { 
+            'Content-Type': 'application/json'
+        },
+        
+    },
     
     
 }

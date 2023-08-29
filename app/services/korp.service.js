@@ -1,6 +1,9 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
+let xmlParser = require('xml2json');
+
+
 const authenticationService = async (params) => {
   return {
     status: true,
@@ -174,27 +177,7 @@ const clientListService = async (params) => {
         res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
         result.push(res);
       }
-      
-
-      // if(params.status == "ACTIVE")
-      // {
-      //   if(res.AcStatus == "Active")
-      //   {
-      //     result.push(res);
-      //   }
-      // }
-      // else if(params.status == "INACTIVE")
-      // {
-      //   if(res.AcStatus == "Inactive")
-      //   {
-      //     result.push(res);
-      //   }
-      // }
-      // else
-      // {
-      //   result.push(res);
-      // }
-      
+   
     }
   }
   return {
@@ -227,6 +210,24 @@ const clientWithMarginShortFallService = async (params) => {
 };
 const topPerformingClientService = async (params) => {
   let resp = await KORPAPIServices.topPerformingClientAPI(params);
+  let result = []
+  if(resp)
+  {
+    resp =  xmlParser.toJson(resp)
+    resp = JSON.parse(resp)
+    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || []
+  }
+    
+
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
+const myBrokerageRevenueService = async (params) => {
+  let resp = await KORPAPIServices.myBrokerageRevenueAPI(params);
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -234,6 +235,7 @@ const topPerformingClientService = async (params) => {
     data: resp,
   };
 };
+
 
 
 module.exports = {
@@ -245,5 +247,6 @@ module.exports = {
   clientHoldingService,
   clientListService,
   clientWithMarginShortFallService,
-  topPerformingClientService
+  topPerformingClientService,
+  myBrokerageRevenueService
 };

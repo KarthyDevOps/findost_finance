@@ -135,14 +135,14 @@ const clientListService = async (params) => {
 
       if(params.status == "ACTIVE")
       {
-        if(res.status == "")
+        if(res.AcStatus == "Active")
         {
           result.push(res);
         }
       }
       else if(params.status == "INACTIVE")
       {
-        if(res.status == "")
+        if(res.AcStatus == "Inactive")
         {
           result.push(res);
         }
@@ -169,7 +169,6 @@ const clientWithMarginShortFallService = async (params) => {
     for (let res of resp.DRCRData) {
       params.clientCode = res.AccountID;
       let profileResp = await KORPAPIServices.clientProfileAPI({...params});
-      console.log('profileResp',profileResp)
       res.MobileNo = profileResp?.MasterData[0]?.MobileNo || "";
       res.PhoneNo = profileResp?.MasterData[0]?.PhoneNo || "";
      

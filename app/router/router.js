@@ -60,7 +60,8 @@ const {
   clientMaster,
   clientHolding,
   clientList,
-  clientWithMarginShortFall
+  clientWithMarginShortFall,
+  topPerformingClient
 } = require("../controllers/korp.controller");
 
 
@@ -238,7 +239,11 @@ router.get(
   errHandle(clientWithMarginShortFall)
 );
 
-
+router.get(
+  routes.v1.KORP.TOP_PERFORMING_CLIENT,
+  [verifyToken("AP"),korpAuthentication],
+  errHandle(topPerformingClient)
+);
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,

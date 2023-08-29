@@ -120,23 +120,22 @@ const clientListService = async (params) => {
 
   if (resp) {
     for (let res of resp) {
-      params.clientCode = res.AccountID;
-      console.log('params',params)
-      let profileResp = await KORPAPIServices.clientProfileAPI({...params});
-      res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
-      res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
-      res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
-      res.City = profileResp?.MasterData[0]?.City || "";
-      res.District = profileResp?.MasterData[0]?.District || "";
-      res.PINCode = profileResp?.MasterData[0]?.PINCode || "";
-      res.StateCode = profileResp?.MasterData[0]?.StateCode || "";
-      res.StateName = profileResp?.MasterData[0]?.StateName || "";
-      res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
-
       if(params.status == "ACTIVE")
       {
         if(res.AcStatus == "Active")
         {
+          params.clientCode = res.AccountID;
+          console.log('params',params)
+          let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+          res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
+          res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
+          res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
+          res.City = profileResp?.MasterData[0]?.City || "";
+          res.District = profileResp?.MasterData[0]?.District || "";
+          res.PINCode = profileResp?.MasterData[0]?.PINCode || "";
+          res.StateCode = profileResp?.MasterData[0]?.StateCode || "";
+          res.StateName = profileResp?.MasterData[0]?.StateName || "";
+          res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
           result.push(res);
         }
       }
@@ -144,13 +143,57 @@ const clientListService = async (params) => {
       {
         if(res.AcStatus == "Inactive")
         {
+          params.clientCode = res.AccountID;
+          console.log('params',params)
+          let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+          res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
+          res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
+          res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
+          res.City = profileResp?.MasterData[0]?.City || "";
+          res.District = profileResp?.MasterData[0]?.District || "";
+          res.PINCode = profileResp?.MasterData[0]?.PINCode || "";
+          res.StateCode = profileResp?.MasterData[0]?.StateCode || "";
+          res.StateName = profileResp?.MasterData[0]?.StateName || "";
+          res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
           result.push(res);
         }
       }
       else
       {
+        params.clientCode = res.AccountID;
+        console.log('params',params)
+        let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+        res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
+        res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
+        res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
+        res.City = profileResp?.MasterData[0]?.City || "";
+        res.District = profileResp?.MasterData[0]?.District || "";
+        res.PINCode = profileResp?.MasterData[0]?.PINCode || "";
+        res.StateCode = profileResp?.MasterData[0]?.StateCode || "";
+        res.StateName = profileResp?.MasterData[0]?.StateName || "";
+        res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
         result.push(res);
       }
+      
+
+      // if(params.status == "ACTIVE")
+      // {
+      //   if(res.AcStatus == "Active")
+      //   {
+      //     result.push(res);
+      //   }
+      // }
+      // else if(params.status == "INACTIVE")
+      // {
+      //   if(res.AcStatus == "Inactive")
+      //   {
+      //     result.push(res);
+      //   }
+      // }
+      // else
+      // {
+      //   result.push(res);
+      // }
       
     }
   }
@@ -182,6 +225,15 @@ const clientWithMarginShortFallService = async (params) => {
     data: result,
   };
 };
+const topPerformingClientService = async (params) => {
+  let resp = await KORPAPIServices.topPerformingClientAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp,
+  };
+};
 
 
 module.exports = {
@@ -192,5 +244,6 @@ module.exports = {
   clientMasterService,
   clientHoldingService,
   clientListService,
-  clientWithMarginShortFallService
+  clientWithMarginShortFallService,
+  topPerformingClientService
 };

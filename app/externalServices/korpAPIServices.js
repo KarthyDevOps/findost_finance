@@ -119,6 +119,31 @@ const clientWithMarginShortFallAPI = async (data) => {
   return await Rest.callApi(apiConfig);
 };
 
+const topPerformingClientAPI = async (data) => {
+  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.topPerformingClientAPI));
+  apiConfig.url = process.env.KORP_BASE_URL + "/Reports/WEBDebtorCreditorList/Post";
+  apiConfig.data ={
+    'CrDrFlag' : "NONZERO",
+    "IncludeMargin":"Y",
+    'AsOnDate'  : moment().format('YYYY-MM-DD')
+  }
+  apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
+  if (data.FIRMID) {
+    apiConfig.headers.FIRMID = data.FIRMID;
+    apiConfig.data["FirmID"] = data.FIRMID;
+  }
+  if (data.BRANCH) {
+    apiConfig.data.Branch = data.BRANCH;
+  }
+  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+
+  
+  delete data.token;
+ // apiConfig.data = data;
+  console.log("apiConfig====", apiConfig);
+  return await Rest.callApi(apiConfig);
+};
+
 module.exports = {
   authenticationAPI,
   clientProfileAPI,

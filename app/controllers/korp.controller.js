@@ -152,7 +152,8 @@ const {
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
     params.BRANCH = process.env.KORP_BRANCHID
-
+    if(!params.limit) params.limit =10
+    if(!params.page) params.page =1
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await clientListService(params);
     if (!result.status) {

@@ -2,6 +2,8 @@ const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
 let xmlParser = require('xml2json');
+const moment = require("moment");
+const { pageMetaService } = require("../helpers/index");
 
 
 const authenticationService = async (params) => {
@@ -109,6 +111,39 @@ const clientMasterService = async (params) => {
 };
 const clientHoldingService = async (params) => {
   let resp = await KORPAPIServices.clientHoldingAPI(params);
+  const getMarketTime = (()=>{
+    let date = moment().format('YYYY-MM-DD hh:mm:ss')
+    if(new Date().getDay() == 0 || new Date().getDay() == 6)
+    {
+      var time = "18:00";
+      const t = new Date().getDate() + (6 - new Date().getDay() - 1) - 7 ;
+      const lastFriday = new Date();
+      lastFriday.setDate(t);
+      
+      date = moment(lastFriday).format('YYYY-MM-DD')
+      date =  moment(date + ' ' + time);
+    }
+    
+    return date
+  }) 
+  resp.overall ={
+      asOnDate : getMarketTime(),
+      totalInvestment : 0,
+      totalCurrentValue : 0,
+      overAllPLValue : 0,
+      //overAllPLPercentage : 0,
+    }
+    let totalInvestment = 0 
+    let totalCurVal = 0 
+
+    resp.data.map((res1)=>{
+      totalInvestment = totalInvestment + (res1.TotalHolding * res1.BuyAvg);
+      totalCurVal = totalCurVal + (res1.TotalHolding * res1.CloseRate)
+    })
+    resp.overall.totalInvestment = totalInvestment
+    resp.overall.totalCurrentValue = totalCurVal
+    resp.overall.overAllPLValue = totalCurVal - totalInvestment
+
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -122,6 +157,19 @@ const clientListService = async (params) => {
   let result = [];
 
   if (resp) {
+    if(params.sort =="ascending")
+      {
+        resp.sort((a,b) => (a.AccountName > b.AccountName) ? 1 : ((b.AccountName > a.AccountName) ? -1 : 0))
+
+      }
+      else if(params.sort =="descending")
+      {
+        resp.sort((a,b) => (a.AccountName > b.AccountName) ? -1 : ((b.AccountName > a.AccountName) ? 1 : 0))
+
+      }
+      
+    resp =resp.slice(params.page,params.page+params.limit)
+    console.log(resp)
     for (let res of resp) {
       if(params.status == "ACTIVE")
       {
@@ -180,11 +228,14 @@ const clientListService = async (params) => {
    
     }
   }
+  
+
+  const pageMeta = await pageMetaService(params, result.length || 0);
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-    data: result,
+   data: { list:  result || [], pageMeta },
   };
 };
 const clientWithMarginShortFallService = async (params) => {

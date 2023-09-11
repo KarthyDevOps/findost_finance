@@ -109,7 +109,7 @@ const leadCreateValidation = (req, res, next) => {
     mobileNumber: joi.string(),
     emailId: joi.string(),
     aditionalInfo: joi.string(),
-    productId: joi.string(),
+    productId: joi.string().allow(null).allow(""),
     productName: joi.string(),
     clientDetails: joi.object({
       clientName: joi.string().required(),

@@ -238,8 +238,11 @@ const clientListService = async (params) => {
    data: { list:  result || [], pageMeta },
   };
 };
+
 const clientWithMarginShortFallService = async (params) => {
+
   let resp = await KORPAPIServices.clientWithMarginShortFallAPI({...params});
+
   let result = [];
 
   if (resp) {
@@ -248,10 +251,13 @@ const clientWithMarginShortFallService = async (params) => {
       let profileResp = await KORPAPIServices.clientProfileAPI({...params});
       res.MobileNo = profileResp?.MasterData[0]?.MobileNo || "";
       res.PhoneNo = profileResp?.MasterData[0]?.PhoneNo || "";
-     
       result.push(res);
     }
   }
+  result  = result.filter((x)=>{
+  return x.NetWithMargin >= 0
+  })
+
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -259,6 +265,7 @@ const clientWithMarginShortFallService = async (params) => {
     data: result,
   };
 };
+
 const topPerformingClientService = async (params) => {
   let resp = await KORPAPIServices.topPerformingClientAPI(params);
   let result = []

@@ -255,7 +255,7 @@ const clientWithMarginShortFallService = async (params) => {
     }
   }
   result  = result.filter((x)=>{
-  return x.NetWithMargin >= 0
+  return x.NetWithMargin < 0
   })
 
   return {

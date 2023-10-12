@@ -17,7 +17,7 @@ const createCrmTicketService = async (params) => {
       "source": params.source || "API",
       "priorityscore": params.priorityscore || "1" ,
       "customeremailid": params.customerEmailId,
-      "subject":  params.source,
+      "subject":  params.subject,
       "issuedescription": params.issuedescription || "I have been facing issue while logging into the system",
       "UserID":  process.env.CRM_TICKET_USER_ID
     }

@@ -293,6 +293,15 @@ const myBrokerageRevenueService = async (params) => {
     data: resp,
   };
 };
+const myClientsReportService = async (params) => {
+  let resp = await KORPAPIServices.myClientsReportAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp,
+  };
+};
 
 
 
@@ -306,5 +315,6 @@ module.exports = {
   clientListService,
   clientWithMarginShortFallService,
   topPerformingClientService,
-  myBrokerageRevenueService
+  myBrokerageRevenueService,
+  myClientsReportService
 };

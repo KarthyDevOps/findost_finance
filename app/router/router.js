@@ -59,6 +59,7 @@ const {
   clientDashboard,
   clientMaster,
   clientHolding,
+  clientPositions,
   clientList,
   clientWithMarginShortFall,
   topPerformingClient,
@@ -234,6 +235,11 @@ router.get(
   routes.v1.KORP.CLIENT_HOLDINGS,
   [verifyToken("AP"),korpAuthentication],
   errHandle(clientHolding)
+);
+router.get(
+  routes.v1.KORP.CLIENT_POSTIONS,
+  [korpAuthentication],
+  errHandle(clientPositions)
 );
 router.get(
   routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,

@@ -302,6 +302,72 @@ const myClientsReportService = async (params) => {
     data: resp,
   };
 };
+const clientPositionsService = async (params) => {
+  let resp = await KORPAPIServices.clientPositionsAPI(params);
+  const getMarketTime = (()=>{
+    let date = moment().format('YYYY-MM-DD hh:mm:ss')
+    if(new Date().getDay() == 0 || new Date().getDay() == 6)
+    {
+      var time = "18:00";
+      const t = new Date().getDate() + (6 - new Date().getDay() - 1) - 7 ;
+      const lastFriday = new Date();
+      lastFriday.setDate(t);
+      
+      date = moment(lastFriday).format('YYYY-MM-DD')
+      date =  moment(date + ' ' + time);
+    }
+    
+    return date
+  }) 
+  let result ={
+    overall :{
+      asOnDate : getMarketTime(),
+      totalInvestment : 0,
+      totalCurrentValue : 0,
+      overAllPLValue : 0,
+      //overAllPLPercentage : 0,
+    },
+    data : []
+  }
+  
+  let totalInvestment = 0 
+  let totalCurVal = 0 
+
+  resp.PositionData.map((res1)=>{
+    // let resp={
+    //   symbol : resp1.Symbol,
+    //   qty : resp1.BuyQuantity,
+    //   "Exchange": resp1.Exchange,
+    //   "Segment": resp1.Segment,
+
+    //   investmentValue : resp1.Symbol,
+    //   currentValue : resp1.Symbol,
+    //   avgPrice : resp1.Symbol,
+    //   Symbol : resp1.Symbol,
+
+    //   Symbol : resp1.Symbol,
+
+    //   Symbol : resp1.Symbol,
+    //   Symbol : resp1.Symbol,
+    //   Symbol : resp1.Symbol,
+    // }
+    result.data.push(res1);
+
+    totalInvestment = totalInvestment + (res1.BuyQuantity * res1.BuyValue);
+    totalCurVal = totalCurVal + (res1.BuyQuantity * res1.CloseRate)
+  })
+  result.overall.totalInvestment = totalInvestment
+  result.overall.totalCurrentValue = totalCurVal
+  result.overall.overAllPLValue = totalCurVal - totalInvestment
+
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
+
 
 
 
@@ -316,5 +382,6 @@ module.exports = {
   clientWithMarginShortFallService,
   topPerformingClientService,
   myBrokerageRevenueService,
-  myClientsReportService
+  myClientsReportService,
+  clientPositionsService
 };

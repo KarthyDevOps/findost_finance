@@ -32,7 +32,8 @@ const routes = {
         SYSTEMATIC_INVESTMENT_PATTERN: "/v1/accord-fintech/mf/getSystematicInvestmentpattern",
         ALL_HOLDINGS: "/v1/accord-fintech/mf/allHoldings",
         NFO_UPDATES: "/v1/accord-fintech/mf/nfoUpdates",
-        GET_FUND_FACT_SHEET: "/v1/accord-fintech/mf/getFundFactsheet"
+        GET_FUND_FACT_SHEET: "/v1/accord-fintech/mf/getFundFactsheet",
+        
       },
       IPO: {
         IPO_ISSUE: "/v1/accord-fintech/ipo/ipoIssue",
@@ -52,6 +53,7 @@ const routes = {
       CLIENT_DASHBOARD: "/v1/korp/clientDashboard",
       CLIENT_MASTER: "/v1/korp/clientMaster",
       CLIENT_HOLDINGS : "/v1/korp/clientHoldings",
+      CLIENT_POSTIONS : "/v1/korp/clientPositions",
       CLIENT_WITH_MARGIN_SHORTFALL : "/v1/korp/clientWithMarginShortFall",
       TOP_PERFORMING_CLIENT : "/v1/korp/topPerformingClient",
       MY_BROKERAGE_REVENUE : "/v1/korp/myBrokerageRevenue",

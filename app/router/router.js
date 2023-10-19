@@ -64,7 +64,8 @@ const {
   clientWithMarginShortFall,
   topPerformingClient,
   myBrokerageRevenue,
-  myClientsReport
+  myClientsReport,
+  myRevenueReport
 } = require("../controllers/korp.controller");
 
 
@@ -261,6 +262,11 @@ router.get(
   routes.v1.KORP.MY_CLIENTS_REPORTS  ,
   [verifyToken("AP"),korpAuthentication],
   errHandle(myClientsReport)
+);
+router.get(
+  routes.v1.KORP.MY_REVENUE_REPORTS  ,
+  [korpAuthentication],
+  errHandle(myRevenueReport)
 );
 
 

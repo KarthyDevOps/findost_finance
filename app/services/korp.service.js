@@ -334,23 +334,7 @@ const clientPositionsService = async (params) => {
   let totalCurVal = 0 
 
   resp.PositionData.map((res1)=>{
-    // let resp={
-    //   symbol : resp1.Symbol,
-    //   qty : resp1.BuyQuantity,
-    //   "Exchange": resp1.Exchange,
-    //   "Segment": resp1.Segment,
-
-    //   investmentValue : resp1.Symbol,
-    //   currentValue : resp1.Symbol,
-    //   avgPrice : resp1.Symbol,
-    //   Symbol : resp1.Symbol,
-
-    //   Symbol : resp1.Symbol,
-
-    //   Symbol : resp1.Symbol,
-    //   Symbol : resp1.Symbol,
-    //   Symbol : resp1.Symbol,
-    // }
+   
     result.data.push(res1);
 
     totalInvestment = totalInvestment + (res1.BuyQuantity * res1.BuyValue);
@@ -369,6 +353,107 @@ const clientPositionsService = async (params) => {
 };
 
 
+const myRevenueReportService = async (params) => {
+  let resp = {
+    'equity':{
+      total : 0,
+      list : []
+    },
+    'currency':{
+      total : 0,
+      list : []
+    },
+    'commodity':{
+      total : 0,
+      list : []
+    },
+    'all' : {
+      total : 0,
+    }
+  }
+  if(params.type == 'equity')
+  {
+    params.Exchange ="NSE"
+    let nseResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    params.Exchange ="BSE"
+    let bseResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    resp.equity.list = nseResp.concat(bseResp);
+    resp.equity.list.map((r)=>{
+      resp.equity.total = resp.equity.total  + +(r.IntroBrok)
+    })
+    delete resp.currency
+    delete resp.commodity
+    delete resp.all
+    resp.equity.total = resp.equity.total.toFixed(2)
+  }
+  else if(params.type == 'currency')
+  {
+    params.Exchange ="CUR"
+    let curResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    resp.currency.list = curResp || [];
+    resp.currency.list.map((r)=>{
+      resp.currency.total = resp.currency.total  + +(r.IntroBrok)
+    })
+    delete resp.equity
+    delete resp.commodity
+    delete resp.all
+    resp.currency.total = resp.currency.total.toFixed(2)
+  }
+  else if(params.type == 'commodity')
+  {
+    params.Exchange ="ALL"
+    params.Segment ="ALL"
+    let comResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    resp.commodity.list = comResp || [];
+    resp.commodity.list.map((r)=>{
+      resp.commodity.total = resp.commodity.total  + +(r.IntroBrok)
+    })
+    delete resp.equity
+    delete resp.currency
+    delete resp.all
+    resp.commodity.total = resp.commodity.total.toFixed(2)
+  }
+  else{
+    params.Exchange ="NSE"
+    let nseResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    params.Exchange ="BSE"
+    let bseResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    resp.equity.list = nseResp.concat(bseResp);
+    resp.equity.list.map((r)=>{
+      resp.equity.total = resp.equity.total  + +(r.IntroBrok)
+    })
+    params.Exchange ="CUR"
+    let curResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    resp.currency.list = curResp || [];
+    resp.currency.list.map((r)=>{
+      resp.currency.total = resp.currency.total  + +(r.IntroBrok)
+    })
+    params.Exchange ="ALL"
+    params.Segment ="ALL"
+    let comResp = await KORPAPIServices.myRevenueReportAPI({...params});
+    resp.commodity.list = comResp || [];
+    resp.commodity.list.map((r)=>{
+      resp.commodity.total = resp.commodity.total  + +(r.IntroBrok)
+    })
+    resp.currency.total = resp.currency.total.toFixed(2)
+    resp.equity.total = resp.equity.total.toFixed(2)
+    resp.commodity.total = resp.commodity.total.toFixed(2)
+
+    resp.all.total = +resp.currency.total + +resp.equity.total + +resp.commodity.total
+
+  }
+  
+ 
+ 
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp,
+  };
+};
+
+
 
 
 module.exports = {
@@ -383,5 +468,6 @@ module.exports = {
   topPerformingClientService,
   myBrokerageRevenueService,
   myClientsReportService,
-  clientPositionsService
+  clientPositionsService,
+  myRevenueReportService
 };

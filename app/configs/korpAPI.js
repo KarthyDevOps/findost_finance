@@ -121,4 +121,13 @@ module.exports = {
     },
     data: {},
   },
+  myRevenueReportAPI: {
+    method: "POST",
+    url: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {},
+  },
+  
 };

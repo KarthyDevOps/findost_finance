@@ -305,6 +305,32 @@ const myClientsReportAPI = async (data) => {
   return await Rest.callApi(apiConfig);
 };
 
+
+const myRevenueReportAPI = async (data) => {
+  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.myRevenueReportAPI));
+  apiConfig.url =
+    process.env.KORP_BASE_URL + "/Reports/IntroBrokReport/Post";
+  apiConfig.headers.Authorization = `Bearer ${data.token }`;
+  if (data.FIRMID) {
+    apiConfig.headers.FIRMID = data.FIRMID;
+  }
+  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+  apiConfig.data = {
+    "FromDate":(data.fromDate && moment(data.fromDate).format("YYYY-MM-DD")) || `${moment().format("YYYY")}-04-01` ,
+    "ToDate":(data.toDate && moment(data.toDate).format("YYYY-MM-DD") ) || moment().format("YYYY-MM-DD"),
+    "Exchange":data.Exchange || "NSE",
+    "Segment": data.Segment || "CAP",
+    "ReportType":"COMBINESEG"
+    // DATE_CLIENT, CLIENT, DATE, COMBINESEG, INTRO_INTRO2_CLIENT
+  };
+
+  delete data.token;
+  // apiConfig.data = data;
+  console.log("apiConfig====", apiConfig);
+  return await Rest.callApi(apiConfig);
+};
+
+
 module.exports = {
   authenticationAPI,
   clientProfileAPI,
@@ -316,5 +342,6 @@ module.exports = {
   topPerformingClientAPI,
   myBrokerageRevenueAPI,
   myClientsReportAPI,
-  clientPositionsAPI
+  clientPositionsAPI,
+  myRevenueReportAPI
 };

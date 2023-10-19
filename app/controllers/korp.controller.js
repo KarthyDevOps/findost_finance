@@ -15,7 +15,8 @@ const {
     myBrokerageRevenueService,
     myClientsReportService,
     clientPositionsService,
-    myRevenueReportService
+    myRevenueReportService,
+    myReportTopClientsService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -327,6 +328,31 @@ const {
       result?.data
     );
   };
+  const myReportTopClients = async (req, res) => {
+    const params = req?.query;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = process.env.KORP_BRANCHID
+
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await myReportTopClientsService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   
 
   module.exports = {
@@ -342,6 +368,7 @@ const {
     myBrokerageRevenue,
     myClientsReport,
     clientPositions,
-    myRevenueReport
+    myRevenueReport,
+    myReportTopClients
   };
   

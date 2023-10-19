@@ -348,6 +348,8 @@ const clientPositionsService = async (params) => {
 };
 
 const myRevenueReportService = async (params) => {
+  let all_total =0
+  let result =[]
   let resp = {
     equity: {
       total: 0,
@@ -361,9 +363,7 @@ const myRevenueReportService = async (params) => {
       total: 0,
       list: [],
     },
-    all: {
-      total: 0,
-    },
+   
   };
   if (params.type == "equity") {
     params.Exchange = "NSE";
@@ -376,7 +376,7 @@ const myRevenueReportService = async (params) => {
     });
     delete resp.currency;
     delete resp.commodity;
-    delete resp.all;
+  
     resp.equity.total = resp.equity.total.toFixed(2);
   } else if (params.type == "currency") {
     params.Exchange = "CUR";
@@ -387,7 +387,7 @@ const myRevenueReportService = async (params) => {
     });
     delete resp.equity;
     delete resp.commodity;
-    delete resp.all;
+   
     resp.currency.total = resp.currency.total.toFixed(2);
   } else if (params.type == "commodity") {
     params.Exchange = "ALL";
@@ -399,7 +399,7 @@ const myRevenueReportService = async (params) => {
     });
     delete resp.equity;
     delete resp.currency;
-    delete resp.all;
+   
     resp.commodity.total = resp.commodity.total.toFixed(2);
   } else {
     params.Exchange = "NSE";
@@ -427,8 +427,24 @@ const myRevenueReportService = async (params) => {
     resp.equity.total = resp.equity.total.toFixed(2);
     resp.commodity.total = resp.commodity.total.toFixed(2);
 
-    resp.all.total =
+    all_total =
       +resp.currency.total + +resp.equity.total + +resp.commodity.total;
+
+   
+    Object.keys(resp).map((d)=>{
+      let data ={
+        name : d,
+        total : resp[d].total,
+        list : resp[d].list || []
+      }
+      result.push(data)
+    })
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: { allTotal : all_total,list :result},
+    };
   }
 
   return {
@@ -438,6 +454,24 @@ const myRevenueReportService = async (params) => {
     data: resp,
   };
 };
+
+const myReportTopClientsService = async (params) => {
+  let resp = await KORPAPIServices.topPerformingClientAPI(params);
+  let result = [];
+  if (resp) {
+    resp = xmlParser.toJson(resp);
+    resp = JSON.parse(resp);
+    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+  }
+
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
+
 
 module.exports = {
   authenticationService,
@@ -453,4 +487,5 @@ module.exports = {
   myClientsReportService,
   clientPositionsService,
   myRevenueReportService,
+  myReportTopClientsService
 };

@@ -59,6 +59,7 @@ const routes = {
       MY_BROKERAGE_REVENUE : "/v1/korp/myBrokerageRevenue",
       MY_CLIENTS_REPORTS : "/v1/korp/myClientsReport",
       MY_REVENUE_REPORTS : "/v1/korp/myRevenueReport",
+      MY_REPORTS : "/v1/korp/myReportTopClients",
     },
     BSE_STAR: {
       AUTHENTICATION: "/v1/bse-star/authentication",

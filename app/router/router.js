@@ -65,7 +65,8 @@ const {
   topPerformingClient,
   myBrokerageRevenue,
   myClientsReport,
-  myRevenueReport
+  myRevenueReport,
+  myReportTopClients
 } = require("../controllers/korp.controller");
 
 
@@ -267,6 +268,11 @@ router.get(
   routes.v1.KORP.MY_REVENUE_REPORTS  ,
   [korpAuthentication],
   errHandle(myRevenueReport)
+);
+router.get(
+  routes.v1.KORP.MY_REPORTS  ,
+  [korpAuthentication],
+  errHandle(myReportTopClients)
 );
 
 

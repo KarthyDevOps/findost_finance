@@ -59,11 +59,14 @@ const {
   clientDashboard,
   clientMaster,
   clientHolding,
+  clientPositions,
   clientList,
   clientWithMarginShortFall,
   topPerformingClient,
   myBrokerageRevenue,
-  myClientsReport
+  myClientsReport,
+  myRevenueReport,
+  myReportTopClients
 } = require("../controllers/korp.controller");
 
 
@@ -213,9 +216,9 @@ router.get(
 
 //KORP Management
 
-router.get(
+router.post(
   routes.v1.KORP.AUTHENTICATION,
-  [verifyToken("AP"),korpAuthentication],
+  [],
   errHandle(authentication)
 );
 
@@ -234,6 +237,11 @@ router.get(
   routes.v1.KORP.CLIENT_HOLDINGS,
   [verifyToken("AP"),korpAuthentication],
   errHandle(clientHolding)
+);
+router.get(
+  routes.v1.KORP.CLIENT_POSTIONS,
+  [korpAuthentication],
+  errHandle(clientPositions)
 );
 router.get(
   routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,
@@ -256,12 +264,22 @@ router.get(
   [verifyToken("AP"),korpAuthentication],
   errHandle(myClientsReport)
 );
+router.get(
+  routes.v1.KORP.MY_REVENUE_REPORTS  ,
+  [korpAuthentication],
+  errHandle(myRevenueReport)
+);
+router.get(
+  routes.v1.KORP.MY_REPORTS  ,
+  [korpAuthentication],
+  errHandle(myReportTopClients)
+);
 
 
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientProfile)
 );
 router.get(

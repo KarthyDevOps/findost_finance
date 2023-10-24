@@ -4,11 +4,12 @@ const qs = require("qs");
 const moment = require("moment");
 
 const authenticationAPI = async (data) => {
+  console.log(data,'data')
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.authenticationAPI));
   apiConfig.url = process.env.KORP_BASE_URL + "/token";
   let payload = qs.stringify({
-    Username: process.env.KORP_USER_NAME,
-    Password: process.env.KORP_PASSWORD,
+    Username: data.userName || process.env.KORP_USER_NAME,
+    Password: data.password || process.env.KORP_PASSWORD,
     Grant_type: "password",
   });
   apiConfig.data = payload;
@@ -176,6 +177,46 @@ const myBrokerageRevenueAPI = async (data) => {
   return await Rest.callApi(apiConfig);
 };
 
+
+const clientPositionsAPI = async (data) => {
+  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.clientPositionsAPI));
+  apiConfig.url =
+    process.env.KORP_BASE_URL + "/Reports/DerivativeNetPosition/Post";
+  apiConfig.headers.Authorization = `Bearer ${data.token || "4_YwyL66GO42u1EPQFgbhkru-NzCDY7Y8jVBPjiAwIUyd55zLpfUGxx4rqvDggpF8ijjH6iXP5Q9yY5PM-ajCmRoo_Wt_IR86sFdTytxN1ey0vRgV8S8oFo20rnhokUNskuU4GsSNur7rrnTZvhcrwdOL_zzGOMMMPILNzJuiNftQO8O4MmzO73KL41D_dkF040VzJQxhtU2eURohAMy4WBRVltgQzHeZlMJD9hVshpqs0Eve94GEp3zMD89s-YRUkEDDpNCAPBa7OjouhwvMXwK7VBGW7g9ATAisqp9XC6hXjtteLQlaImoNV_fT4MR3qIaLqU8kubkzziq-hFKz88JBhhIR7SgGTqHXv5DVSk"}`;
+  if (data.FIRMID) {
+    apiConfig.headers.FIRMID = data.FIRMID;
+  }
+  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+  apiConfig.data = {
+   
+    "FirmID":data.FIRMID,
+    "AccountID":data.clientCode,
+    "AsOnDate":"2023-09-04" || moment().format("YYYY-MM-DD"),
+    "Exchange":"NSE",
+    // BSE, MCX, NCDEX, NSE
+    "Segment":"FNO",
+    // FNO, COM, CUR
+    // "Instrument":"FUTBLN",
+    // "Symbol":"ALL",
+    // "ExpiryDate":"2023-08-23",
+    // "StrikePrice":233.33,
+    "OptionType":"CE",
+    // CE, PE
+    "ReportType":"CLIENT",
+    "IgnoreZeroPosition":"N",
+    // Y, N
+    "QtyInLot": "Y"
+
+
+  };
+
+  delete data.token;
+  // apiConfig.data = data;
+  console.log("apiConfig====", apiConfig);
+  return await Rest.callApi(apiConfig);
+};
+
+
 const myClientsReportAPI = async (data) => {
   let apiConfig = null 
 
@@ -265,6 +306,32 @@ const myClientsReportAPI = async (data) => {
   return await Rest.callApi(apiConfig);
 };
 
+
+const myRevenueReportAPI = async (data) => {
+  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.myRevenueReportAPI));
+  apiConfig.url =
+    process.env.KORP_BASE_URL + "/Reports/IntroBrokReport/Post";
+  apiConfig.headers.Authorization = `Bearer ${data.token }`;
+  if (data.FIRMID) {
+    apiConfig.headers.FIRMID = data.FIRMID;
+  }
+  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+  apiConfig.data = {
+    "FromDate":(data.fromDate && moment(data.fromDate).format("YYYY-MM-DD")) || `${moment().format("YYYY")}-04-01` ,
+    "ToDate":(data.toDate && moment(data.toDate).format("YYYY-MM-DD") ) || moment().format("YYYY-MM-DD"),
+    "Exchange":data.Exchange || "NSE",
+    "Segment": data.Segment || "CAP",
+    "ReportType":"COMBINESEG"
+    // DATE_CLIENT, CLIENT, DATE, COMBINESEG, INTRO_INTRO2_CLIENT
+  };
+
+  delete data.token;
+  // apiConfig.data = data;
+  console.log("apiConfig====", apiConfig);
+  return await Rest.callApi(apiConfig);
+};
+
+
 module.exports = {
   authenticationAPI,
   clientProfileAPI,
@@ -276,4 +343,6 @@ module.exports = {
   topPerformingClientAPI,
   myBrokerageRevenueAPI,
   myClientsReportAPI,
+  clientPositionsAPI,
+  myRevenueReportAPI
 };

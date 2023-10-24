@@ -35,6 +35,15 @@ module.exports = {
     },
     data: {},
   },
+  clientPositionsAPI: {
+    method: "POST",
+    url: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {},
+  },
+  
   clientListAPI: {
     method: "POST",
     url: "",
@@ -112,4 +121,13 @@ module.exports = {
     },
     data: {},
   },
+  myRevenueReportAPI: {
+    method: "POST",
+    url: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {},
+  },
+  
 };

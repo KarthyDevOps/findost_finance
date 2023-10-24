@@ -29,6 +29,14 @@ const verifyToken = (type = ["ADMIN"]) =>
           if (type.includes("AP")) {
             userData = await InternalServices.getBOUSERSById({token:token});
             console.log('userData--->', userData)
+            // decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+            // userData = await InternalServices.getAPById({ _id: decode?._id });
+            userData ={
+              data :{
+                korpAccessToken:token,
+                isActive:true
+              }
+            }
             userType = "AP";
           }
         }
@@ -104,6 +112,7 @@ const verifyAdminRole = (roles, action) =>
     }
   };
   const korpAuthentication = async(req, res, next) =>{
+    console.log('wwww')
     let resp = await KORPAPIServices.authenticationAPI();
     if(resp?.access_token)
     {

@@ -1,20 +1,29 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
-let xmlParser = require('xml2json');
+let xmlParser = require("xml2json");
 const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
 
-
 const authenticationService = async (params) => {
-  return {
-    status: true,
-    statusCode: statusCodes?.HTTP_OK,
-    message: messages?.success,
-    data: {
-      token: params.token,
-    },
-  };
+  let resp = await KORPAPIServices.authenticationAPI(params);
+  if (!resp.access_token) {
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: {
+        token: params.token,
+      },
+    };
+  } else {
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: resp,
+    };
+  }
 };
 
 const clientDetailsService = async (params) => {
@@ -111,38 +120,37 @@ const clientMasterService = async (params) => {
 };
 const clientHoldingService = async (params) => {
   let resp = await KORPAPIServices.clientHoldingAPI(params);
-  const getMarketTime = (()=>{
-    let date = moment().format('YYYY-MM-DD hh:mm:ss')
-    if(new Date().getDay() == 0 || new Date().getDay() == 6)
-    {
+  const getMarketTime = () => {
+    let date = moment().format("YYYY-MM-DD hh:mm:ss");
+    if (new Date().getDay() == 0 || new Date().getDay() == 6) {
       var time = "18:00";
-      const t = new Date().getDate() + (6 - new Date().getDay() - 1) - 7 ;
+      const t = new Date().getDate() + (6 - new Date().getDay() - 1) - 7;
       const lastFriday = new Date();
       lastFriday.setDate(t);
-      
-      date = moment(lastFriday).format('YYYY-MM-DD')
-      date =  moment(date + ' ' + time);
-    }
-    
-    return date
-  }) 
-  resp.overall ={
-      asOnDate : getMarketTime(),
-      totalInvestment : 0,
-      totalCurrentValue : 0,
-      overAllPLValue : 0,
-      //overAllPLPercentage : 0,
-    }
-    let totalInvestment = 0 
-    let totalCurVal = 0 
 
-    resp.data.map((res1)=>{
-      totalInvestment = totalInvestment + (res1.TotalHolding * res1.BuyAvg);
-      totalCurVal = totalCurVal + (res1.TotalHolding * res1.CloseRate)
-    })
-    resp.overall.totalInvestment = totalInvestment
-    resp.overall.totalCurrentValue = totalCurVal
-    resp.overall.overAllPLValue = totalCurVal - totalInvestment
+      date = moment(lastFriday).format("YYYY-MM-DD");
+      date = moment(date + " " + time);
+    }
+
+    return date;
+  };
+  resp.overall = {
+    asOnDate: getMarketTime(),
+    totalInvestment: 0,
+    totalCurrentValue: 0,
+    overAllPLValue: 0,
+    //overAllPLPercentage : 0,
+  };
+  let totalInvestment = 0;
+  let totalCurVal = 0;
+
+  resp.data.map((res1) => {
+    totalInvestment = totalInvestment + res1.TotalHolding * res1.BuyAvg;
+    totalCurVal = totalCurVal + res1.TotalHolding * res1.CloseRate;
+  });
+  resp.overall.totalInvestment = totalInvestment;
+  resp.overall.totalCurrentValue = totalCurVal;
+  resp.overall.overAllPLValue = totalCurVal - totalInvestment;
 
   return {
     status: true,
@@ -152,32 +160,39 @@ const clientHoldingService = async (params) => {
   };
 };
 const clientListService = async (params) => {
-  let newParams = params
-  let resp = await KORPAPIServices.clientListAPI({...params});
+  let newParams = params;
+  let resp = await KORPAPIServices.clientListAPI({ ...params });
   let result = [];
 
   if (resp) {
-    if(params.sort =="ascending")
-      {
-        resp.sort((a,b) => (a.AccountName > b.AccountName) ? 1 : ((b.AccountName > a.AccountName) ? -1 : 0))
+    if (params.sort == "ascending") {
+      resp.sort((a, b) =>
+        a.AccountName > b.AccountName
+          ? 1
+          : b.AccountName > a.AccountName
+          ? -1
+          : 0
+      );
+    } else if (params.sort == "descending") {
+      resp.sort((a, b) =>
+        a.AccountName > b.AccountName
+          ? -1
+          : b.AccountName > a.AccountName
+          ? 1
+          : 0
+      );
+    }
 
-      }
-      else if(params.sort =="descending")
-      {
-        resp.sort((a,b) => (a.AccountName > b.AccountName) ? -1 : ((b.AccountName > a.AccountName) ? 1 : 0))
-
-      }
-      
-    resp =resp.slice(params.page,params.page+params.limit)
-    console.log(resp)
+    resp = resp.slice(params.page, params.page + params.limit);
+    console.log(resp);
     for (let res of resp) {
-      if(params.status == "ACTIVE")
-      {
-        if(res.AcStatus == "Active")
-        {
+      if (params.status == "ACTIVE") {
+        if (res.AcStatus == "Active") {
           params.clientCode = res.AccountID;
-          console.log('params',params)
-          let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+          console.log("params", params);
+          let profileResp = await KORPAPIServices.clientProfileAPI({
+            ...params,
+          });
           res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
           res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
           res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
@@ -189,14 +204,13 @@ const clientListService = async (params) => {
           res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
           result.push(res);
         }
-      }
-      else if(params.status == "INACTIVE")
-      {
-        if(res.AcStatus == "Inactive")
-        {
+      } else if (params.status == "INACTIVE") {
+        if (res.AcStatus == "Inactive") {
           params.clientCode = res.AccountID;
-          console.log('params',params)
-          let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+          console.log("params", params);
+          let profileResp = await KORPAPIServices.clientProfileAPI({
+            ...params,
+          });
           res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
           res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
           res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
@@ -208,12 +222,10 @@ const clientListService = async (params) => {
           res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
           result.push(res);
         }
-      }
-      else
-      {
+      } else {
         params.clientCode = res.AccountID;
-        console.log('params',params)
-        let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+        console.log("params", params);
+        let profileResp = await KORPAPIServices.clientProfileAPI({ ...params });
         res.Address1 = profileResp?.MasterData[0]?.Address1 || "";
         res.Address2 = profileResp?.MasterData[0]?.Address2 || "";
         res.Address3 = profileResp?.MasterData[0]?.Address3 || "";
@@ -225,38 +237,35 @@ const clientListService = async (params) => {
         res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
         result.push(res);
       }
-   
     }
   }
-  
 
   const pageMeta = await pageMetaService(params, result.length || 0);
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-   data: { list:  result || [], pageMeta },
+    data: { list: result || [], pageMeta },
   };
 };
 
 const clientWithMarginShortFallService = async (params) => {
-
-  let resp = await KORPAPIServices.clientWithMarginShortFallAPI({...params});
+  let resp = await KORPAPIServices.clientWithMarginShortFallAPI({ ...params });
 
   let result = [];
 
   if (resp) {
     for (let res of resp.DRCRData) {
       params.clientCode = res.AccountID;
-      let profileResp = await KORPAPIServices.clientProfileAPI({...params});
+      let profileResp = await KORPAPIServices.clientProfileAPI({ ...params });
       res.MobileNo = profileResp?.MasterData[0]?.MobileNo || "";
       res.PhoneNo = profileResp?.MasterData[0]?.PhoneNo || "";
       result.push(res);
     }
   }
-  result  = result.filter((x)=>{
-  return x.NetWithMargin < 0
-  })
+  result = result.filter((x) => {
+    return x.NetWithMargin < 0;
+  });
 
   return {
     status: true,
@@ -268,14 +277,12 @@ const clientWithMarginShortFallService = async (params) => {
 
 const topPerformingClientService = async (params) => {
   let resp = await KORPAPIServices.topPerformingClientAPI(params);
-  let result = []
-  if(resp)
-  {
-    resp =  xmlParser.toJson(resp)
-    resp = JSON.parse(resp)
-    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || []
+  let result = [];
+  if (resp) {
+    resp = xmlParser.toJson(resp);
+    resp = JSON.parse(resp);
+    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
   }
-    
 
   return {
     status: true,
@@ -302,8 +309,176 @@ const myClientsReportService = async (params) => {
     data: resp,
   };
 };
+const clientPositionsService = async (params) => {
+  let resp = await KORPAPIServices.clientPositionsAPI(params);
+  const getMarketTime = () => {
+    let date = moment().format("YYYY-MM-DD hh:mm:ss");
+    if (new Date().getDay() == 0 || new Date().getDay() == 6) {
+      var time = "18:00";
+      const t = new Date().getDate() + (6 - new Date().getDay() - 1) - 7;
+      const lastFriday = new Date();
+      lastFriday.setDate(t);
 
+      date = moment(lastFriday).format("YYYY-MM-DD");
+      date = moment(date + " " + time);
+    }
 
+    return date;
+  };
+  let result = {
+    overall: {
+      asOnDate: getMarketTime(),
+      totalInvestment: 0,
+      totalCurrentValue: 0,
+      overAllPLValue: 0,
+      //overAllPLPercentage : 0,
+    },
+    data: [],
+  };
+
+  let totalInvestment = 0;
+  let totalCurVal = 0;
+
+  resp.PositionData.map((res1) => {
+    result.data.push(res1);
+
+    totalInvestment = totalInvestment + res1.BuyQuantity * res1.BuyValue;
+    totalCurVal = totalCurVal + res1.BuyQuantity * res1.CloseRate;
+  });
+  result.overall.totalInvestment = totalInvestment;
+  result.overall.totalCurrentValue = totalCurVal;
+  result.overall.overAllPLValue = totalCurVal - totalInvestment;
+
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
+
+const myRevenueReportService = async (params) => {
+  let all_total = 0;
+  let result = [];
+  let resp = {
+    equity: {
+      total: 0,
+      list: [],
+    },
+    currency: {
+      total: 0,
+      list: [],
+    },
+    commodity: {
+      total: 0,
+      list: [],
+    },
+  };
+  if (params.type == "equity") {
+    params.Exchange = "NSE";
+    let nseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    params.Exchange = "BSE";
+    let bseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    resp.equity.list = nseResp.concat(bseResp);
+    resp.equity.list.map((r) => {
+      resp.equity.total = resp.equity.total + +r.IntroBrok;
+    });
+    delete resp.currency;
+    delete resp.commodity;
+
+    resp.equity.total = resp.equity.total.toFixed(2);
+  } else if (params.type == "currency") {
+    params.Exchange = "CUR";
+    let curResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    resp.currency.list = curResp || [];
+    resp.currency.list.map((r) => {
+      resp.currency.total = resp.currency.total + +r.IntroBrok;
+    });
+    delete resp.equity;
+    delete resp.commodity;
+
+    resp.currency.total = resp.currency.total.toFixed(2);
+  } else if (params.type == "commodity") {
+    params.Exchange = "ALL";
+    params.Segment = "ALL";
+    let comResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    resp.commodity.list = comResp || [];
+    resp.commodity.list.map((r) => {
+      resp.commodity.total = resp.commodity.total + +r.IntroBrok;
+    });
+    delete resp.equity;
+    delete resp.currency;
+
+    resp.commodity.total = resp.commodity.total.toFixed(2);
+  } else {
+    params.Exchange = "NSE";
+    let nseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    params.Exchange = "BSE";
+    let bseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    resp.equity.list = nseResp.concat(bseResp);
+    resp.equity.list.map((r) => {
+      resp.equity.total = resp.equity.total + +r.IntroBrok;
+    });
+    params.Exchange = "CUR";
+    let curResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    resp.currency.list = curResp || [];
+    resp.currency.list.map((r) => {
+      resp.currency.total = resp.currency.total + +r.IntroBrok;
+    });
+    params.Exchange = "ALL";
+    params.Segment = "ALL";
+    let comResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    resp.commodity.list = comResp || [];
+    resp.commodity.list.map((r) => {
+      resp.commodity.total = resp.commodity.total + +r.IntroBrok;
+    });
+    resp.currency.total = resp.currency.total.toFixed(2);
+    resp.equity.total = resp.equity.total.toFixed(2);
+    resp.commodity.total = resp.commodity.total.toFixed(2);
+
+    all_total =
+      +resp.currency.total + +resp.equity.total + +resp.commodity.total;
+
+    Object.keys(resp).map((d) => {
+      let data = {
+        name: d,
+        total: resp[d].total,
+        list: resp[d].list || [],
+      };
+      result.push(data);
+    });
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: { allTotal: all_total, list: result },
+    };
+  }
+
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp,
+  };
+};
+
+const myReportTopClientsService = async (params) => {
+  let resp = await KORPAPIServices.topPerformingClientAPI(params);
+  let result = [];
+  if (resp) {
+    resp = xmlParser.toJson(resp);
+    resp = JSON.parse(resp);
+    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+  }
+
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
 
 module.exports = {
   authenticationService,
@@ -316,5 +491,8 @@ module.exports = {
   clientWithMarginShortFallService,
   topPerformingClientService,
   myBrokerageRevenueService,
-  myClientsReportService
+  myClientsReportService,
+  clientPositionsService,
+  myRevenueReportService,
+  myReportTopClientsService,
 };

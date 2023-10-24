@@ -13,12 +13,15 @@ const {
     clientWithMarginShortFallService,
     topPerformingClientService,
     myBrokerageRevenueService,
-    myClientsReportService
+    myClientsReportService,
+    clientPositionsService,
+    myRevenueReportService,
+    myReportTopClientsService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
-    const params = req?.query;
-    params.token = req.user.korpAccessToken
+    const params = req?.body;
+    //params.token = req.user.korpAccessToken
     const result = await authenticationService(params);
     if (!result.status) {
       return sendErrorResponse(
@@ -62,7 +65,7 @@ const {
     );
   };
   const clientProfile = async (req, res) => {
-    const params = req?.query;
+    var params = req?.query;
     params.token = req.user.korpAccessToken
     const result = await clientProfileService(params);
     if (!result.status) {
@@ -275,7 +278,81 @@ const {
       result?.data
     );
   };
-  
+  const clientPositions = async (req, res) => {
+    const params = req?.query;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = process.env.KORP_BRANCHID
+
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await clientPositionsService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  const myRevenueReport = async (req, res) => {
+    const params = req?.query;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = process.env.KORP_BRANCHID
+
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await myRevenueReportService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  const myReportTopClients = async (req, res) => {
+    const params = req?.query;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = process.env.KORP_BRANCHID
+
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await myReportTopClientsService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   
 
   module.exports = {
@@ -289,6 +366,9 @@ const {
     clientWithMarginShortFall,
     topPerformingClient,
     myBrokerageRevenue,
-    myClientsReport
+    myClientsReport,
+    clientPositions,
+    myRevenueReport,
+    myReportTopClients
   };
   

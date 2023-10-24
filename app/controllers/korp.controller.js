@@ -20,8 +20,8 @@ const {
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
-    const params = req?.query;
-    params.token = req.user.korpAccessToken
+    const params = req?.body;
+    //params.token = req.user.korpAccessToken
     const result = await authenticationService(params);
     if (!result.status) {
       return sendErrorResponse(
@@ -65,7 +65,7 @@ const {
     );
   };
   const clientProfile = async (req, res) => {
-    const params = req?.query;
+    var params = req?.query;
     params.token = req.user.korpAccessToken
     const result = await clientProfileService(params);
     if (!result.status) {

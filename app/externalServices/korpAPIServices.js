@@ -4,11 +4,12 @@ const qs = require("qs");
 const moment = require("moment");
 
 const authenticationAPI = async (data) => {
+  console.log(data,'data')
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.authenticationAPI));
   apiConfig.url = process.env.KORP_BASE_URL + "/token";
   let payload = qs.stringify({
-    Username: process.env.KORP_USER_NAME,
-    Password: process.env.KORP_PASSWORD,
+    Username: data.userName || process.env.KORP_USER_NAME,
+    Password: data.password || process.env.KORP_PASSWORD,
     Grant_type: "password",
   });
   apiConfig.data = payload;

@@ -6,14 +6,24 @@ const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
 
 const authenticationService = async (params) => {
-  return {
-    status: true,
-    statusCode: statusCodes?.HTTP_OK,
-    message: messages?.success,
-    data: {
-      token: params.token,
-    },
-  };
+  let resp = await KORPAPIServices.authenticationAPI(params);
+  if (!resp.access_token) {
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: {
+        token: params.token,
+      },
+    };
+  } else {
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: resp,
+    };
+  }
 };
 
 const clientDetailsService = async (params) => {
@@ -348,8 +358,8 @@ const clientPositionsService = async (params) => {
 };
 
 const myRevenueReportService = async (params) => {
-  let all_total =0
-  let result =[]
+  let all_total = 0;
+  let result = [];
   let resp = {
     equity: {
       total: 0,
@@ -363,7 +373,6 @@ const myRevenueReportService = async (params) => {
       total: 0,
       list: [],
     },
-   
   };
   if (params.type == "equity") {
     params.Exchange = "NSE";
@@ -376,7 +385,7 @@ const myRevenueReportService = async (params) => {
     });
     delete resp.currency;
     delete resp.commodity;
-  
+
     resp.equity.total = resp.equity.total.toFixed(2);
   } else if (params.type == "currency") {
     params.Exchange = "CUR";
@@ -387,7 +396,7 @@ const myRevenueReportService = async (params) => {
     });
     delete resp.equity;
     delete resp.commodity;
-   
+
     resp.currency.total = resp.currency.total.toFixed(2);
   } else if (params.type == "commodity") {
     params.Exchange = "ALL";
@@ -399,7 +408,7 @@ const myRevenueReportService = async (params) => {
     });
     delete resp.equity;
     delete resp.currency;
-   
+
     resp.commodity.total = resp.commodity.total.toFixed(2);
   } else {
     params.Exchange = "NSE";
@@ -430,20 +439,19 @@ const myRevenueReportService = async (params) => {
     all_total =
       +resp.currency.total + +resp.equity.total + +resp.commodity.total;
 
-   
-    Object.keys(resp).map((d)=>{
-      let data ={
-        name : d,
-        total : resp[d].total,
-        list : resp[d].list || []
-      }
-      result.push(data)
-    })
+    Object.keys(resp).map((d) => {
+      let data = {
+        name: d,
+        total: resp[d].total,
+        list: resp[d].list || [],
+      };
+      result.push(data);
+    });
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: { allTotal : all_total,list :result},
+      data: { allTotal: all_total, list: result },
     };
   }
 
@@ -472,7 +480,6 @@ const myReportTopClientsService = async (params) => {
   };
 };
 
-
 module.exports = {
   authenticationService,
   clientDetailsService,
@@ -487,5 +494,5 @@ module.exports = {
   myClientsReportService,
   clientPositionsService,
   myRevenueReportService,
-  myReportTopClientsService
+  myReportTopClientsService,
 };

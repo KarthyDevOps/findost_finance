@@ -216,9 +216,9 @@ router.get(
 
 //KORP Management
 
-router.get(
+router.post(
   routes.v1.KORP.AUTHENTICATION,
-  [verifyToken("AP"),korpAuthentication],
+  [],
   errHandle(authentication)
 );
 
@@ -279,7 +279,7 @@ router.get(
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientProfile)
 );
 router.get(

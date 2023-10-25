@@ -258,7 +258,7 @@ router.get(
   [verifyToken("AP")],
   errHandle(clientHolding)
 );
-router.get(routes.v1.KORP.CLIENT_POSTIONS, [], errHandle(clientPositions));
+router.get(routes.v1.KORP.CLIENT_POSTIONS, [verifyToken("AP")], errHandle(clientPositions));
 router.get(
   routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,
   [verifyToken("AP")],
@@ -280,8 +280,8 @@ router.get(
   [verifyToken("AP")],
   errHandle(myClientsReport)
 );
-router.get(routes.v1.KORP.MY_REVENUE_REPORTS, [], errHandle(myRevenueReport));
-router.get(routes.v1.KORP.MY_REPORTS, [], errHandle(myReportTopClients));
+router.get(routes.v1.KORP.MY_REVENUE_REPORTS, [verifyToken("AP")], errHandle(myRevenueReport));
+router.get(routes.v1.KORP.MY_REPORTS, [verifyToken("AP")], errHandle(myReportTopClients));
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,

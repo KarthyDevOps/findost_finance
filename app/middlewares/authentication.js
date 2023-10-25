@@ -34,9 +34,11 @@ const verifyToken = (type = ["ADMIN"]) =>
             userData ={
               data :{
                 korpAccessToken:token,
-                isActive:true
+                isActive:true,
+                ...userData
               }
             }
+            userData.data.apId = userData?.data?.BOUserId
             userType = "AP";
           }
         }

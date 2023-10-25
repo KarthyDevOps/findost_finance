@@ -2,7 +2,12 @@
 const express = require("express");
 const Router = express.Router;
 const { routes } = require("../routes/routes");
-const { verifyToken, korpAuthentication, CRMTicketAuthentication, BSEStarAuthentication , verifyAdminRole} = require("../middlewares/authentication");
+const {
+  verifyToken,
+  CRMTicketAuthentication,
+  BSEStarAuthentication,
+  verifyAdminRole,
+} = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
   createCrmTicketValidation,
@@ -11,18 +16,16 @@ const {
   leadCreateValidation,
   createWatchListValidation,
   createProductIpoValidation,
-  deleteProductIpoValidation
+  deleteProductIpoValidation,
 } = require("../validator/validator");
 
 const {
   createCrmTicket,
   crmTicketList,
-  getCrmTicket
+  getCrmTicket,
 } = require("../controllers/crmTicketManagement.controller");
 
-const {
-  createLeads, leadList
-} = require("../controllers/leads.controller");
+const { createLeads, leadList } = require("../controllers/leads.controller");
 
 const {
   createWatchList,
@@ -30,7 +33,6 @@ const {
   updateWatchList,
   watchListList,
 } = require("../controllers/watchList.controller");
-
 
 const {
   GetFundsList,
@@ -50,7 +52,7 @@ const {
   ipoSnapshot,
   nfoUpdates,
   getCorporateNews,
-  getEconomyNews
+  getEconomyNews,
 } = require("../controllers/accordFintech.controller");
 const {
   authentication,
@@ -66,20 +68,38 @@ const {
   myBrokerageRevenue,
   myClientsReport,
   myRevenueReport,
-  myReportTopClients
+  myReportTopClients,
 } = require("../controllers/korp.controller");
-
 
 const {
   bseStarAuthentication,
   bseStarSipCreate,
-  bseStarLumpsumCreate
+  bseStarLumpsumCreate,
 } = require("../controllers/bseStar.controller");
 
 const { errHandle } = require("../helpers/index");
-const { createProductIpo, updateProductIpo, getProductIpo, productIpoList, deleteProductIpo, productIpoCountList } = require("../controllers/productIpo.controller");
-const { createMutualFund, updateMutualFund, getMutualFund, mutualFundList, deleteMutualFund } = require("../controllers/mutualFund.controller");
-const { createAPRevenue, updateAPRevenue,getAPRevenue ,deleteAPRevenue ,APRevenueList  } = require("../controllers/authorizedPersonRevenue.controller");
+const {
+  createProductIpo,
+  updateProductIpo,
+  getProductIpo,
+  productIpoList,
+  deleteProductIpo,
+  productIpoCountList,
+} = require("../controllers/productIpo.controller");
+const {
+  createMutualFund,
+  updateMutualFund,
+  getMutualFund,
+  mutualFundList,
+  deleteMutualFund,
+} = require("../controllers/mutualFund.controller");
+const {
+  createAPRevenue,
+  updateAPRevenue,
+  getAPRevenue,
+  deleteAPRevenue,
+  APRevenueList,
+} = require("../controllers/authorizedPersonRevenue.controller");
 
 const router = Router();
 //Ticket Management
@@ -95,7 +115,7 @@ router.post(
 );
 router.get(
   routes.v1.CRMTicketManagenent.get,
-  [CRMTicketAuthentication, getCrmTicketeValidation,],
+  [CRMTicketAuthentication, getCrmTicketeValidation],
   errHandle(getCrmTicket)
 );
 
@@ -105,11 +125,17 @@ router.post(
   errHandle(createLeads)
 );
 
-
-router.get(routes.v1.Leads.list,[verifyToken(["AP", "ADMIN"]), verifyAdminRole("leadManagement", "VIEW"), leadListValidation],errHandle(leadList));
+router.get(
+  routes.v1.Leads.list,
+  [
+    verifyToken(["AP", "ADMIN"]),
+    verifyAdminRole("leadManagement", "VIEW"),
+    leadListValidation,
+  ],
+  errHandle(leadList)
+);
 
 //ACCORD FINTECH Management
-
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_FUNDS_LIST,
@@ -126,7 +152,6 @@ router.get(
   [verifyToken("AP")],
   errHandle(categoryReturnsList)
 );
-
 
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST,
@@ -189,7 +214,6 @@ router.get(
   errHandle(ipoNewListing)
 );
 
-
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_SNAPSHOT,
   [verifyToken("AP")],
@@ -216,66 +240,48 @@ router.get(
 
 //KORP Management
 
-router.post(
-  routes.v1.KORP.AUTHENTICATION,
-  [],
-  errHandle(authentication)
-);
+router.post(routes.v1.KORP.AUTHENTICATION, [], errHandle(authentication));
 
 router.get(
   routes.v1.KORP.CLIENT_LIST,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientList)
 );
 
 router.get(
   routes.v1.KORP.CLIENT_DETAILS_API,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientDetails)
 );
 router.get(
   routes.v1.KORP.CLIENT_HOLDINGS,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientHolding)
 );
-router.get(
-  routes.v1.KORP.CLIENT_POSTIONS,
-  [korpAuthentication],
-  errHandle(clientPositions)
-);
+router.get(routes.v1.KORP.CLIENT_POSTIONS, [], errHandle(clientPositions));
 router.get(
   routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientWithMarginShortFall)
 );
 
 router.get(
   routes.v1.KORP.TOP_PERFORMING_CLIENT,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(topPerformingClient)
 );
 router.get(
-  routes.v1.KORP.MY_BROKERAGE_REVENUE  ,
-  [verifyToken("AP"),korpAuthentication],
+  routes.v1.KORP.MY_BROKERAGE_REVENUE,
+  [verifyToken("AP")],
   errHandle(myBrokerageRevenue)
 );
 router.get(
-  routes.v1.KORP.MY_CLIENTS_REPORTS  ,
-  [verifyToken("AP"),korpAuthentication],
+  routes.v1.KORP.MY_CLIENTS_REPORTS,
+  [verifyToken("AP")],
   errHandle(myClientsReport)
 );
-router.get(
-  routes.v1.KORP.MY_REVENUE_REPORTS  ,
-  [korpAuthentication],
-  errHandle(myRevenueReport)
-);
-router.get(
-  routes.v1.KORP.MY_REPORTS  ,
-  [korpAuthentication],
-  errHandle(myReportTopClients)
-);
-
-
+router.get(routes.v1.KORP.MY_REVENUE_REPORTS, [], errHandle(myRevenueReport));
+router.get(routes.v1.KORP.MY_REPORTS, [], errHandle(myReportTopClients));
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
@@ -284,18 +290,14 @@ router.get(
 );
 router.get(
   routes.v1.KORP.CLIENT_DASHBOARD,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientDashboard)
 );
 router.get(
   routes.v1.KORP.CLIENT_MASTER,
-  [verifyToken("AP"),korpAuthentication],
+  [verifyToken("AP")],
   errHandle(clientMaster)
 );
-
-
-
-
 
 //WATCHLIST Management
 
@@ -320,11 +322,6 @@ router.get(
   errHandle(updateWatchList)
 );
 
-
-
-
-
-
 //BSE STAR Management
 
 router.get(
@@ -343,32 +340,88 @@ router.get(
   errHandle(bseStarLumpsumCreate)
 );
 
-
 // Product-Ipo Mobile Module
 
-router.post(routes.v1.PRODUCT_IPO.create, [verifyToken(["AP"]), createProductIpoValidation], errHandle(createProductIpo));
-router.put(routes.v1.PRODUCT_IPO.update, [verifyToken(["AP"])], errHandle(updateProductIpo));
-router.get(routes.v1.PRODUCT_IPO.get, [verifyToken(["AP"])], errHandle(getProductIpo));
-router.get(routes.v1.PRODUCT_IPO.list, [verifyToken(["AP"])], errHandle(productIpoList));
-router.get(routes.v1.PRODUCT_IPO.countItems, [verifyToken(["AP"])], errHandle(productIpoCountList));
+router.post(
+  routes.v1.PRODUCT_IPO.create,
+  [verifyToken(["AP"]), createProductIpoValidation],
+  errHandle(createProductIpo)
+);
+router.put(
+  routes.v1.PRODUCT_IPO.update,
+  [verifyToken(["AP"])],
+  errHandle(updateProductIpo)
+);
+router.get(
+  routes.v1.PRODUCT_IPO.get,
+  [verifyToken(["AP"])],
+  errHandle(getProductIpo)
+);
+router.get(
+  routes.v1.PRODUCT_IPO.list,
+  [verifyToken(["AP"])],
+  errHandle(productIpoList)
+);
+router.get(
+  routes.v1.PRODUCT_IPO.countItems,
+  [verifyToken(["AP"])],
+  errHandle(productIpoCountList)
+);
 //router.delete(routes.v1.PRODUCT_IPO.delete, [verifyToken(["AP"]),deleteProductIpoValidation], errHandle(deleteProductIpo)); for future use...
 
-
 // Mutual- fund Ipo Mobile Module
 
-router.post(routes.v1.MUTUAL_FUND.create, [verifyToken(["AP"])], errHandle(createMutualFund));
-router.put(routes.v1.MUTUAL_FUND.update, [verifyToken(["AP"])], errHandle(updateMutualFund));
-router.get(routes.v1.MUTUAL_FUND.get, [verifyToken(["AP"])], errHandle(getMutualFund));
-router.get(routes.v1.MUTUAL_FUND.list, [verifyToken(["AP"])], errHandle(mutualFundList));
-router.delete(routes.v1.MUTUAL_FUND.delete, [verifyToken(["AP"])], errHandle(deleteMutualFund));
-
+router.post(
+  routes.v1.MUTUAL_FUND.create,
+  [verifyToken(["AP"])],
+  errHandle(createMutualFund)
+);
+router.put(
+  routes.v1.MUTUAL_FUND.update,
+  [verifyToken(["AP"])],
+  errHandle(updateMutualFund)
+);
+router.get(
+  routes.v1.MUTUAL_FUND.get,
+  [verifyToken(["AP"])],
+  errHandle(getMutualFund)
+);
+router.get(
+  routes.v1.MUTUAL_FUND.list,
+  [verifyToken(["AP"])],
+  errHandle(mutualFundList)
+);
+router.delete(
+  routes.v1.MUTUAL_FUND.delete,
+  [verifyToken(["AP"])],
+  errHandle(deleteMutualFund)
+);
 
 // Mutual- fund Ipo Mobile Module
-router.post(routes.v1.AP_REVENUE.create, [verifyToken(["AP"])], errHandle(createAPRevenue));
-router.put(routes.v1.AP_REVENUE.update, [verifyToken(["AP"])], errHandle(updateAPRevenue));
-router.get(routes.v1.AP_REVENUE.get, [verifyToken(["AP"])], errHandle(getAPRevenue));
-router.get(routes.v1.AP_REVENUE.list, [verifyToken(["AP"])], errHandle(APRevenueList));
-router.delete(routes.v1.AP_REVENUE.delete, [verifyToken(["AP"])], errHandle(deleteAPRevenue));
-
+router.post(
+  routes.v1.AP_REVENUE.create,
+  [verifyToken(["AP"])],
+  errHandle(createAPRevenue)
+);
+router.put(
+  routes.v1.AP_REVENUE.update,
+  [verifyToken(["AP"])],
+  errHandle(updateAPRevenue)
+);
+router.get(
+  routes.v1.AP_REVENUE.get,
+  [verifyToken(["AP"])],
+  errHandle(getAPRevenue)
+);
+router.get(
+  routes.v1.AP_REVENUE.list,
+  [verifyToken(["AP"])],
+  errHandle(APRevenueList)
+);
+router.delete(
+  routes.v1.AP_REVENUE.delete,
+  [verifyToken(["AP"])],
+  errHandle(deleteAPRevenue)
+);
 
 module.exports = router;

@@ -69,6 +69,7 @@ const {
   myClientsReport,
   myRevenueReport,
   myReportTopClients,
+  myReportOverAll
 } = require("../controllers/korp.controller");
 
 const {
@@ -281,7 +282,8 @@ router.get(
   errHandle(myClientsReport)
 );
 router.get(routes.v1.KORP.MY_REVENUE_REPORTS, [verifyToken("AP")], errHandle(myRevenueReport));
-router.get(routes.v1.KORP.MY_REPORTS, [verifyToken("AP")], errHandle(myReportTopClients));
+router.get(routes.v1.KORP.MY_REPORTS_TOP_CLIENTS, [verifyToken("AP")], errHandle(myReportTopClients));
+router.get(routes.v1.KORP.MY_REPORTS_TOP_OVERALL, [verifyToken("AP")], errHandle(myReportOverAll));
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,

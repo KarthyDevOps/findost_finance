@@ -5,6 +5,109 @@ let xmlParser = require("xml2json");
 const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
 
+function convertToArray(value) {
+  if (Array.isArray(value)) {
+    // If it's already an array, return it as is
+    return value;
+  } else if (typeof value === 'object') {
+    // If it's an object, convert it into an array of objects
+    return [value];
+  } else {
+    // For any other data type, create an empty array
+    return [];
+  }
+}
+
+const dateList = (type, params) => {
+  var months = {
+    1: "Jan",
+    2: "Feb",
+    3: "Mar",
+    4: "Apr",
+    5: "May",
+    6: "Jun",
+    7: "Jul",
+    8: "Aug",
+    9: "Sep",
+    10: "Oct",
+    11: "Nov",
+    12: "Dec",
+  };
+  let report = {};
+  console.log(type);
+  if (type == "YEAR" || type == "QUARTER") {
+    let start_day = new Date(
+      new Date(params.startDate).setHours(0, 0, 0, 0)
+    ).getTime();
+    let st_day = start_day;
+    let end_day = new Date(
+      new Date(params.endDate).setHours(23, 59, 59, 0)
+    ).getTime();
+    while (st_day < end_day) {
+      var mon = new Date(st_day).getMonth(),
+        year = new Date(st_day).getFullYear();
+      var st = moment(st_day).startOf("month").format("YYYY-MM-DD"),
+        ed = moment(st_day).endOf("month").format("YYYY-MM-DD");
+      var idx = [st, ed].join(" - ");
+      report[idx] = {
+        text: [months[mon + 1], year].join(" "),
+        date: {
+          start: moment(st).format("YYYY-MM-DD"),
+          end: moment(ed).format("YYYY-MM-DD"),
+        },
+        resp: {},
+      };
+      // Increase
+      st_day = new Date(year, mon + 1, 1).getTime();
+    }
+  }
+  else if(type == "MONTH") {
+    let start_day = new Date(
+      new Date(params.startDate).setHours(0, 0, 0, 0)
+    ).getTime();
+    let st_day = start_day;
+    let end_day = new Date(
+      new Date(params.endDate).setHours(23, 59, 59, 0)
+    ).getTime();
+    while (st_day < end_day) {
+      var d = moment(st_day).format("YYYY-MM-DD");
+      report[d] = {
+        text: d,
+        date: {
+          start: moment(d).format("YYYY-MM-DD"),
+          end: moment(d).format("YYYY-MM-DD"),
+        },
+        resp: {},
+      };
+      st_day += 24 * 60 * 60 * 1000;
+    }
+  }
+  else
+  {
+    //week
+    let start_day = new Date(
+      new Date(params.startDate).setHours(0, 0, 0, 0)
+    ).getTime();
+    let st_day = start_day;
+    let end_day = new Date(
+      new Date(params.endDate).setHours(23, 59, 59, 0)
+    ).getTime();
+    while (st_day < end_day) {
+      var d = moment(st_day).format("YYYY-MM-DD");
+      report[d] = {
+        text: d,
+        date: {
+          start: moment(d).format("YYYY-MM-DDT00:00:00.000"),
+          end: moment(d).format("YYYY-MM-DDT23:59:59.000"),
+        },
+        resp: {},
+      };
+      st_day += 24 * 60 * 60 * 1000;
+    }
+  }
+  return report;
+};
+
 const authenticationService = async (params) => {
   let resp = await KORPAPIServices.authenticationAPI(params);
   if (!resp.access_token) {
@@ -282,6 +385,7 @@ const topPerformingClientService = async (params) => {
     resp = xmlParser.toJson(resp);
     resp = JSON.parse(resp);
     result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+    result =convertToArray(result);
   }
 
   return {
@@ -464,13 +568,198 @@ const myRevenueReportService = async (params) => {
 };
 
 const myReportTopClientsService = async (params) => {
-  let resp = await KORPAPIServices.topPerformingClientAPI(params);
+  let finalResp = {
+    totalTurnOver : 0,
+    totalRevenue : 0,
+    totalMyBrokerageRevenue : 0,
+    list :[]
+  }
+  let topPerformingClientsObj ={};
+  let resp = await KORPAPIServices.topPerformingClientAPI({...params});
   let result = [];
   if (resp) {
     resp = xmlParser.toJson(resp);
     resp = JSON.parse(resp);
     result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+    result =convertToArray(result);
   }
+  console.log(result)
+  result.map((e)=>{
+    if(!topPerformingClientsObj[e.AccountID])
+    {
+      topPerformingClientsObj[e.AccountID] = {
+        AccountID : e.AccountID,
+        AccountName : e.AccountName,
+        turnOver : +e.TotalTurnOver,
+        revenue : +e.TotalBrokerage,
+        myBrokerageRevenue : 0
+      }
+    }
+    else
+    {
+      topPerformingClientsObj[e.AccountID].turnOver = topPerformingClientsObj[e.AccountID].turnOver + +e.TotalTurnOver
+      topPerformingClientsObj[e.AccountID].revenue = topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage
+    }
+
+  })
+   let myRevResp =  await KORPAPIServices.myRevenueReportAPI({...params});
+   if(myRevResp)
+   {
+    myRevResp.map((e)=>{
+     
+      if(topPerformingClientsObj[e.ClientCode])
+      {
+        topPerformingClientsObj[e.ClientCode].myBrokerageRevenue = topPerformingClientsObj[e.ClientCode].myBrokerageRevenue + (+e.IntroBrok + +e.IntroBrok)
+      }
+    })
+   }
+   Object.keys(topPerformingClientsObj).map((d)=>{
+    finalResp.totalTurnOver = finalResp.totalTurnOver + +topPerformingClientsObj[d].turnOver
+    finalResp.totalRevenue = finalResp.totalRevenue + +topPerformingClientsObj[d].revenue
+    finalResp.totalMyBrokerageRevenue = finalResp.totalMyBrokerageRevenue + +topPerformingClientsObj[d].myBrokerageRevenue
+
+    finalResp.list.push(topPerformingClientsObj[d])
+
+   })
+  
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: finalResp,
+  };
+};
+
+const myReportOverAllService = async (params) => {
+  //let params = {};
+  let type = params.type || "MONTH"
+    if (type == "YEAR") {
+      const currentDate = moment();
+      let currentYear = currentDate.year();
+      let financialYearStart = moment({ year: currentYear, month: 3, day: 1 }).format('YYYY-MM-DD'); // April is month 3
+      let financialYearEnd = moment({ year: currentYear+1, month: 2, day: 31 }).format('YYYY-MM-DD'); 
+      params.startDate = financialYearStart;
+      params.endDate = financialYearEnd;
+    }
+    else if(type == "MONTH") {
+      params.startDate = moment(new Date()).startOf("month").toISOString();
+      params.endDate = moment(new Date()).endOf("month").toISOString();
+    }
+    else if(type == "WEEK") 
+    {
+      params.startDate = moment(new Date()).startOf("week").toISOString();
+      params.endDate = moment(new Date()).endOf("week").toISOString();
+    }
+    else if(type == "QUARTER") 
+    {
+      params.startDate = moment(new Date()).startOf("quarter").toISOString();
+      params.endDate = moment(new Date()).endOf("quarter").toISOString();
+    }
+    else
+    {
+      type ="MONTH"
+      params.startDate = moment(new Date()).startOf("month").toISOString();
+      params.endDate = moment(new Date()).endOf("month").toISOString();
+    }
+    let result = dateList(type, params);
+    var getData = async (d) => {
+
+      return new Promise(async(resolve, reject) => {
+        let finalResp = {
+          totalTurnOver : 0,
+          totalRevenue : 0,
+          totalMyBrokerageRevenue : 0,
+          list :[]
+        }
+        let topPerformingClientsObj ={};
+        params.fromDate = result[d].date.start
+        params.toDate = result[d].date.end
+        let resp = await KORPAPIServices.topPerformingClientAPI({...params});
+        let tempResult = [];
+        if (resp) {
+          resp = xmlParser.toJson(resp);
+          resp = JSON.parse(resp);
+          tempResult = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+          tempResult =convertToArray(tempResult);
+        }
+       
+        tempResult.map((e)=>{
+          if(!topPerformingClientsObj[e.AccountID])
+          {
+            topPerformingClientsObj[e.AccountID] = {
+              AccountID : e.AccountID,
+              AccountName : e.AccountName,
+              turnOver : +e.TotalTurnOver,
+              revenue : +e.TotalBrokerage,
+              myBrokerageRevenue : 0
+            }
+          }
+          else
+          {
+            topPerformingClientsObj[e.AccountID].turnOver = topPerformingClientsObj[e.AccountID].turnOver + +e.TotalTurnOver
+            topPerformingClientsObj[e.AccountID].revenue = topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage
+          }
+      
+        })
+         let myRevResp =  await KORPAPIServices.myRevenueReportAPI({...params});
+         if(myRevResp)
+         {
+          console.log('myRevResp ---',myRevResp)
+          myRevResp.map((e)=>{
+           
+            if(topPerformingClientsObj[e.ClientCode])
+            {
+              topPerformingClientsObj[e.ClientCode].myBrokerageRevenue = topPerformingClientsObj[e.ClientCode].myBrokerageRevenue + (+e.IntroBrok + +e.IntroBrok)
+            }
+          })
+         }
+         Object.keys(topPerformingClientsObj).map((d)=>{
+          finalResp.totalTurnOver = finalResp.totalTurnOver + +topPerformingClientsObj[d].turnOver
+          finalResp.totalRevenue = finalResp.totalRevenue + +topPerformingClientsObj[d].revenue
+          finalResp.totalMyBrokerageRevenue = finalResp.totalMyBrokerageRevenue + +topPerformingClientsObj[d].myBrokerageRevenue
+      
+         // finalResp.list.push(topPerformingClientsObj[d])
+      
+         })
+         result[d].resp.totalTurnOver =finalResp.totalTurnOver || 0;
+         result[d].resp.totalRevenue = finalResp.totalRevenue || 0;
+         result[d].resp.totalMyBrokerageRevenue = finalResp.totalMyBrokerageRevenue|| 0;
+         return true
+    });
+
+      
+    };
+    await Promise.all(Object.keys(result).map(getData));
+    let x_axis = []
+    let x_axis_value = []
+    let y_axis = [
+      {
+        name: "totalTurnOver",
+        data: []
+      },
+      {
+        name: "totalRevenue",
+        data: []
+      },
+      {
+        name: "totalMyBrokerageRevenue",
+        data: []
+      }
+    ]
+    Object.keys(result).forEach((date) => {
+      y_axis[0].data.push(result[date].resp.totalTurnOver || 0)
+      y_axis[1].data.push((result[date].resp.totalRevenue || 0).toFixed(2))
+      y_axis[2].data.push((result[date].resp.totalMyBrokerageRevenue || 0).toFixed(2))
+      x_axis.push(date)
+      x_axis_value.push(result[date].text)
+    })
+    let result1 = {
+      x_axis: x_axis,
+      x_axis_value: x_axis_value,
+      y_axis: y_axis,
+    }
+
+    
 
   return {
     status: true,
@@ -479,6 +768,8 @@ const myReportTopClientsService = async (params) => {
     data: result,
   };
 };
+
+
 
 module.exports = {
   authenticationService,
@@ -495,4 +786,5 @@ module.exports = {
   clientPositionsService,
   myRevenueReportService,
   myReportTopClientsService,
+  myReportOverAllService
 };

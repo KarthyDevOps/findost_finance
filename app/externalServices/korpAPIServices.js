@@ -124,9 +124,9 @@ const topPerformingClientAPI = async (data) => {
   apiConfig.url =
     process.env.KORP_BASE_URL + "/Reports/TurnoverBrokerageWebReport/Post";
   apiConfig.data = {
-    FromDate: `${moment().format("YYYY")}-04-01`,
-    ToDate: moment().format("YYYY-MM-DD"),
-    Branch: "01AO",
+    FromDate: (data.fromDate  && moment(data.fromDate).format("YYYY-MM-DD")) ||  `${moment().format("YYYY")}-04-01`,
+    ToDate:  (data.toDate  && moment(data.toDate).format("YYYY-MM-DD")) || moment().format("YYYY-MM-DD"),
+    Branch:  data.BRANCH,
     // "SubBranch":"RTL",
     // "RM":"???",
     // "FamilyGroup":"???",

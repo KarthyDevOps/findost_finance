@@ -9,7 +9,7 @@ function convertToArray(value) {
   if (Array.isArray(value)) {
     // If it's already an array, return it as is
     return value;
-  } else if (typeof value === 'object') {
+  } else if (typeof value === "object") {
     // If it's an object, convert it into an array of objects
     return [value];
   } else {
@@ -60,8 +60,7 @@ const dateList = (type, params) => {
       // Increase
       st_day = new Date(year, mon + 1, 1).getTime();
     }
-  }
-  else if(type == "MONTH") {
+  } else if (type == "MONTH") {
     let start_day = new Date(
       new Date(params.startDate).setHours(0, 0, 0, 0)
     ).getTime();
@@ -81,9 +80,7 @@ const dateList = (type, params) => {
       };
       st_day += 24 * 60 * 60 * 1000;
     }
-  }
-  else
-  {
+  } else {
     //week
     let start_day = new Date(
       new Date(params.startDate).setHours(0, 0, 0, 0)
@@ -385,7 +382,7 @@ const topPerformingClientService = async (params) => {
     resp = xmlParser.toJson(resp);
     resp = JSON.parse(resp);
     result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
-    result =convertToArray(result);
+    result = convertToArray(result);
   }
 
   return {
@@ -569,59 +566,59 @@ const myRevenueReportService = async (params) => {
 
 const myReportTopClientsService = async (params) => {
   let finalResp = {
-    totalTurnOver : 0,
-    totalRevenue : 0,
-    totalMyBrokerageRevenue : 0,
-    list :[]
-  }
-  let topPerformingClientsObj ={};
-  let resp = await KORPAPIServices.topPerformingClientAPI({...params});
+    totalTurnOver: 0,
+    totalRevenue: 0,
+    totalMyBrokerageRevenue: 0,
+    list: [],
+  };
+  let topPerformingClientsObj = {};
+  let resp = await KORPAPIServices.topPerformingClientAPI({ ...params });
   let result = [];
   if (resp) {
     resp = xmlParser.toJson(resp);
     resp = JSON.parse(resp);
     result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
-    result =convertToArray(result);
+    result = convertToArray(result);
   }
-  console.log(result)
-  result.map((e)=>{
-    if(!topPerformingClientsObj[e.AccountID])
-    {
+  console.log(result);
+  result.map((e) => {
+    if (!topPerformingClientsObj[e.AccountID]) {
       topPerformingClientsObj[e.AccountID] = {
-        AccountID : e.AccountID,
-        AccountName : e.AccountName,
-        turnOver : +e.TotalTurnOver,
-        revenue : +e.TotalBrokerage,
-        myBrokerageRevenue : 0
-      }
+        AccountID: e.AccountID,
+        AccountName: e.AccountName,
+        turnOver: +e.TotalTurnOver,
+        revenue: +e.TotalBrokerage,
+        myBrokerageRevenue: 0,
+      };
+    } else {
+      topPerformingClientsObj[e.AccountID].turnOver =
+        topPerformingClientsObj[e.AccountID].turnOver + +e.TotalTurnOver;
+      topPerformingClientsObj[e.AccountID].revenue =
+        topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage;
     }
-    else
-    {
-      topPerformingClientsObj[e.AccountID].turnOver = topPerformingClientsObj[e.AccountID].turnOver + +e.TotalTurnOver
-      topPerformingClientsObj[e.AccountID].revenue = topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage
-    }
-
-  })
-   let myRevResp =  await KORPAPIServices.myRevenueReportAPI({...params});
-   if(myRevResp)
-   {
-    myRevResp.map((e)=>{
-     
-      if(topPerformingClientsObj[e.ClientCode])
-      {
-        topPerformingClientsObj[e.ClientCode].myBrokerageRevenue = topPerformingClientsObj[e.ClientCode].myBrokerageRevenue + (+e.IntroBrok + +e.IntroBrok)
+  });
+  let myRevResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+  if (myRevResp) {
+    myRevResp.map((e) => {
+      if (topPerformingClientsObj[e.ClientCode]) {
+        topPerformingClientsObj[e.ClientCode].myBrokerageRevenue =
+          topPerformingClientsObj[e.ClientCode].myBrokerageRevenue +
+          (+e.IntroBrok + +e.IntroBrok);
       }
-    })
-   }
-   Object.keys(topPerformingClientsObj).map((d)=>{
-    finalResp.totalTurnOver = finalResp.totalTurnOver + +topPerformingClientsObj[d].turnOver
-    finalResp.totalRevenue = finalResp.totalRevenue + +topPerformingClientsObj[d].revenue
-    finalResp.totalMyBrokerageRevenue = finalResp.totalMyBrokerageRevenue + +topPerformingClientsObj[d].myBrokerageRevenue
+    });
+  }
+  Object.keys(topPerformingClientsObj).map((d) => {
+    finalResp.totalTurnOver =
+      finalResp.totalTurnOver + +topPerformingClientsObj[d].turnOver;
+    finalResp.totalRevenue =
+      finalResp.totalRevenue + +topPerformingClientsObj[d].revenue;
+    finalResp.totalMyBrokerageRevenue =
+      finalResp.totalMyBrokerageRevenue +
+      +topPerformingClientsObj[d].myBrokerageRevenue;
 
-    finalResp.list.push(topPerformingClientsObj[d])
+    finalResp.list.push(topPerformingClientsObj[d]);
+  });
 
-   })
-  
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -632,134 +629,151 @@ const myReportTopClientsService = async (params) => {
 
 const myReportOverAllService = async (params) => {
   //let params = {};
-  let type = params.type || "MONTH"
-    if (type == "YEAR") {
-      const currentDate = moment();
-      let currentYear = currentDate.year();
-      let financialYearStart = moment({ year: currentYear, month: 3, day: 1 }).format('YYYY-MM-DD'); // April is month 3
-      let financialYearEnd = moment({ year: currentYear+1, month: 2, day: 31 }).format('YYYY-MM-DD'); 
-      params.startDate = financialYearStart;
-      params.endDate = financialYearEnd;
-    }
-    else if(type == "MONTH") {
-      params.startDate = moment(new Date()).startOf("month").toISOString();
-      params.endDate = moment(new Date()).endOf("month").toISOString();
-    }
-    else if(type == "WEEK") 
-    {
-      params.startDate = moment(new Date()).startOf("week").toISOString();
-      params.endDate = moment(new Date()).endOf("week").toISOString();
-    }
-    else if(type == "QUARTER") 
-    {
-      params.startDate = moment(new Date()).startOf("quarter").toISOString();
-      params.endDate = moment(new Date()).endOf("quarter").toISOString();
-    }
-    else
-    {
-      type ="MONTH"
-      params.startDate = moment(new Date()).startOf("month").toISOString();
-      params.endDate = moment(new Date()).endOf("month").toISOString();
-    }
-    let result = dateList(type, params);
-    var getData = async (d) => {
+  let type = params.type || "MONTH";
+  if (type == "YEAR") {
+    const currentDate = moment();
+    let currentYear = currentDate.year();
+    let financialYearStart = moment({
+      year: currentYear,
+      month: 3,
+      day: 1,
+    }).format("YYYY-MM-DD"); // April is month 3
+    let financialYearEnd = moment({
+      year: currentYear + 1,
+      month: 2,
+      day: 31,
+    }).format("YYYY-MM-DD");
+    params.startDate = financialYearStart;
+    params.endDate = financialYearEnd;
+  } else if (type == "MONTH") {
+    params.startDate = moment(new Date()).startOf("month").toISOString();
+    params.endDate = moment(new Date()).endOf("month").toISOString();
+  } else if (type == "WEEK") {
+    params.startDate = moment(new Date()).startOf("week").toISOString();
+    params.endDate = moment(new Date()).endOf("week").toISOString();
+  } else if (type == "QUARTER") {
+    params.startDate = moment(new Date()).startOf("quarter").toISOString();
+    params.endDate = moment(new Date()).endOf("quarter").toISOString();
+  } else {
+    type = "MONTH";
+    params.startDate = moment(new Date()).startOf("month").toISOString();
+    params.endDate = moment(new Date()).endOf("month").toISOString();
+  }
+  let result = dateList(type, params);
+  var getData = async(d) => {
+   // return new Promise(async (resolve, reject) => {
+     
+      params.fromDate = result[d].date.start;
+      params.toDate = result[d].date.end;
+    
 
-      return new Promise(async(resolve, reject) => {
+
+        
+      return await Promise.all([
+        KORPAPIServices.topPerformingClientAPI({ ...params }),
+        //null,
+        KORPAPIServices.myRevenueReportAPI({ ...params }),
+      ]).then(([resp, myRevResp])=>{
+        console.log('resp, myRevResp  ---------------------------',[resp, myRevResp])
         let finalResp = {
-          totalTurnOver : 0,
-          totalRevenue : 0,
-          totalMyBrokerageRevenue : 0,
-          list :[]
-        }
-        let topPerformingClientsObj ={};
-        params.fromDate = result[d].date.start
-        params.toDate = result[d].date.end
-        let resp = await KORPAPIServices.topPerformingClientAPI({...params});
+          totalTurnOver: 0,
+          totalRevenue: 0,
+          totalMyBrokerageRevenue: 0,
+          list: [],
+        };
+        let topPerformingClientsObj = {};
         let tempResult = [];
         if (resp) {
           resp = xmlParser.toJson(resp);
           resp = JSON.parse(resp);
-          tempResult = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
-          tempResult =convertToArray(tempResult);
+          tempResult =
+            resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+          tempResult = convertToArray(tempResult);
         }
-       
-        tempResult.map((e)=>{
-          if(!topPerformingClientsObj[e.AccountID])
-          {
+  
+        tempResult.map((e) => {
+          if (!topPerformingClientsObj[e.AccountID]) {
             topPerformingClientsObj[e.AccountID] = {
-              AccountID : e.AccountID,
-              AccountName : e.AccountName,
-              turnOver : +e.TotalTurnOver,
-              revenue : +e.TotalBrokerage,
-              myBrokerageRevenue : 0
-            }
+              AccountID: e.AccountID,
+              AccountName: e.AccountName,
+              turnOver: +e.TotalTurnOver,
+              revenue: +e.TotalBrokerage,
+              myBrokerageRevenue: 0,
+            };
+          } else {
+            topPerformingClientsObj[e.AccountID].turnOver =
+              topPerformingClientsObj[e.AccountID].turnOver + +e.TotalTurnOver;
+            topPerformingClientsObj[e.AccountID].revenue =
+              topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage;
           }
-          else
-          {
-            topPerformingClientsObj[e.AccountID].turnOver = topPerformingClientsObj[e.AccountID].turnOver + +e.TotalTurnOver
-            topPerformingClientsObj[e.AccountID].revenue = topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage
-          }
-      
-        })
-         let myRevResp =  await KORPAPIServices.myRevenueReportAPI({...params});
-         if(myRevResp)
-         {
-          console.log('myRevResp ---',myRevResp)
-          myRevResp.map((e)=>{
-           
-            if(topPerformingClientsObj[e.ClientCode])
-            {
-              topPerformingClientsObj[e.ClientCode].myBrokerageRevenue = topPerformingClientsObj[e.ClientCode].myBrokerageRevenue + (+e.IntroBrok + +e.IntroBrok)
+        });
+        //  let myRevResp =  await KORPAPIServices.myRevenueReportAPI({...params});
+        if (myRevResp) {
+          console.log("myRevResp ---", myRevResp);
+          myRevResp.map((e) => {
+            if (topPerformingClientsObj[e.ClientCode]) {
+              topPerformingClientsObj[e.ClientCode].myBrokerageRevenue =
+                topPerformingClientsObj[e.ClientCode].myBrokerageRevenue +
+                (+e.IntroBrok + +e.IntroBrok);
             }
-          })
-         }
-         Object.keys(topPerformingClientsObj).map((d)=>{
-          finalResp.totalTurnOver = finalResp.totalTurnOver + +topPerformingClientsObj[d].turnOver
-          finalResp.totalRevenue = finalResp.totalRevenue + +topPerformingClientsObj[d].revenue
-          finalResp.totalMyBrokerageRevenue = finalResp.totalMyBrokerageRevenue + +topPerformingClientsObj[d].myBrokerageRevenue
-      
-         // finalResp.list.push(topPerformingClientsObj[d])
-      
-         })
-         result[d].resp.totalTurnOver =finalResp.totalTurnOver || 0;
-         result[d].resp.totalRevenue = finalResp.totalRevenue || 0;
-         result[d].resp.totalMyBrokerageRevenue = finalResp.totalMyBrokerageRevenue|| 0;
-         return true
-    });
+          });
+        }
+        Object.keys(topPerformingClientsObj).map((data1) => {
+          finalResp.totalTurnOver =
+            finalResp.totalTurnOver + +topPerformingClientsObj[data1].turnOver;
+          finalResp.totalRevenue =
+            finalResp.totalRevenue + +topPerformingClientsObj[data1].revenue;
+          finalResp.totalMyBrokerageRevenue =
+            finalResp.totalMyBrokerageRevenue +
+            +topPerformingClientsObj[data1].myBrokerageRevenue;
+  
+          // finalResp.list.push(topPerformingClientsObj[d])
+        });
+        result[d].resp.totalTurnOver = finalResp.totalTurnOver || 0;
+        result[d].resp.totalRevenue = finalResp.totalRevenue || 0;
+        result[d].resp.totalMyBrokerageRevenue =
+          finalResp.totalMyBrokerageRevenue || 0;
+          return true
+      }).catch((e)=>{
 
-      
-    };
-    await Promise.all(Object.keys(result).map(getData));
-    let x_axis = []
-    let x_axis_value = []
-    let y_axis = [
-      {
-        name: "totalTurnOver",
-        data: []
-      },
-      {
-        name: "totalRevenue",
-        data: []
-      },
-      {
-        name: "totalMyBrokerageRevenue",
-        data: []
-      }
-    ]
-    Object.keys(result).forEach((date) => {
-      y_axis[0].data.push(result[date].resp.totalTurnOver || 0)
-      y_axis[1].data.push((result[date].resp.totalRevenue || 0).toFixed(2))
-      y_axis[2].data.push((result[date].resp.totalMyBrokerageRevenue || 0).toFixed(2))
-      x_axis.push(date)
-      x_axis_value.push(result[date].text)
-    })
-    let result1 = {
-      x_axis: x_axis,
-      x_axis_value: x_axis_value,
-      y_axis: y_axis,
-    }
+      });
 
-    
+    //   let resp = await KORPAPIServices.topPerformingClientAPI({...params});
+     
+    // });
+  };
+  const keys =await Promise.all(Object.keys(result));
+  await Promise.all(keys.map(getData));
+  let x_axis = [];
+  let x_axis_value = [];
+  let y_axis = [
+    {
+      name: "totalTurnOver",
+      data: [],
+    },
+    {
+      name: "totalRevenue",
+      data: [],
+    },
+    {
+      name: "totalMyBrokerageRevenue",
+      data: [],
+    },
+  ];
+  Object.keys(result).forEach((date) => {
+    y_axis[0].data.push(result[date].resp.totalTurnOver || 0);
+    y_axis[1].data.push((result[date].resp.totalRevenue || 0).toFixed(2));
+    y_axis[2].data.push(
+      (result[date].resp.totalMyBrokerageRevenue || 0).toFixed(2)
+    );
+    x_axis.push(date);
+    x_axis_value.push(result[date].text);
+  });
+  let result1 = {
+    x_axis: x_axis,
+    x_axis_value: x_axis_value,
+    y_axis: y_axis,
+  };
 
   return {
     status: true,
@@ -768,8 +782,6 @@ const myReportOverAllService = async (params) => {
     data: result,
   };
 };
-
-
 
 module.exports = {
   authenticationService,
@@ -786,5 +798,5 @@ module.exports = {
   clientPositionsService,
   myRevenueReportService,
   myReportTopClientsService,
-  myReportOverAllService
+  myReportOverAllService,
 };

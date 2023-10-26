@@ -205,7 +205,7 @@ const {
     );
   };
   const topPerformingClient = async (req, res) => {
-    const params = req?.body;
+    const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
     params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
@@ -230,7 +230,7 @@ const {
     );
   };
   const myBrokerageRevenue = async (req, res) => {
-    const params = req?.body;
+    const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
     params.BRANCH = req.user.apId || process.env.KORP_BRANCHID

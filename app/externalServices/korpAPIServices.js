@@ -163,8 +163,11 @@ const myBrokerageRevenueAPI = async (data) => {
   }
   if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
   apiConfig.data = {
-    FromDate: `${moment().format("YYYY")}-04-01`,
-    ToDate: moment().format("YYYY-MM-DD"),
+    FromDate: (data.fromDate  && moment(data.fromDate).format("YYYY-MM-DD")) ||  `${moment().format("YYYY")}-04-01`,
+    ToDate:  (data.toDate  && moment(data.toDate).format("YYYY-MM-DD")) || moment().format("YYYY-MM-DD"),
+
+    // FromDate: `${moment().format("YYYY")}-04-01`,
+    // ToDate: moment().format("YYYY-MM-DD"),
     Exchange: "BSE",
     Segment: "CAP",
     //"IntroCode": data.BRANCH,

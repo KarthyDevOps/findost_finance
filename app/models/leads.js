@@ -12,6 +12,9 @@ const leadsSchema = new mongoose.Schema(
         return now.slice(0, 3) + now.slice(10, 13);
       },
     },
+    APILeadId: {
+      type: String,
+    },
     productId: {
       type: String,
     },

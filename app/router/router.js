@@ -122,7 +122,7 @@ router.get(
 
 router.post(
   routes.v1.Leads.create,
-  [verifyToken("AP"), leadCreateValidation],
+  [verifyToken("AP"),CRMTicketAuthentication, leadCreateValidation],
   errHandle(createLeads)
 );
 

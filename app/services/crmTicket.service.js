@@ -23,7 +23,7 @@ const createCrmTicketService = async (params) => {
     }
 
   let apiResp = await CRMTicketAPIServices.createTicketAPI(token,payload)
-  console.log(apiResp["code"] ,'apiResp')
+  //console.log(apiResp["code"] ,'apiResp')
   apiResp = apiResp
       .replace('"[', '[')
       .replace(']"', ']')
@@ -31,11 +31,13 @@ const createCrmTicketService = async (params) => {
   if (apiResp && apiResp.code == "200") {
     console.log(apiResp?.data)
     params.ticketId = apiResp?.data[0]?.TicketID;
-    params.APId = params.userId;
+    //params.APId = params.userId;
     params.userId = process.env.CRM_TICKET_USER_ID;
-    params.APName =  params.userName;
+  //  params.APName =  params.userName;
     params.status = "New";
     var newvalues = params;
+
+    console.log('newvalues',newvalues)
     const resp = await CrmTicket.create(newvalues);
     return {
       status: true,

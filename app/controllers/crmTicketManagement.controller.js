@@ -16,7 +16,8 @@ const {
     params.userName = req.user.name
     params.apId =params.APId= params.APId || req.user.authorizedPersonId || req.user.apId
     params.apName = params.APName = params.APName || req.user.name || ''
-    const result = await createCrmTicketService(params);
+    console.log('params------------>',params)
+    const result = await createCrmTicketService({...params});
     if (!result.status) {
       return sendErrorResponse(
         req,

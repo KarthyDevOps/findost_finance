@@ -779,7 +779,7 @@ const myReportOverAllService = async (params) => {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-    data: result,
+    data: result1,
   };
 };
 

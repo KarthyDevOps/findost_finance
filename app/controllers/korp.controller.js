@@ -1,4 +1,6 @@
 const excelJs = require("exceljs");
+const moment = require("moment");
+
 const {
     sendErrorResponse,
     sendSuccessResponse,
@@ -364,7 +366,7 @@ const {
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myReportOverAllService(params);
 
-    if (params.export ==true && result.status) {
+    if ((params.export ==true || params.export == "true" )&& result.status) {
       let workbook = new excelJs.Workbook();
       let worksheet = workbook.addWorksheet("Sheet1");
       worksheet.columns = [
@@ -374,7 +376,7 @@ const {
           { header: "totalMyBrokerageRevenue", key: "totalMyBrokerageRevenue", width: 25 },
       ];
 
-      let workData = searchresults || [];
+      let workData = result.data || [];
       console.log(workData)
      // if (workData?.length) workData = workData?.map(w => ({ ...w, fullName: w?.userDetails?.fullName || "" }))
       worksheet.addRows(workData);

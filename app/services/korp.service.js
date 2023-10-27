@@ -751,9 +751,9 @@ const myReportOverAllService = async (params) => {
      Object.keys(result).map((key)=>{
       let obj ={
         date : result[key].text,
-        totalTurnOver :(result[date].resp.totalTurnOver || 0).toFixed(2),
-        totalRevenue : (result[date].resp.totalRevenue || 0).toFixed(2),
-        totalMyBrokerageRevenue : (result[date].resp.totalMyBrokerageRevenue || 0).toFixed(2)
+        totalTurnOver :(result[key].resp.totalTurnOver || 0).toFixed(2),
+        totalRevenue : (result[key].resp.totalRevenue || 0).toFixed(2),
+        totalMyBrokerageRevenue : (result[key].resp.totalMyBrokerageRevenue || 0).toFixed(2)
       }
       resp.push(obj)
     })

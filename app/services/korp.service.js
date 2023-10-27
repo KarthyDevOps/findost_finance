@@ -744,6 +744,28 @@ const myReportOverAllService = async (params) => {
   };
   const keys =await Promise.all(Object.keys(result));
   await Promise.all(keys.map(getData));
+
+
+  if (params.export==true ||params.export=='true' ) {
+    let resp =[]
+     Object.keys(result).map((key)=>{
+      let obj ={
+        date : result[key].text,
+        totalTurnOver :(result[date].resp.totalTurnOver || 0).toFixed(2),
+        totalRevenue : (result[date].resp.totalRevenue || 0).toFixed(2),
+        totalMyBrokerageRevenue : (result[date].resp.totalMyBrokerageRevenue || 0).toFixed(2)
+      }
+      resp.push(obj)
+    })
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: resp,
+    };
+   
+  }
+
   let x_axis = [];
   let x_axis_value = [];
   let y_axis = [

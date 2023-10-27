@@ -1,3 +1,4 @@
+const excelJs = require("exceljs");
 const {
     sendErrorResponse,
     sendSuccessResponse,
@@ -362,6 +363,33 @@ const {
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myReportOverAllService(params);
+
+    if (params.export ==true && result.status) {
+      let workbook = new excelJs.Workbook();
+      let worksheet = workbook.addWorksheet("Sheet1");
+      worksheet.columns = [
+          { header: "Date", key: "date", width: 15 },
+          { header: "totalTurnOver", key: "totalTurnOver", width: 25 },
+          { header: "totalRevenue", key: "totalRevenue", width: 25 },
+          { header: "totalMyBrokerageRevenue", key: "totalMyBrokerageRevenue", width: 25 },
+      ];
+
+      let workData = searchresults || [];
+      console.log(workData)
+     // if (workData?.length) workData = workData?.map(w => ({ ...w, fullName: w?.userDetails?.fullName || "" }))
+      worksheet.addRows(workData);
+      res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader(
+          "Content-Disposition",
+          "attachment; filename=" + `My Reports-${moment().format('YYYY-MM-DD-hh-mm-ss')}.xlsx`
+      );
+      await workbook.xlsx.write(res);
+      return res.status(statusCodes.HTTP_OK).end();
+  }
+
     if (!result.status) {
       return sendErrorResponse(
         req,

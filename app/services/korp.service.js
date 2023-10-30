@@ -5,6 +5,14 @@ let xmlParser = require("xml2json");
 const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
 
+
+
+function capitalizeFLetter(string) {
+  //let string = 'geeksforgeeks';
+  console.log(string.charAt(0).toUpperCase() +
+      string.slice(1));
+}
+
 function convertToArray(value) {
   if (Array.isArray(value)) {
     // If it's already an array, return it as is
@@ -542,7 +550,7 @@ const myRevenueReportService = async (params) => {
 
     Object.keys(resp).map((d) => {
       let data = {
-        name: d,
+        name: capitalizeFLetter(d),
         total: resp[d].total,
         list: resp[d].list || [],
       };

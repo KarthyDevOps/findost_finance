@@ -357,6 +357,37 @@ const clientListService = async (params) => {
   };
 };
 
+
+const clientListWithLedgerService = async (params) => {
+  let resp = await KORPAPIServices.clientListAPI({ ...params });
+  let result = [];
+  if (resp) {
+    console.log(resp);
+    for (let res of resp) {
+      if (res.AcStatus == "Active") {
+        params.clientCode = res.AccountID;
+        console.log("params", params);
+        let profileResp = await KORPAPIServices.clientDashboardAPI({
+          ...params,
+        });
+        res.ledgerBalance =  profileResp?.FinSummary[0]?.LedgerBalance || 0;
+        if(+res.ledgerBalance > 0)
+          result.push(res);
+      }
+    }
+  }
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: { list: result },
+  };
+};
+
+
+
+
+
 const clientWithMarginShortFallService = async (params) => {
   let resp = await KORPAPIServices.clientWithMarginShortFallAPI({ ...params });
 
@@ -812,6 +843,43 @@ const myReportOverAllService = async (params) => {
     data: result1,
   };
 };
+const clientWithdrawalRequestService = async (params) => {
+  console.log(params,'params')
+  let result =[]
+  for(let data of params.list){
+    params.clientCode = data.clientCode
+    await Promise.all([
+      KORPAPIServices.getApprovedWithdrawalAmountAPI({ ...params }),
+      KORPAPIServices.getClientbankDetailsAPI({ ...params }),
+    ]).then(async([amount, bankDetails])=>{
+      console.log(amount,bankDetails)
+      if(+amount >= (+data.amount) && bankDetails && bankDetails[0]?.BankAccountNumber)
+      {
+        params.amount = +data.amount
+        params.BankAccountNumber = bankDetails[0]?.BankAccountNumber
+        params.BankCode = bankDetails[0]?.BankCode
+        let resps =await KORPAPIServices.clientWithdrawalRequestAPI({ ...params })
+        result.push(resps)
+        console.log('=------------',resps)
+      }
+      else
+      {
+        return {
+          status: false,
+          statusCode: statusCodes?.HTTP_NOT_FOUND,
+          message: messages?.error,
+          data: [],
+        };
+      }
+    })
+  }
+   return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
 
 module.exports = {
   authenticationService,
@@ -829,4 +897,6 @@ module.exports = {
   myRevenueReportService,
   myReportTopClientsService,
   myReportOverAllService,
+  clientListWithLedgerService,
+  clientWithdrawalRequestService
 };

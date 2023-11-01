@@ -129,5 +129,30 @@ module.exports = {
     },
     data: {},
   },
+  getApprovedWithdrawalAmountAPI: {
+    method: "GET",
+    url: "",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  },
+  getClientbankDetailsAPI: {
+    method: "GET",
+    url: "",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  },
+  clientWithdrawalRequestAPI: {
+    method: "POST",
+    url: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: {},
+  },
+  
+  
+
   
 };

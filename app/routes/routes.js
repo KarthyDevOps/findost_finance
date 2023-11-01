@@ -48,6 +48,7 @@ const routes = {
     KORP: {
       AUTHENTICATION: "/v1/korp/authentication",
       CLIENT_LIST: "/v1/korp/clientList",
+      CLIENT_LIST_WITH_LEDGER: "/v1/korp/clientListWithLedger",
       CLIENT_DETAILS_API : "/v1/korp/clientDetails",
       CLIENT_PROFILE: "/v1/korp/clientProfile",
       CLIENT_DASHBOARD: "/v1/korp/clientDashboard",
@@ -61,6 +62,9 @@ const routes = {
       MY_REVENUE_REPORTS : "/v1/korp/myRevenueReport",
       MY_REPORTS_TOP_CLIENTS : "/v1/korp/myReportTopClients",
       MY_REPORTS_TOP_OVERALL : "/v1/korp/myReportOverAll",
+
+      CLIENT_WITHDRAWAL_REQUEST : "/v1/korp/clientWithdrawalRequest"
+       
     },
     BSE_STAR: {
       AUTHENTICATION: "/v1/bse-star/authentication",

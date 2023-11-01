@@ -27,10 +27,13 @@ const verifyToken = (type = ["ADMIN"]) =>
           userType = "ADMIN";
         } catch (error) {
           if (type.includes("AP")) {
-            userData = await InternalServices.getBOUSERSById({token:token});
-            console.log('userData--->', userData)
-            // decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
-            // userData = await InternalServices.getAPById({ _id: decode?._id });
+            let id;
+            decode = jwt.verify(token, process.env.JWT_authorizedPerson_SECRET);
+            if (decode) {
+              id = decode?.APId || decode?._id;
+            }
+
+            userData = await InternalServices.getBOUSERSById({token:id});
             userData ={
               data :{
                 korpAccessToken:token,

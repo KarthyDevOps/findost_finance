@@ -21,7 +21,9 @@ const {
     clientPositionsService,
     myRevenueReportService,
     myReportTopClientsService,
-    myReportOverAllService
+    myReportOverAllService,
+    clientListWithLedgerService,
+    clientWithdrawalRequestService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -182,6 +184,33 @@ const {
       result?.data
     );
   };
+  const clientListWithLedger = async (req, res) => {
+    const params = req?.query;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = req.user.apId  || process.env.KORP_BRANCHID
+    if(!params.limit) params.limit =10
+    if(!params.page) params.page =1
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await clientListWithLedgerService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
   
   const clientWithMarginShortFall = async (req, res) => {
     const params = req?.body;
@@ -437,8 +466,32 @@ const {
       result?.data
     );
   };
-  
+  const clientWithdrawalRequest = async (req, res) => {
+    const params = req?.body;
+    params.token = req.user.korpAccessToken
+    params.FIRMID = process.env.KORP_FIRMID
+    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
 
+    params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
+    const result = await clientWithdrawalRequestService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
   module.exports = {
     authentication,
     clientDetails,
@@ -454,6 +507,8 @@ const {
     clientPositions,
     myRevenueReport,
     myReportTopClients,
-    myReportOverAll
+    myReportOverAll,
+    clientListWithLedger,
+    clientWithdrawalRequest
   };
   

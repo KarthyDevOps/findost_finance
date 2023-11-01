@@ -69,7 +69,9 @@ const {
   myClientsReport,
   myRevenueReport,
   myReportTopClients,
-  myReportOverAll
+  myReportOverAll,
+  clientListWithLedger,
+  clientWithdrawalRequest
 } = require("../controllers/korp.controller");
 
 const {
@@ -248,6 +250,12 @@ router.get(
   [verifyToken("AP")],
   errHandle(clientList)
 );
+router.get(
+  routes.v1.KORP.CLIENT_LIST_WITH_LEDGER,
+  [verifyToken("AP")],
+  errHandle(clientListWithLedger)
+);
+
 
 router.get(
   routes.v1.KORP.CLIENT_DETAILS_API,
@@ -424,6 +432,14 @@ router.delete(
   routes.v1.AP_REVENUE.delete,
   [verifyToken(["AP"])],
   errHandle(deleteAPRevenue)
+);
+
+
+
+router.post(
+  routes.v1.KORP.CLIENT_WITHDRAWAL_REQUEST,
+  [verifyToken(["AP"])],
+  errHandle(clientWithdrawalRequest)
 );
 
 module.exports = router;

@@ -23,7 +23,8 @@ const {
     myReportTopClientsService,
     myReportOverAllService,
     clientListWithLedgerService,
-    clientWithdrawalRequestService
+    clientWithdrawalRequestService,
+    dashboardApStatusCountService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -491,6 +492,27 @@ const {
       result?.data
     );
   };
+  const dashboardApStatusCount = async (req, res) => {
+    const params = req?.query;
+    const result = await dashboardApStatusCountService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
   
   module.exports = {
     authentication,
@@ -509,6 +531,7 @@ const {
     myReportTopClients,
     myReportOverAll,
     clientListWithLedger,
-    clientWithdrawalRequest
+    clientWithdrawalRequest,
+    dashboardApStatusCount
   };
   

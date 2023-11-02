@@ -62,9 +62,8 @@ const routes = {
       MY_REVENUE_REPORTS : "/v1/korp/myRevenueReport",
       MY_REPORTS_TOP_CLIENTS : "/v1/korp/myReportTopClients",
       MY_REPORTS_TOP_OVERALL : "/v1/korp/myReportOverAll",
-
-      CLIENT_WITHDRAWAL_REQUEST : "/v1/korp/clientWithdrawalRequest"
-       
+      CLIENT_WITHDRAWAL_REQUEST : "/v1/korp/clientWithdrawalRequest",
+      DASHBOARD_AP_STATUS_COUNT : "/v1/korp/dashboardApStatusCount"
     },
     BSE_STAR: {
       AUTHENTICATION: "/v1/bse-star/authentication",

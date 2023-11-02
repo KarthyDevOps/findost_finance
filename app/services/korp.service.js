@@ -880,6 +880,20 @@ const clientWithdrawalRequestService = async (params) => {
     data: result,
   };
 };
+const dashboardApStatusCountService = async (params) => {
+  let result ={
+    completedApCount : 0,
+    rejectedApCount :0,
+    inProgressApCount :0
+  }
+   return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: result,
+  };
+};
+
 
 module.exports = {
   authenticationService,
@@ -898,5 +912,6 @@ module.exports = {
   myReportTopClientsService,
   myReportOverAllService,
   clientListWithLedgerService,
-  clientWithdrawalRequestService
+  clientWithdrawalRequestService,
+  dashboardApStatusCountService
 };

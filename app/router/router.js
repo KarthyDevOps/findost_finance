@@ -71,7 +71,8 @@ const {
   myReportTopClients,
   myReportOverAll,
   clientListWithLedger,
-  clientWithdrawalRequest
+  clientWithdrawalRequest,
+  dashboardApStatusCount
 } = require("../controllers/korp.controller");
 
 const {
@@ -441,5 +442,12 @@ router.post(
   [verifyToken(["AP"])],
   errHandle(clientWithdrawalRequest)
 );
+router.post(
+  routes.v1.KORP.DASHBOARD_AP_STATUS_COUNT,
+  [verifyToken(["ADMIN"])],
+  errHandle(dashboardApStatusCount)
+);
+
+
 
 module.exports = router;

@@ -32,17 +32,25 @@ const verifyToken = (type = ["ADMIN"]) =>
             if (decode) {
               id = decode?.APId || decode?._id;
             }
-
             userData = await InternalServices.getBOUSERSById({token:id});
-            userData ={
-              data :{
-                korpAccessToken:token,
-                isActive:true,
-                ...userData
+            if(userData && userData.status ==200)
+            {
+              console.log('userData',userData)
+              userData ={
+                data :{
+                  korpAccessToken:userData.data.token,
+                  isActive:true,
+                  ...userData.data
+                }
               }
+              userData.data.apId = userData?.data?.BOUserId
+              userType = "AP";
             }
-            userData.data.apId = userData?.data?.BOUserId
-            userType = "AP";
+            else
+            {
+              userData =null
+            }
+            
           }
         }
         if (userData?.data) {

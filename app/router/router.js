@@ -7,7 +7,8 @@ const {
   CRMTicketAuthentication,
   BSEStarAuthentication,
   verifyAdminRole,
-  IPOAuthentication
+  IPOAuthentication,
+  korpAuthentication
 } = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
@@ -83,6 +84,7 @@ const {
   clientListWithLedger,
   clientWithdrawalRequest,
   dashboardApStatusCount,
+  korpClientProfileSuperAdminToken
 } = require("../controllers/korp.controller");
 
 const {
@@ -255,6 +257,13 @@ router.get(
 //KORP Management
 
 router.post(routes.v1.KORP.AUTHENTICATION, [], errHandle(authentication));
+
+
+router.get(
+  routes.v1.KORP.CLIENT_PROFILE_ADMIN_TOKEN,
+  [korpAuthentication],
+  errHandle(korpClientProfileSuperAdminToken)
+);
 
 router.get(
   routes.v1.KORP.CLIENT_LIST,

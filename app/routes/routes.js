@@ -47,6 +47,9 @@ const routes = {
     },
     KORP: {
       AUTHENTICATION: "/v1/korp/authentication",
+      CLIENT_PROFILE_ADMIN_TOKEN: "/v1/korp/korpClientProfileSuperAdminToken",
+
+      
       CLIENT_LIST: "/v1/korp/clientList",
       CLIENT_LIST_WITH_LEDGER: "/v1/korp/clientListWithLedger",
       CLIENT_DETAILS_API : "/v1/korp/clientDetails",

@@ -894,6 +894,17 @@ const dashboardApStatusCountService = async (params) => {
   };
 };
 
+const korpClientProfileSuperAdminTokenService = async (params) => {
+  let resp = await KORPAPIServices.clientProfileAPI(params);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp,
+  };
+};
+
+
 
 module.exports = {
   authenticationService,
@@ -913,5 +924,6 @@ module.exports = {
   myReportOverAllService,
   clientListWithLedgerService,
   clientWithdrawalRequestService,
-  dashboardApStatusCountService
+  dashboardApStatusCountService,
+  korpClientProfileSuperAdminTokenService
 };

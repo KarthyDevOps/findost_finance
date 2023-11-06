@@ -24,7 +24,8 @@ const {
     myReportOverAllService,
     clientListWithLedgerService,
     clientWithdrawalRequestService,
-    dashboardApStatusCountService
+    dashboardApStatusCountService,
+    korpClientProfileSuperAdminTokenService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -512,6 +513,27 @@ const {
       result?.data
     );
   };
+  const korpClientProfileSuperAdminToken = async (req, res) => {
+    let params = req?.query;
+    params.token =req.user.korpAccessToken
+    const result = await korpClientProfileSuperAdminTokenService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   
   
   module.exports = {
@@ -532,6 +554,7 @@ const {
     myReportOverAll,
     clientListWithLedger,
     clientWithdrawalRequest,
-    dashboardApStatusCount
+    dashboardApStatusCount,
+    korpClientProfileSuperAdminToken
   };
   

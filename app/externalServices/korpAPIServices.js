@@ -3,7 +3,7 @@ let { KorpAPI } = require("../configs");
 const qs = require("qs");
 const moment = require("moment");
 
-const authenticationAPI = async (data) => {
+const authenticationAPI = async (data={}) => {
   console.log(data, "data");
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.authenticationAPI));
   apiConfig.url = process.env.KORP_BASE_URL + "/token";

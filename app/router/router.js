@@ -7,6 +7,7 @@ const {
   CRMTicketAuthentication,
   BSEStarAuthentication,
   verifyAdminRole,
+  IPOAuthentication
 } = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
@@ -24,6 +25,15 @@ const {
   crmTicketList,
   getCrmTicket,
 } = require("../controllers/crmTicketManagement.controller");
+
+
+const {
+  ipoLogin,
+  ipoTransactionAdd,
+  ipoTransactionList,
+  ipoMaster
+} = require("../controllers/ipo.controller");
+
 
 const { createLeads, leadList } = require("../controllers/leads.controller");
 
@@ -72,7 +82,7 @@ const {
   myReportOverAll,
   clientListWithLedger,
   clientWithdrawalRequest,
-  dashboardApStatusCount
+  dashboardApStatusCount,
 } = require("../controllers/korp.controller");
 
 const {
@@ -125,7 +135,7 @@ router.get(
 
 router.post(
   routes.v1.Leads.create,
-  [verifyToken("AP"),CRMTicketAuthentication, leadCreateValidation],
+  [verifyToken("AP"), CRMTicketAuthentication, leadCreateValidation],
   errHandle(createLeads)
 );
 
@@ -257,7 +267,6 @@ router.get(
   errHandle(clientListWithLedger)
 );
 
-
 router.get(
   routes.v1.KORP.CLIENT_DETAILS_API,
   [verifyToken("AP")],
@@ -268,7 +277,11 @@ router.get(
   [verifyToken("AP")],
   errHandle(clientHolding)
 );
-router.get(routes.v1.KORP.CLIENT_POSTIONS, [verifyToken("AP")], errHandle(clientPositions));
+router.get(
+  routes.v1.KORP.CLIENT_POSTIONS,
+  [verifyToken("AP")],
+  errHandle(clientPositions)
+);
 router.get(
   routes.v1.KORP.CLIENT_WITH_MARGIN_SHORTFALL,
   [verifyToken("AP")],
@@ -290,9 +303,21 @@ router.get(
   [verifyToken("AP")],
   errHandle(myClientsReport)
 );
-router.get(routes.v1.KORP.MY_REVENUE_REPORTS, [verifyToken("AP")], errHandle(myRevenueReport));
-router.get(routes.v1.KORP.MY_REPORTS_TOP_CLIENTS, [verifyToken("AP")], errHandle(myReportTopClients));
-router.get(routes.v1.KORP.MY_REPORTS_TOP_OVERALL, [verifyToken("AP")], errHandle(myReportOverAll));
+router.get(
+  routes.v1.KORP.MY_REVENUE_REPORTS,
+  [verifyToken("AP")],
+  errHandle(myRevenueReport)
+);
+router.get(
+  routes.v1.KORP.MY_REPORTS_TOP_CLIENTS,
+  [verifyToken("AP")],
+  errHandle(myReportTopClients)
+);
+router.get(
+  routes.v1.KORP.MY_REPORTS_TOP_OVERALL,
+  [verifyToken("AP")],
+  errHandle(myReportOverAll)
+);
 
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
@@ -435,8 +460,6 @@ router.delete(
   errHandle(deleteAPRevenue)
 );
 
-
-
 router.post(
   routes.v1.KORP.CLIENT_WITHDRAWAL_REQUEST,
   [verifyToken(["AP"])],
@@ -450,4 +473,25 @@ router.post(
 
 
 
+router.post(
+  routes.v1.IPO.LOGIN,
+  [verifyToken(["AP"])],
+  errHandle(ipoLogin)
+);
+router.post(
+  routes.v1.IPO.TRANSACTION_ADD,
+  [verifyToken(["AP"]),IPOAuthentication],
+  errHandle(ipoTransactionAdd)
+);
+router.post(
+  routes.v1.IPO.TRANSACTION_LIST,
+  [verifyToken(["AP"]),IPOAuthentication],
+  errHandle(ipoTransactionList)
+);
+
+router.get(
+  routes.v1.IPO.IPO_MASTER,
+  [verifyToken(["AP"]),IPOAuthentication],
+  errHandle(ipoMaster)
+);
 module.exports = router;

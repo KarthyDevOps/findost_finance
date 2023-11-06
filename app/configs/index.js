@@ -6,4 +6,5 @@ module.exports = {
   CRMTicketAPI: require("./CRMTicketAPI"),
   bseStarAPI :  require("./bseStarAPI"),
   LEADAPI :  require("./LEADAPI"),
+  IPOAPI :  require("./IPOAPI"),
 };

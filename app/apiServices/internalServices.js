@@ -39,6 +39,7 @@ const getBOUSERSById = async (data) => {
   console.log("apiConfig", apiConfig);
   return await Rest.callApi(apiConfig);
 };
+
 module.exports = {
   getUserById,
   getAPById,

@@ -71,6 +71,12 @@ const routes = {
       LUMPSUM_CREATE: "/v1/bse-star/lumpsumCreate",
 
     },
+    IPO: {
+      LOGIN: "/v1/ipo/login",
+      IPO_MASTER: "/v1/ipo/master",
+      TRANSACTION_ADD: "/v1/ipo/transactionAdd",
+      TRANSACTION_LIST: "/v1/ipo/transactionList",
+    },
     PRODUCT_IPO: {
       list: "/v1/Product-Ipo/list",
       create: "/v1/Product-Ipo/create",

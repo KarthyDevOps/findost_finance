@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { InternalServices } = require("./../apiServices");
-const { KORPAPIServices,CRMTicketAPIServices,BSESTARAPIServices } = require("./../externalServices");
+const { KORPAPIServices,CRMTicketAPIServices,BSESTARAPIServices,IPOAPIServices } = require("./../externalServices");
 
 const { sendErrorResponse } = require("../response/response");
 const { statusCodes } = require("../response/httpStatusCodes");
@@ -181,10 +181,34 @@ const verifyAdminRole = (roles, action) =>
       );
     }
   };
+
+
+  const IPOAuthentication = async(req, res, next) =>{
+    let resp = await IPOAPIServices.ipoLoginAPI({});
+    console.log('resp',resp)
+    if(resp && resp.status =="success")
+    {
+      if(!req.user) req.user = {}
+      req.user.IPOAccessToken = resp.token
+      next()
+    }
+    else{
+      return sendErrorResponse(
+        req,
+        res,
+        statusCodes.HTTP_UNAUTHORIZED,
+        messages.accessDenied,
+        []
+      );
+    }
+  };
+
+  
 module.exports = {
   verifyToken,
   verifyAdminRole,
   korpAuthentication,
   CRMTicketAuthentication,
-  BSEStarAuthentication
+  BSEStarAuthentication,
+  IPOAuthentication
 };

@@ -514,6 +514,13 @@ const clientPositionsService = async (params) => {
 };
 
 const myRevenueReportService = async (params) => {
+  let FromDate =
+  (params.fromDate && moment(params.fromDate).format("YYYY-MM-DD")) ||
+  `${moment().format("YYYY")}-04-01`;
+let ToDate =
+  (params.toDate && moment(params.toDate).format("YYYY-MM-DD")) ||
+  moment().format("YYYY-MM-DD");
+
   let all_total = 0;
   let result = [];
   let resp = {
@@ -532,9 +539,23 @@ const myRevenueReportService = async (params) => {
   };
   if (params.type == "equity") {
     params.Exchange = "NSE";
-    let nseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+
+    let nseFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"NSE"
+    }
+    let nseResp = await FranchiseBrokerageReport.find(nseFilter)
+
+    //let nseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
     params.Exchange = "BSE";
-    let bseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    let bseFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"BSE"
+    }
+    let bseResp = await FranchiseBrokerageReport.find(bseFilter)
+    //let bseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
     resp.equity.list = nseResp.concat(bseResp);
     resp.equity.list.map((r) => {
       resp.equity.total = resp.equity.total + +r.IntroBrok;
@@ -545,7 +566,13 @@ const myRevenueReportService = async (params) => {
     resp.equity.total = resp.equity.total.toFixed(2);
   } else if (params.type == "currency") {
     params.Exchange = "CUR";
-    let curResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    let curFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"CUR"
+    }
+    let curResp = await FranchiseBrokerageReport.find(curFilter)
+    //let curResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
     resp.currency.list = curResp || [];
     resp.currency.list.map((r) => {
       resp.currency.total = resp.currency.total + +r.IntroBrok;
@@ -557,7 +584,16 @@ const myRevenueReportService = async (params) => {
   } else if (params.type == "commodity") {
     params.Exchange = "ALL";
     params.Segment = "ALL";
-    let comResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+
+    let comFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"ALL",
+      Segment :"ALL"
+    }
+    let comResp = await FranchiseBrokerageReport.find(comFilter)
+
+    //let comResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
     resp.commodity.list = comResp || [];
     resp.commodity.list.map((r) => {
       resp.commodity.total = resp.commodity.total + +r.IntroBrok;
@@ -568,22 +604,43 @@ const myRevenueReportService = async (params) => {
     resp.commodity.total = resp.commodity.total.toFixed(2);
   } else {
     params.Exchange = "NSE";
-    let nseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    let nseFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"NSE"
+    }
+    let nseResp = await FranchiseBrokerageReport.find(nseFilter)
     params.Exchange = "BSE";
-    let bseResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    let bseFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"BSE"
+    }
+    let bseResp = await FranchiseBrokerageReport.find(bseFilter)
     resp.equity.list = nseResp.concat(bseResp);
     resp.equity.list.map((r) => {
       resp.equity.total = resp.equity.total + +r.IntroBrok;
     });
     params.Exchange = "CUR";
-    let curResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    let curFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"CUR"
+    }
+    let curResp = await FranchiseBrokerageReport.find(curFilter)
     resp.currency.list = curResp || [];
     resp.currency.list.map((r) => {
       resp.currency.total = resp.currency.total + +r.IntroBrok;
     });
     params.Exchange = "ALL";
     params.Segment = "ALL";
-    let comResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+    let comFilter ={
+      APId : params.apId,
+      TradeDate : { $gte: FromDate, $lte: ToDate },
+      Exchange :"ALL",
+      Segment :"ALL"
+    }
+    let comResp = await FranchiseBrokerageReport.find(comFilter)
     resp.commodity.list = comResp || [];
     resp.commodity.list.map((r) => {
       resp.commodity.total = resp.commodity.total + +r.IntroBrok;
@@ -669,7 +726,15 @@ let ToDate =
         topPerformingClientsObj[e.AccountID].revenue + +e.TotalBrokerage;
     }
   });
-  let myRevResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
+
+  let comFilter ={
+    APId : params.apId,
+    TradeDate : { $gte: FromDate, $lte: ToDate },
+    Exchange :"NSE"
+  }
+  let myRevResp = await FranchiseBrokerageReport.find(comFilter)
+
+  //let myRevResp = await KORPAPIServices.myRevenueReportAPI({ ...params });
   if (myRevResp) {
     myRevResp.map((e) => {
       if (topPerformingClientsObj[e.ClientCode]) {
@@ -743,12 +808,19 @@ const myReportOverAllService = async (params) => {
         TradeDate : { $gte: params.fromDate, $lte: params.toDate }
       }
 
-        
+      let comFilter ={
+        APId : params.apId,
+        TradeDate : { $gte: FromDate, $lte: ToDate },
+        Exchange :"NSE"
+      }
+   
+    
       return await Promise.all([
         TurnoverBrokerageReport.find(filter),
         //null,
-        KORPAPIServices.myRevenueReportAPI({ ...params }),
-      ]).then(([resp, myRevResp])=>{
+       // KORPAPIServices.myRevenueReportAPI({ ...params }),
+       FranchiseBrokerageReport.find(comFilter)
+      ]).then(([tempResult, myRevResp])=>{
         console.log('resp, myRevResp  ---------------------------',[resp, myRevResp])
         let finalResp = {
           totalTurnOver: 0,
@@ -757,14 +829,14 @@ const myReportOverAllService = async (params) => {
           list: [],
         };
         let topPerformingClientsObj = {};
-        let tempResult = [];
-        if (resp) {
-          resp = xmlParser.toJson(resp);
-          resp = JSON.parse(resp);
-          tempResult =
-            resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
-          tempResult = convertToArray(tempResult);
-        }
+        // let tempResult = [];
+        // if (resp) {
+        //   resp = xmlParser.toJson(resp);
+        //   resp = JSON.parse(resp);
+        //   tempResult =
+        //     resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+        //   tempResult = convertToArray(tempResult);
+        // }
   
         tempResult.map((e) => {
           if (!topPerformingClientsObj[e.AccountID]) {

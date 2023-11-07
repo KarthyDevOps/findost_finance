@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 const turnoverBrokerageReportSchema = new mongoose.Schema(
   {
     APId: {
@@ -12,45 +13,45 @@ const turnoverBrokerageReportSchema = new mongoose.Schema(
     },
     TradeDate: {
       type: Date,
+      get(value) {
+        return moment(value).format("YYYY-MM-DD");
+      }
     },
     InraDayTurnover: {
-      type: String,
+      type: Number,
     },
     InraDayBrokerage: {
-      type: String,
+      type: Number,
     },
     DeliveryTurnover: {
-      type: String,
+      type: Number,
     },
     DeliveryBrokerage: {
-      type: String,
+      type: Number,
     },
     TurnOver: {
-      type: String,
+      type: Number,
     },
     Brokerage: {
-      type: String,
+      type: Number,
     },
     FutureTurnover: {
-      type: String,
+      type: Number,
     },
     FutureBrokerage: {
-      type: String,
-    },
-    AccountName: {
-      type: String,
+      type: Number,
     },
     OptionTurnover: {
-      type: String,
+      type: Number,
     },
     OptionBrokerage: {
-      type: String,
+      type: Number,
     },
     TotalTurnOver: {
-      type: String,
+      type: Number,
     },
     TotalBrokerage: {
-      type: String,
+      type: Number,
     },
   },
   {

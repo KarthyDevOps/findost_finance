@@ -2,7 +2,11 @@ let { Rest } = require("./../restCalls");
 let { KorpAPI } = require("../configs");
 const qs = require("qs");
 const moment = require("moment");
-
+const { createLogger, transports } = require("winston");
+const errorLogFile = "error.log";
+const logger = createLogger({
+  transports: [new transports.File({ filename: errorLogFile, level: "error" })],
+});
 const authenticationAPI = async (data = {}) => {
   console.log(data, "data");
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.authenticationAPI));
@@ -120,39 +124,50 @@ const clientWithMarginShortFallAPI = async (data) => {
 };
 
 const topPerformingClientAPI = async (data) => {
-  let apiConfig = JSON.parse(JSON.stringify(KorpAPI.topPerformingClientAPI));
-  apiConfig.url =
-    process.env.KORP_BASE_URL + "/Reports/TurnoverBrokerageWebReport/Post";
-  apiConfig.data = {
-    FromDate:
-      (data.fromDate && moment(data.fromDate).format("YYYY-MM-DD")) ||
-      `${moment().format("YYYY")}-04-01`,
-    ToDate:
-      (data.toDate && moment(data.toDate).format("YYYY-MM-DD")) ||
-      moment().format("YYYY-MM-DD"),
-   // Branch: data.BRANCH,
-
-    ReportType: "DETAIL",
-    // ReportType Values - SUMMARY, DETAIL,
-    ReportSelection: "CLIENT",
-    //ReportSelection values - BRANCH, SUB_BRANCH, TL, RM, CLIENT, BR_SUB_BR, BR_SUB_BR_TL, BR_SUB_BR_TL_RM
-   // AccountID: data.BRANCH,
-  };
-
-  apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
-  if (data.FIRMID) {
-    apiConfig.headers.FIRMID = data.FIRMID;
-    apiConfig.data["FirmID"] = data.FIRMID;
+  try {
+    let apiConfig = JSON.parse(JSON.stringify(KorpAPI.topPerformingClientAPI));
+    apiConfig.url =
+      process.env.KORP_BASE_URL + "/Reports/TurnoverBrokerageWebReport/Post";
+    apiConfig.data = {
+      FromDate:
+        (data.fromDate && moment(data.fromDate).format("YYYY-MM-DD")) ||
+        `${moment().format("YYYY")}-04-01`,
+      ToDate:
+        (data.toDate && moment(data.toDate).format("YYYY-MM-DD")) ||
+        moment().format("YYYY-MM-DD"),
+     // Branch: data.BRANCH,
+  
+      ReportType: "DETAIL",
+      // ReportType Values - SUMMARY, DETAIL,
+      ReportSelection: "CLIENT",
+      //ReportSelection values - BRANCH, SUB_BRANCH, TL, RM, CLIENT, BR_SUB_BR, BR_SUB_BR_TL, BR_SUB_BR_TL_RM
+     // AccountID: data.BRANCH,
+    };
+  
+    apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
+    if (data.FIRMID) {
+      apiConfig.headers.FIRMID = data.FIRMID;
+      apiConfig.data["FirmID"] = data.FIRMID;
+    }
+    if (data.BRANCH) {
+      apiConfig.data.Branch = data.BRANCH;
+    }
+    if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+  
+    delete data.token;
+    // apiConfig.data = data;
+    console.log("apiConfig====", apiConfig);
+    return await Rest.callApi(apiConfig);
   }
-  if (data.BRANCH) {
-    apiConfig.data.Branch = data.BRANCH;
-  }
-  if (data.FINANCIALYEAR) apiConfig.headers.FINANCIALYEAR = data.FINANCIALYEAR;
+  catch(e){
 
-  delete data.token;
-  // apiConfig.data = data;
-  console.log("apiConfig====", apiConfig);
-  return await Rest.callApi(apiConfig);
+    logger.error(
+      `bugs $$$$$$ : ${path}  - ${data.fromDate}`
+    );
+
+   
+  }
+ 
 };
 
 const myBrokerageRevenueAPI = async (data) => {
@@ -201,7 +216,7 @@ const clientPositionsAPI = async (data) => {
   apiConfig.data = {
     FirmID: data.FIRMID,
     AccountID: data.clientCode,
-    AsOnDate: "2023-09-04" || moment().format("YYYY-MM-DD"),
+    AsOnDate: moment().format("YYYY-MM-DD"),
     Exchange: "NSE",
     // BSE, MCX, NCDEX, NSE
     Segment: "FNO",

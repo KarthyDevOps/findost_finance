@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
+
 const franchiseBrokerageReportSchema = new mongoose.Schema(
   {
     APId: {
@@ -12,6 +14,9 @@ const franchiseBrokerageReportSchema = new mongoose.Schema(
     },
     TradeDate: {
       type: Date,
+      get(value) {
+        return moment(value).format("YYYY-MM-DD");
+      }
     },
     Exchange: {
       type: String,
@@ -20,16 +25,16 @@ const franchiseBrokerageReportSchema = new mongoose.Schema(
       type: String,
     },
     TotalBrok: {
-      type: String,
+      type: Number,
     },
     IntroBrok: {
-      type: String,
+      type: Number,
     },
     IntroBrok2: {
-      type: String,
+      type: Number,
     },
     BrokerBrok: {
-      type: String,
+      type: Number,
     },
   },
   {

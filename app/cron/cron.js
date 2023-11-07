@@ -23,7 +23,7 @@ module.exports = {
       "55 23 * * *",
       async () => {
         console.log("getDailyFranchiseBrokerageReportForAllAP start ---->");
-        await couponController.getDailyFranchiseBrokerageReportForAllAP();
+        await getDailyFranchiseBrokerageReportForAllAP();
         console.log("getDailyFranchiseBrokerageReportForAllAP end ---->");
       },
       {

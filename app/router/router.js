@@ -26,7 +26,10 @@ const {
   crmTicketList,
   getCrmTicket,
 } = require("../controllers/crmTicketManagement.controller");
-
+const {
+  getDailyTurnOverBrokerageReportForAllAP,
+  getDailyFranchiseBrokerageReportForAllAP
+} = require("../controllers/cron.controller");
 
 const {
   ipoLogin,
@@ -503,4 +506,18 @@ router.get(
   [verifyToken(["AP"]),IPOAuthentication],
   errHandle(ipoMaster)
 );
+
+router.get(
+  routes.v1.KORP.getDailyTurnOverBrokerageReportForAllAP,
+  [],
+  errHandle(getDailyTurnOverBrokerageReportForAllAP)
+);
+router.get(
+  routes.v1.KORP.getDailyFranchiseBrokerageReportForAllAP,
+  [],
+  errHandle(getDailyFranchiseBrokerageReportForAllAP)
+);
+
+
+
 module.exports = router;

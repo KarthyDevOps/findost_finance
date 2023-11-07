@@ -1,14 +1,14 @@
 const cron = require("node-cron");
-const { couponController } = require("./../controllers");
+const {getDailyTurnOverBrokerageReportForAllAP,getDailyFranchiseBrokerageReportForAllAP} = require("../controllers/cron.controller");
 module.exports = {
-  couponInaciveCron: function () {
-    console.log("couponInaciveCron running ---->");
+  getDailyTurnOverBrokerageReportForAllAP: function () {
+    console.log("getDailyTurnOverBrokerageReportForAllAP running ---->");
     cron.schedule(
       "55 23 * * *",
       async () => {
-        console.log("couponInaciveCron start ---->");
-        await couponController.inActivateCouponIsExpired();
-        console.log("couponInaciveCron end ---->");
+        console.log("getDailyTurnOverBrokerageReportForAllAP start ---->");
+        await getDailyTurnOverBrokerageReportForAllAP();
+        console.log("getDailyTurnOverBrokerageReportForAllAP end ---->");
       },
       {
         scheduled: true,
@@ -16,4 +16,21 @@ module.exports = {
       }
     );
   },
+
+  getDailyFranchiseBrokerageReportForAllAP: function () {
+    console.log("getDailyFranchiseBrokerageReportForAllAP running ---->");
+    cron.schedule(
+      "55 23 * * *",
+      async () => {
+        console.log("getDailyFranchiseBrokerageReportForAllAP start ---->");
+        await couponController.getDailyFranchiseBrokerageReportForAllAP();
+        console.log("getDailyFranchiseBrokerageReportForAllAP end ---->");
+      },
+      {
+        scheduled: true,
+        timezone: "Asia/kolkata",
+      }
+    );
+  },
+  
 };

@@ -164,7 +164,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId  || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId  || process.env.KORP_BRANCHID
     if(!params.limit) params.limit =10
     if(!params.page) params.page =1
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
@@ -190,7 +190,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId  || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId  || process.env.KORP_BRANCHID
     if(!params.limit) params.limit =10
     if(!params.page) params.page =1
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
@@ -218,7 +218,7 @@ const {
     const params = req?.body;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await clientWithMarginShortFallService(params);
@@ -243,7 +243,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await topPerformingClientService(params);
@@ -268,7 +268,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myBrokerageRevenueService(params);
@@ -293,7 +293,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myClientsReportService(params);
@@ -318,7 +318,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await clientPositionsService(params);
@@ -343,7 +343,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myRevenueReportService(params);
@@ -368,7 +368,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myReportTopClientsService(params);
@@ -420,7 +420,7 @@ const {
     const params = req?.query;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await myReportOverAllService(params);
@@ -472,7 +472,7 @@ const {
     const params = req?.body;
     params.token = req.user.korpAccessToken
     params.FIRMID = process.env.KORP_FIRMID
-    params.BRANCH = req.user.apId || process.env.KORP_BRANCHID
+    params.BRANCH = params.apId =req.user.apId || process.env.KORP_BRANCHID
 
     params.FINANCIALYEAR = process.env.KORP_FINANCIALYEAR
     const result = await clientWithdrawalRequestService(params);

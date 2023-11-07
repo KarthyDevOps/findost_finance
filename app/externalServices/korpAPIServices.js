@@ -3,7 +3,7 @@ let { KorpAPI } = require("../configs");
 const qs = require("qs");
 const moment = require("moment");
 
-const authenticationAPI = async (data={}) => {
+const authenticationAPI = async (data = {}) => {
   console.log(data, "data");
   let apiConfig = JSON.parse(JSON.stringify(KorpAPI.authenticationAPI));
   apiConfig.url = process.env.KORP_BASE_URL + "/token";
@@ -130,15 +130,13 @@ const topPerformingClientAPI = async (data) => {
     ToDate:
       (data.toDate && moment(data.toDate).format("YYYY-MM-DD")) ||
       moment().format("YYYY-MM-DD"),
-    Branch: data.BRANCH,
-    // "SubBranch":"RTL",
-    // "RM":"???",
-    // "FamilyGroup":"???",
+   // Branch: data.BRANCH,
+
     ReportType: "DETAIL",
     // ReportType Values - SUMMARY, DETAIL,
     ReportSelection: "CLIENT",
     //ReportSelection values - BRANCH, SUB_BRANCH, TL, RM, CLIENT, BR_SUB_BR, BR_SUB_BR_TL, BR_SUB_BR_TL_RM
-    AccountID: data.BRANCH,
+   // AccountID: data.BRANCH,
   };
 
   apiConfig.headers.Authorization = `Bearer ${data.token || ""}`;
@@ -390,10 +388,10 @@ const clientWithdrawalRequestAPI = async (data) => {
     AccountID: data.clientCode,
     Amount: data.amount,
     APAmount: data.clientCode,
-    BankAccountNo:  data.BankAccountNo,
+    BankAccountNo: data.BankAccountNo,
     PaymentMode: "NEFT",
     // NEFT,RTGS,FT
-    BankCode:  data.BankCode,
+    BankCode: data.BankCode,
     PaymentRequestType: "ONREQUEST",
   };
   delete data.token;

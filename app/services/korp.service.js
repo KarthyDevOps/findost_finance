@@ -5,6 +5,12 @@ let xmlParser = require("xml2json");
 const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
 
+const {
+  TurnoverBrokerageReport,
+} = require("../models/turnoverBrokerageReport");
+const {
+  FranchiseBrokerageReport,
+} = require("../models/franchiseBrokerageReport");
 
 
 function capitalizeFLetter(string) {
@@ -415,20 +421,30 @@ const clientWithMarginShortFallService = async (params) => {
 };
 
 const topPerformingClientService = async (params) => {
-  let resp = await KORPAPIServices.topPerformingClientAPI(params);
-  let result = [];
-  if (resp) {
-    resp = xmlParser.toJson(resp);
-    resp = JSON.parse(resp);
-    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
-    result = convertToArray(result);
+  let filter ={
+    APId : params.apId,
+    TradeDate : { $gte: `${moment().format("YYYY")}-04-01`, $lte: moment().format("YYYY-MM-DD") }
   }
+  console.log('filyter',filter)
+  let resp = await TurnoverBrokerageReport.find(filter);
+  resp = resp.map((e)=>{
+    e.TradeDate = e.TradeDate
+    return e
+  })
+  //let resp = await KORPAPIServices.topPerformingClientAPI(params);
+  // let result = [];
+  // if (resp) {
+  //   resp = xmlParser.toJson(resp);
+  //   resp = JSON.parse(resp);
+  //   result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+  //   result = convertToArray(result);
+  // }
 
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-    data: result,
+    data: resp,
   };
 };
 const myBrokerageRevenueService = async (params) => {
@@ -611,14 +627,31 @@ const myReportTopClientsService = async (params) => {
     list: [],
   };
   let topPerformingClientsObj = {};
-  let resp = await KORPAPIServices.topPerformingClientAPI({ ...params });
-  let result = [];
-  if (resp) {
-    resp = xmlParser.toJson(resp);
-    resp = JSON.parse(resp);
-    result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
-    result = convertToArray(result);
+  // let resp = await KORPAPIServices.topPerformingClientAPI({ ...params });
+  // let result = [];
+  // if (resp) {
+  //   resp = xmlParser.toJson(resp);
+  //   resp = JSON.parse(resp);
+  //   result = resp.DataSet["diffgr:diffgram"]["NewDataSet"]["Table"] || [];
+  //   result = convertToArray(result);
+  // }
+
+
+  let FromDate =
+  (params.fromDate && moment(params.fromDate).format("YYYY-MM-DD")) ||
+  `${moment().format("YYYY")}-04-01`;
+let ToDate =
+  (params.toDate && moment(params.toDate).format("YYYY-MM-DD")) ||
+  moment().format("YYYY-MM-DD");
+
+  let filter ={
+    APId : params.apId,
+    TradeDate : { $gte: FromDate, $lte: ToDate }
   }
+  console.log(filter)
+  let result = await TurnoverBrokerageReport.find(filter);
+
+
   console.log(result);
   result.map((e) => {
     if (!topPerformingClientsObj[e.AccountID]) {
@@ -642,7 +675,7 @@ const myReportTopClientsService = async (params) => {
       if (topPerformingClientsObj[e.ClientCode]) {
         topPerformingClientsObj[e.ClientCode].myBrokerageRevenue =
           topPerformingClientsObj[e.ClientCode].myBrokerageRevenue +
-          (+e.IntroBrok + +e.IntroBrok);
+          (+e.IntroBrok + +e.IntroBrok2);
       }
     });
   }
@@ -705,11 +738,14 @@ const myReportOverAllService = async (params) => {
       params.fromDate = result[d].date.start;
       params.toDate = result[d].date.end;
     
-
+      let filter ={
+        APId : params.apId,
+        TradeDate : { $gte: params.fromDate, $lte: params.toDate }
+      }
 
         
       return await Promise.all([
-        KORPAPIServices.topPerformingClientAPI({ ...params }),
+        TurnoverBrokerageReport.find(filter),
         //null,
         KORPAPIServices.myRevenueReportAPI({ ...params }),
       ]).then(([resp, myRevResp])=>{

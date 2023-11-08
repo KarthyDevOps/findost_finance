@@ -810,7 +810,7 @@ const myReportOverAllService = async (params) => {
 
       let comFilter ={
         APId : params.apId,
-        TradeDate : { $gte: FromDate, $lte: ToDate },
+        TradeDate : { $gte: params.fromDate, $lte: params.toDate },
         Exchange :"NSE"
       }
    
@@ -821,7 +821,7 @@ const myReportOverAllService = async (params) => {
        // KORPAPIServices.myRevenueReportAPI({ ...params }),
        FranchiseBrokerageReport.find(comFilter)
       ]).then(([tempResult, myRevResp])=>{
-        console.log('resp, myRevResp  ---------------------------',[resp, myRevResp])
+        console.log('resp, myRevResp  ---------------------------')
         let finalResp = {
           totalTurnOver: 0,
           totalRevenue: 0,

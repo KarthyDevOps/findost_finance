@@ -1,6 +1,8 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { IPOAPIServices } = require("../externalServices");
+const moment = require("moment");
+
 const { pageMetaService } = require("../helpers/index");
 const ipoLoginService = async (params) => {
   let resp = await IPOAPIServices.ipoLoginAPI(params);
@@ -31,16 +33,28 @@ const ipoTransactionListService = async (params) => {
 };
 const ipoMasterService = async (params) => {
   let resp = await IPOAPIServices.ipoMasterAPI(params.token,params);
-
-  resp = resp.map((data)=>{
-   // data.status = 
-    return data
-  })
+  let result =[]
+  if(resp && resp.data && resp.data.length >0)
+  {
+    console.log(resp,'resp')
+    result = resp.data.map((data)=>{
+      if(new Date().getTime() > new Date(moment(data.biddingStartDate)).getTime())
+      {
+        data.status = "OPEN"
+      }
+      else
+      {
+        data.status = "UPCOMMING"
+      }
+      return data
+    })
+  }
+ 
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
     message: messages?.success,
-    data: resp,
+    data: result,
   };
 };
 module.exports = {

@@ -392,7 +392,7 @@ router.get(
 
 router.post(
   routes.v1.PRODUCT_IPO.create,
-  [verifyToken(["AP"]), createProductIpoValidation],
+  [verifyToken(["ADMIN","AP"]), createProductIpoValidation],
   errHandle(createProductIpo)
 );
 router.put(

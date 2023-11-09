@@ -60,9 +60,15 @@ const ipoMasterService = async (params) => {
   if (resp && resp.data && resp.data.length > 0) {
     console.log(resp, "resp");
     let cmsIpoDatesObj = {};
-    let cmsIpoDatesList = await cmsIpoDates.find({ isDeleted: false });
+    let cmsIpoDatesList = await cmsIpoDates.find({ isDeleted: false }).lean();
     cmsIpoDatesList.map((data) => {
-      cmsIpoDatesObj[data.ipoisinNumber] = data;
+      cmsIpoDatesObj[data.ipoisinNumber] = {
+        ...data,
+        allotmnetDate : moment(data.allotmnetDate).format("YYYY-MM-DD"),
+        refundInitiation : moment(data.refundInitiation).format("YYYY-MM-DD"),
+        listingOnExchange : moment(data.listingOnExchange).format("YYYY-MM-DD")
+      };
+
     });
     result = resp.data.map((data) => {
       if (

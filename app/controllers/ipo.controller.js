@@ -7,6 +7,7 @@ const {
   ipoTransactionAddService,
   ipoTransactionListService,
   ipoMasterService,
+  cmsIpoUpdateService
 } = require("../services/ipo.service");
 
 const ipoLogin = async (req, res) => {
@@ -94,9 +95,54 @@ const ipoMaster = async (req, res) => {
   );
 };
 
+const ipoCreateOrUpdate = async (req, res) => {
+  const params = req?.query;
+  params.token = req.user.IPOAccessToken
+  const result = await ipoMasterService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
+
+const cmsIpoUpdate = async (req, res) => {
+  const params = req?.body;
+  const result = await cmsIpoUpdateService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+
 module.exports = {
   ipoLogin,
   ipoTransactionAdd,
   ipoTransactionList,
   ipoMaster,
+  cmsIpoUpdate
 };

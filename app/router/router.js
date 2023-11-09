@@ -35,7 +35,8 @@ const {
   ipoLogin,
   ipoTransactionAdd,
   ipoTransactionList,
-  ipoMaster
+  ipoMaster,
+  cmsIpoUpdate
 } = require("../controllers/ipo.controller");
 
 
@@ -500,6 +501,12 @@ router.post(
   [verifyToken(["AP"]),IPOAuthentication],
   errHandle(ipoTransactionList)
 );
+router.post(
+  routes.v1.IPO.CMS_IPO_UPDATED,
+  [verifyToken(["ADMIN"])],
+  errHandle(cmsIpoUpdate)
+);
+
 
 router.get(
   routes.v1.IPO.IPO_MASTER,

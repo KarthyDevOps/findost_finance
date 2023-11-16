@@ -46,9 +46,16 @@ const cmsIpoDatesSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    toObject: { getters: true },
+    toJSON: {
+      virtuals: true,
+      getters: true
+    }
   }
 );
+
 cmsIpoDatesSchema.virtual("ipoDocS3").get(function () {
+    console.log('aaa==========================',getImageURL(this.ipoDoc))
   return this.ipoDoc ? getImageURL(this.ipoDoc) : null;
 });
 

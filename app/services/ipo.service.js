@@ -61,7 +61,9 @@ const ipoMasterService = async (params) => {
   if (resp && resp.data && resp.data.length > 0) {
     console.log(resp, "resp");
     let cmsIpoDatesObj = {};
-    let cmsIpoDatesList = await cmsIpoDates.find({ isDeleted: false }).lean();
+    let cmsIpoDatesList = await cmsIpoDates.find({ isDeleted: false });
+    cmsIpoDatesList =JSON.parse(JSON.stringify(cmsIpoDatesList))
+
     cmsIpoDatesList.map((data) => {
       cmsIpoDatesObj[data.ipoisinNumber] = {
         ...data,

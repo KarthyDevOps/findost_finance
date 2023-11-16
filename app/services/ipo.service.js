@@ -6,6 +6,7 @@ const { cmsIpoDates } = require("../models/cmsIpoDates");
 const moment = require("moment");
 
 const { pageMetaService } = require("../helpers/index");
+
 const ipoLoginService = async (params) => {
   let resp = await IPOAPIServices.ipoLoginAPI(params);
   return {
@@ -64,11 +65,10 @@ const ipoMasterService = async (params) => {
     cmsIpoDatesList.map((data) => {
       cmsIpoDatesObj[data.ipoisinNumber] = {
         ...data,
-        allotmnetDate : moment(data.allotmnetDate).format("YYYY-MM-DD"),
-        refundInitiation : moment(data.refundInitiation).format("YYYY-MM-DD"),
-        listingOnExchange : moment(data.listingOnExchange).format("YYYY-MM-DD")
+        allotmnetDate: moment(data.allotmnetDate).format("YYYY-MM-DD"),
+        refundInitiation: moment(data.refundInitiation).format("YYYY-MM-DD"),
+        listingOnExchange: moment(data.listingOnExchange).format("YYYY-MM-DD"),
       };
-
     });
     result = resp.data.map((data) => {
       if (
@@ -99,10 +99,49 @@ const ipoMasterService = async (params) => {
   };
 };
 
+const buyIPOService = async (params) => {
+  let payload = {
+    "symbol":params.symbol,
+    "applicationNumber":params.applicationNumber,
+    "category": params.category,
+    "clientName":params.clientName,
+    "depository": params.depository,
+    "dpId": params.dpId,
+    "clientBenId": params.clientBenId,
+    "nonASBA": false,
+    "pan":params.pan,
+    "referenceNumber": params.referenceNumber,
+    "allotmentMode": "demat",
+    "upiFlag": "Y",
+    "upi": params.upi,
+    "bankCode": null,
+    "locationCode": null,
+    "timestamp":new Date(),
+    "bids": [
+        {
+            "activityType": "new",
+            "quantity": 100,
+            "atCutOff": false,
+            "price": 55.30,
+            "amount": 5530.00,
+            "remark": "BD/000001"
+        }
+    ]
+}
+  let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
+  return {
+    status: true,
+    statusCode: statusCodes?.HTTP_OK,
+    message: messages?.success,
+    data: resp,
+  };
+};
+
 module.exports = {
   ipoLoginService,
   ipoTransactionAddService,
   ipoTransactionListService,
   ipoMasterService,
   cmsIpoUpdateService,
+  buyIPOService,
 };

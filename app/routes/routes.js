@@ -82,6 +82,7 @@ const routes = {
       TRANSACTION_ADD: "/v1/ipo/transactionAdd",
       TRANSACTION_LIST: "/v1/ipo/transactionList",
       CMS_IPO_UPDATED: "/v1/ipo/cmsIpoUpdate",
+      BUY_IPO: "/v1/ipo/buyIpo",
     },
     PRODUCT_IPO: {
       list: "/v1/Product-Ipo/list",

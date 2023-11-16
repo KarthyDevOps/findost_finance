@@ -8,7 +8,7 @@ module.exports = {
           },
     },
     ipoTransactionListAPI: {
-        method: 'POST',
+        method: 'GET',
         url: "",
         headers: { 
             'Content-Type': 'application/json'
@@ -28,4 +28,12 @@ module.exports = {
             contentType: 'application/json',
         },
     },
+    buyIPOAPI: {
+        method: "POST",
+        url: "",
+        headers: {
+            contentType: 'application/json',
+        },
+    },
+    
 }

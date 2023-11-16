@@ -14,9 +14,8 @@ const {
 
 
 function capitalizeFLetter(string) {
-  //let string = 'geeksforgeeks';
-  console.log(string.charAt(0).toUpperCase() +
-      string.slice(1));
+
+      return string.charAt(0).toUpperCase() + string.slice(1)
 }
 
 function convertToArray(value) {
@@ -655,6 +654,7 @@ let ToDate =
     Object.keys(resp).map((d) => {
       let data = {
         name: capitalizeFLetter(d),
+        // name: d,
         total: resp[d].total,
         list: resp[d].list || [],
       };

@@ -36,7 +36,8 @@ const {
   ipoTransactionAdd,
   ipoTransactionList,
   ipoMaster,
-  cmsIpoUpdate
+  cmsIpoUpdate,
+  buyIPO
 } = require("../controllers/ipo.controller");
 
 
@@ -496,7 +497,7 @@ router.post(
   [verifyToken(["AP"]),IPOAuthentication],
   errHandle(ipoTransactionAdd)
 );
-router.post(
+router.get(
   routes.v1.IPO.TRANSACTION_LIST,
   [verifyToken(["AP"]),IPOAuthentication],
   errHandle(ipoTransactionList)
@@ -514,6 +515,12 @@ router.get(
   errHandle(ipoMaster)
 );
 
+
+router.post(
+  routes.v1.IPO.BUY_IPO,
+  [verifyToken(["AP"])],
+  errHandle(buyIPO)
+);
 router.get(
   routes.v1.KORP.getDailyTurnOverBrokerageReportForAllAP,
   [],

@@ -51,7 +51,7 @@ const cmsIpoDatesSchema = new mongoose.Schema(
 cmsIpoDatesSchema.virtual('ipoDocS3').get(function () {
 
  
-    return  this.ipoDocS3 ? getImageURL(this.ipoDocS3) : null;
+    return  this.ipoDoc ? getImageURL(this.ipoDoc) : null;
   })
 
 const cmsIpoDates = mongoose.model("cmsIpoDates", cmsIpoDatesSchema);

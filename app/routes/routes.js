@@ -74,7 +74,6 @@ const routes = {
       AUTHENTICATION: "/v1/bse-star/authentication",
       SIP_CREATE: "/v1/bse-star/sipCreate",
       LUMPSUM_CREATE: "/v1/bse-star/lumpsumCreate",
-
     },
     IPO: {
       LOGIN: "/v1/ipo/login",

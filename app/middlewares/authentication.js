@@ -170,7 +170,7 @@ const verifyAdminRole = (roles, action) =>
     if(resp)
     {
       if(!req.user) req.user = {}
-      req.user.CRMAccessToken = resp
+      req.user.bseStarAccessToken = resp
       next()
     }
     else{

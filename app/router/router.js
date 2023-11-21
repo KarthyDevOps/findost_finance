@@ -19,6 +19,8 @@ const {
   createWatchListValidation,
   createProductIpoValidation,
   deleteProductIpoValidation,
+  lumpsumValidation,
+  sipValidation
 } = require("../validator/validator");
 
 const {
@@ -379,14 +381,14 @@ router.get(
   [BSEStarAuthentication],
   errHandle(bseStarAuthentication)
 );
-router.get(
+router.post(
   routes.v1.BSE_STAR.SIP_CREATE,
-  [verifyToken("AP")],
+  [verifyToken("AP"),BSEStarAuthentication,sipValidation],
   errHandle(bseStarSipCreate)
 );
-router.get(
+router.post(
   routes.v1.BSE_STAR.LUMPSUM_CREATE,
-  [verifyToken("AP")],
+  [verifyToken("AP"),BSEStarAuthentication,lumpsumValidation],
   errHandle(bseStarLumpsumCreate)
 );
 

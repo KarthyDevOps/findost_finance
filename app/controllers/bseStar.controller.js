@@ -30,8 +30,11 @@ const {
     );
   };
   const bseStarSipCreate = async (req, res) => {
-    const params = req?.query;
+    let params = req?.body;
     params.token = req.user.bseStarAccessToken
+    params.APId = req.user.BOUserId
+    params.APName = req.user.accountName
+  
     const result = await bseStarSipCreateService(params);
     if (!result.status) {
       return sendErrorResponse(
@@ -51,8 +54,11 @@ const {
     );
   };
   const bseStarLumpsumCreate = async (req, res) => {
-    const params = req?.query;
+    var params = req?.body;
     params.token = req.user.bseStarAccessToken
+    params.APId = req.user.BOUserId
+    params.APName = req.user.accountName
+  
     const result = await bseStarLumpsumCreateService(params);
     if (!result.status) {
       return sendErrorResponse(

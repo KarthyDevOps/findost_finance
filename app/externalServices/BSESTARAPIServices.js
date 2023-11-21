@@ -17,49 +17,53 @@ const buildAUTHSoapRequest = async (data) => {
 }
 const buildMFLUMPSUMSoapRequest  = async (data) => {
   return `
-  <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:bses="http://bsestarmf.in/">
-   <soap:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsa:Action>http://bsestarmf.in/MFOrderEntry/orderEntryParam</wsa:Action><wsa:To>https://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc/Secure</wsa:To></soap:Header>
-   <soap:Body>
-      <bses:orderEntryParam>
-         <bses:TransCode></bses:TransCode>
-         <bses:TransNo></bses:TransNo>
-         <bses:OrderId></bses:OrderId>
-         <bses:UserID></bses:UserID>
-         <bses:MemberId></bses:MemberId>
-         <bses:ClientCode></bses:ClientCode>
-         <bses:SchemeCd></bses:SchemeCd>
-         <bses:BuySell></bses:BuySell>
-         <bses:BuySellType></bses:BuySellType>
-         <bses:DPTxn></bses:DPTxn>
-         <bses:OrderVal></bses:OrderVal>
-         <bses:Qty></bses:Qty>
-         <bses:AllRedeem></bses:AllRedeem>
-         <bses:FolioNo></bses:FolioNo>
-         <bses:Remarks></bses:Remarks>
-         <bses:KYCStatus></bses:KYCStatus>
-         <bses:RefNo></bses:RefNo>
-         <bses:SubBrCode></bses:SubBrCode>
-         <bses:EUIN></bses:EUIN>
-         <bses:EUINVal></bses:EUINVal>
-         <bses:MinRedeem></bses:MinRedeem>
-         <bses:DPC></bses:DPC>
-         <bses:IPAdd></bses:IPAdd>
-         <bses:Password></bses:Password>
-         <bses:PassKey></bses:PassKey>
-         <bses:Parma1></bses:Parma1>
-         <bses:Param2></bses:Param2>
-         <bses:Param3></bses:Param3>
-         <bses:MobileNo></bses:MobileNo>
-         <bses:EmailID></bses:EmailID>
-         <bses:MandateID></bses:MandateID>
-         <bses:Filler1></bses:Filler1>
-         <bses:Filler2></bses:Filler2>
-         <bses:Filler3></bses:Filler3>
-         <bses:Filler4></bses:Filler4>
-         <bses:Filler5></bses:Filler5>
-         <bses:Filler6></bses:Filler6>
-      </bses:orderEntryParam>
-   </soap:Body>
+ 
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:bses="http://bsestarmf.in/">
+    <soap:Header xmlns:wsa="http://www.w3.org/2005/08/addressing">
+        <wsa:Action>http://bsestarmf.in/MFOrderEntry/orderEntryParam</wsa:Action>
+        <wsa:To>https://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc/Secure</wsa:To>
+    </soap:Header>
+    <soap:Body>
+        <bses:orderEntryParam>
+            <bses:TransCode>${data.TransCode || "NEW"} </bses:TransCode>
+            <bses:TransNo>${data.sequenceNumber}</bses:TransNo>
+            <bses:OrderId/>
+            <bses:UserID>${data.UserID }</bses:UserID>
+            <bses:MemberId>${data.MemberId }</bses:MemberId>
+            <bses:ClientCode>${data.clientCode }</bses:ClientCode>
+            <bses:SchemeCd>${data.schemeCode }</bses:SchemeCd>
+            <bses:BuySell>P</bses:BuySell>
+            <bses:BuySellType>FRESH</bses:BuySellType>
+            <bses:DPTxn>C</bses:DPTxn>
+            <bses:OrderVal>${data.orderVal }</bses:OrderVal>
+            <bses:Qty/>
+            <bses:AllRedeem>N</bses:AllRedeem>
+            <bses:FolioNo/>
+            <bses:Remarks/>
+            <bses:KYCStatus>Y</bses:KYCStatus>
+            <bses:RefNo>${data.APId}</bses:RefNo>
+            <bses:SubBrCode/>
+            <bses:EUIN/>
+            <bses:EUINVal>N</bses:EUINVal>
+            <bses:MinRedeem>N</bses:MinRedeem>
+            <bses:DPC>Y</bses:DPC>
+            <bses:IPAdd/>
+            <bses:Password>${data.token}</bses:Password>
+            <bses:PassKey>${data.PassKey }</bses:PassKey>
+            <bses:Parma1/>
+            <bses:Param2/>
+            <bses:Param3/>
+            <bses:MobileNo/>
+            <bses:EmailID/>
+            <bses:MandateID/>
+            <bses:Filler1/>
+            <bses:Filler2/>
+            <bses:Filler3/>
+            <bses:Filler4/>
+            <bses:Filler5/>
+            <bses:Filler6/>
+        </bses:orderEntryParam>
+    </soap:Body>
 </soap:Envelope>
   `;
 }
@@ -69,31 +73,31 @@ const buildMFSIPSoapRequest = async (data) => {
    <soap:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsa:Action>http://bsestarmf.in/MFOrderEntry/sipOrderEntryParam</wsa:Action><wsa:To>https://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc/Secure</wsa:To></soap:Header>
    <soap:Body>
       <bses:sipOrderEntryParam>
-         <bses:TransactionCode></bses:TransactionCode>
-         <bses:UniqueRefNo></bses:UniqueRefNo>
-         <bses:SchemeCode></bses:SchemeCode>
-         <bses:MemberCode></bses:MemberCode>
-         <bses:ClientCode></bses:ClientCode>
-         <bses:UserID></bses:UserID>
-         <bses:InternalRefNo></bses:InternalRefNo>
-         <bses:TransMode></bses:TransMode>
-         <bses:DpTxnMode></bses:DpTxnMode>
+        <bses:TransCode>${data.TransCode || "NEW"} </bses:TransCode>
+         <bses:UniqueRefNo>${data.sequenceNumber}</bses:UniqueRefNo>
+         <bses:SchemeCode>${data.schemeCode }</bses:SchemeCode>
+         <bses:MemberCode>${data.MemberId }</bses:MemberCode>
+         <bses:ClientCode>${data.clientCode }</bses:ClientCode>
+         <bses:UserID>${data.UserID }</bses:UserID>
+         <bses:InternalRefNo>${data.APId}</bses:InternalRefNo>
+         <bses:TransMode>P</bses:TransMode>
+         <bses:DpTxnMode>P</bses:DpTxnMode>
          <bses:StartDate></bses:StartDate>
-         <bses:FrequencyType></bses:FrequencyType>
-         <bses:FrequencyAllowed></bses:FrequencyAllowed>
-         <bses:InstallmentAmount></bses:InstallmentAmount>
-         <bses:NoOfInstallment></bses:NoOfInstallment>
-         <bses:Remarks></bses:Remarks>
+         <bses:FrequencyType>${data.SIPFrequency }</bses:FrequencyType>
+         <bses:FrequencyAllowed>1</bses:FrequencyAllowed>
+         <bses:InstallmentAmount>${data.SIPAmount }</bses:InstallmentAmount>
+         <bses:NoOfInstallment>${data.numberOfInstallments }</bses:NoOfInstallment>
+         <bses:Remarks>${data.APId }</bses:Remarks>
          <bses:FolioNo></bses:FolioNo>
-         <bses:FirstOrderFlag></bses:FirstOrderFlag>
+         <bses:FirstOrderFlag>Y</bses:FirstOrderFlag>
          <bses:SubberCode></bses:SubberCode>
          <bses:Euin></bses:Euin>
          <bses:EuinVal></bses:EuinVal>
          <bses:DPC></bses:DPC>
          <bses:RegId></bses:RegId>
          <bses:IPAdd></bses:IPAdd>
-         <bses:Password></bses:Password>
-         <bses:PassKey></bses:PassKey>
+         <bses:Password>${data.token}</bses:Password>
+         <bses:PassKey>${data.PassKey }</bses:PassKey>
          <bses:Param1></bses:Param1>
          <bses:Param2></bses:Param2>
          <bses:Param3></bses:Param3>
@@ -104,10 +108,13 @@ const buildMFSIPSoapRequest = async (data) => {
          <bses:Filler5></bses:Filler5>
          <bses:Filler6></bses:Filler6>
       </bses:sipOrderEntryParam>
+
+      
    </soap:Body>
 </soap:Envelope>
   `;
 }
+
 const makeSoapRequest = async (url, xml) => {
   try {
     const response = await axios.post(url, xml, {
@@ -118,7 +125,8 @@ const makeSoapRequest = async (url, xml) => {
     console.log('response.data',response.data)
     const parser = new xml2js.Parser({ explicitArray: false });
     const result = await parser.parseStringPromise(response.data);
-    return result['soapenv:Envelope']['soapenv:Body'];
+    console.log(result,'result---')
+    return result['s:Envelope']['s:Body'];
   } catch (error) {
     console.error('Error making SOAP request:', error);
     throw error;
@@ -135,8 +143,25 @@ const bseStarauthenticationAPI = async (data) => {
   console.log(soapRequestXml,'soapRequestXml')
   const weatherApiUrl = 'https://bsestarmfdemo.bseindia.com/MFOrderEntry/MFOrder.svc/Secure';
   const soapResponse = await makeSoapRequest(weatherApiUrl, soapRequestXml);
-  console.log('SOAP Response:', soapResponse);
-  return soapResponse
+
+  if(soapResponse?.getPasswordResponse?.getPasswordResult)
+  {
+    let pwdResp = soapResponse?.getPasswordResponse?.getPasswordResult
+    pwdResp = pwdResp.split("|")
+    if(pwdResp[0]==(100 || "100"))
+    {
+      return pwdResp[1]
+    }
+    else
+    {
+      return false
+    }
+  }
+  else
+  {
+    return false
+  }
+ 
 };
 const bseStarSipCreateAPI = async (data) => {
   const soapRequestXml = await buildMFSIPSoapRequest(data);

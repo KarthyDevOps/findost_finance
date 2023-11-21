@@ -163,12 +163,37 @@ const deleteProductIpoValidation = (req, res, next) => {
   });
   req.bodyParam = true;
   queryParamValidation(req, res, next, querySchema);
-
   const schema = joi.object({
     cancelReason: joi.string().required()
   });
   return bodyParamValidation(req, res, next, schema);
 };
+
+const lumpsumValidation = (req, res, next) => {
+  const schema = joi.object({
+    schemeCode: joi.string().required(),
+    clientName: joi.string().required(),
+    clientCode: joi.string().required(),
+    orderVal: joi.string().required(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
+const sipValidation = (req, res, next) => {
+  const schema = joi.object({
+    schemeCode: joi.string().required(),
+    clientName: joi.string().required(),
+    clientCode: joi.string().required(),
+    SIPAmount: joi.string().required(),
+    SIPFrequency: joi.string().required().valid("MONTHLY", "QUARTERLY", "WEEKLY"),
+    dayOfInvestment: joi.string().required(),
+    numberOfInstallments: joi.string().required(),
+    paymentMode: joi.string().required(),
+    
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
+
 
 module.exports = {
   bodyParamValidation,
@@ -180,5 +205,7 @@ module.exports = {
   createWatchListValidation,
   createProductIpoValidation,
   deleteProductIpoValidation,
-  leadListValidation
+  leadListValidation,
+  lumpsumValidation,
+  sipValidation
 };

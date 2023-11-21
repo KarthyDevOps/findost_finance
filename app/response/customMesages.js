@@ -52,7 +52,8 @@ const messages = {
   scheduleCreated:"Schedule created Sucessfully",
   scheduleUpdated : "Schedule update Sucessfully",
   scheduleDeleted:"Schedule Deleted Sucessfully",
-  scheduleListed:"Schedule Listed Sucessfully"
+  scheduleListed:"Schedule Listed Sucessfully",
+  MFCreatedSuccessfully : "Mutual Fund Created Successfully",
 
 };
 module.exports = { customMessages, messages };

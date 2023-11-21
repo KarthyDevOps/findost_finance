@@ -6,6 +6,10 @@ const mutualFundSchema = new mongoose.Schema(
             type: String,
             trim: true
         },
+        transactionNo: {
+            type: String,
+            trim: true
+        },
         investmentType: {
             type: String,
             trim: true
@@ -19,6 +23,10 @@ const mutualFundSchema = new mongoose.Schema(
             trim: true
         },
         clientName: {
+            type: String,
+            trim: true
+        },
+        schemeCode: {
             type: String,
             trim: true
         },
@@ -48,6 +56,10 @@ const mutualFundSchema = new mongoose.Schema(
             trim: true
         },
         paymentMode: {
+            type: String,
+            trim: true
+        },
+        thirdPartyResp: {
             type: String,
             trim: true
         },

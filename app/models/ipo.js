@@ -6,9 +6,6 @@ const ipoSchema = new mongoose.Schema(
     APId: {
       type: String,
     },
-    symbol: {
-      type: String,
-    },
     applicationNumber: {
       type: String,
     },
@@ -40,13 +37,20 @@ const ipoSchema = new mongoose.Schema(
     allotmentMode: {
       type: String,
     },
+
     upiFlag: {
       type: String,
     },
     upi: {
       type: String,
     },
-    cretaedTime: {
+    timestamp: {
+      type: String,
+    },
+    subBrokerCode: {
+      type: String,
+    },
+    status: {
       type: String,
     },
     bids: {

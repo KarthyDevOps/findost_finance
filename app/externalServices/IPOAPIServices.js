@@ -51,9 +51,10 @@ const ipoTransactionAddAPI = async (token, data) => {
 };
 
 const buyIPOAPI = async (token, data) => {
+  console.log('dtaa-----------',data)
   let apiConfig = JSON.parse(JSON.stringify(IPOAPI.buyIPOAPI));
   apiConfig.url = process.env.IPO_BASE_URL + "/v1/transactions/add";
-  apiConfig.headers["Authorization"] = `Bearer ${token}`;
+  apiConfig.headers["Access-Token"] = `${token}`;
   let payload = data;
   apiConfig.data = payload;
   console.log("apiConfig====", apiConfig);

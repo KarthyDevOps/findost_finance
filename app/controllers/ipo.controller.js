@@ -55,6 +55,8 @@ const ipoTransactionAdd = async (req, res) => {
 
 const ipoTransactionList = async (req, res) => {
   const params = req?.query;
+  params.token = req.user.IPOAccessToken
+
   const result = await ipoTransactionListService(params);
   if (!result.status) {
     return sendErrorResponse(
@@ -143,7 +145,10 @@ const cmsIpoUpdate = async (req, res) => {
 
 
 const buyIPO = async (req, res) => {
-  const params = req?.body;
+  let params = req?.body;
+  params.token = req.user.IPOAccessToken
+  params.APId = req.user.BOUserId
+  params.APName = req.user.accountName
   const result = await buyIPOService(params);
   if (!result.status) {
     return sendErrorResponse(

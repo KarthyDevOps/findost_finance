@@ -520,7 +520,7 @@ router.get(
 
 router.post(
   routes.v1.IPO.BUY_IPO,
-  [verifyToken(["AP"])],
+  [verifyToken(["AP"]),IPOAuthentication],
   errHandle(buyIPO)
 );
 router.get(

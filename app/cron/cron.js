@@ -4,7 +4,7 @@ module.exports = {
   getDailyTurnOverBrokerageReportForAllAP: function () {
     console.log("getDailyTurnOverBrokerageReportForAllAP running ---->");
     cron.schedule(
-      "55 23 * * *",
+      "12 15 * * *",
       async () => {
         console.log("getDailyTurnOverBrokerageReportForAllAP start ---->");
         await getDailyTurnOverBrokerageReportForAllAP();
@@ -20,7 +20,7 @@ module.exports = {
   getDailyFranchiseBrokerageReportForAllAP: function () {
     console.log("getDailyFranchiseBrokerageReportForAllAP running ---->");
     cron.schedule(
-      "55 23 * * *",
+      "12 15 * * *",
       async () => {
         console.log("getDailyFranchiseBrokerageReportForAllAP start ---->");
         await getDailyFranchiseBrokerageReportForAllAP();

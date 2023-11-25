@@ -20,7 +20,9 @@ const {
   createProductIpoValidation,
   deleteProductIpoValidation,
   lumpsumValidation,
-  sipValidation
+  sipValidation,
+  buyIPOValidation,
+  cmsIpoUpdateValidation
 } = require("../validator/validator");
 
 const {
@@ -30,7 +32,8 @@ const {
 } = require("../controllers/crmTicketManagement.controller");
 const {
   getDailyTurnOverBrokerageReportForAllAP,
-  getDailyFranchiseBrokerageReportForAllAP
+  getDailyFranchiseBrokerageReportForAllAP,
+  getDailyIPO
 } = require("../controllers/cron.controller");
 
 const {
@@ -506,7 +509,7 @@ router.get(
 );
 router.post(
   routes.v1.IPO.CMS_IPO_UPDATED,
-  [verifyToken(["ADMIN"])],
+  [verifyToken(["ADMIN"]),cmsIpoUpdateValidation],
   errHandle(cmsIpoUpdate)
 );
 
@@ -520,9 +523,16 @@ router.get(
 
 router.post(
   routes.v1.IPO.BUY_IPO,
-  [verifyToken(["AP"]),IPOAuthentication],
+  [verifyToken(["AP"]),IPOAuthentication,buyIPOValidation],
   errHandle(buyIPO)
 );
+
+router.get(
+  routes.v1.IPO.CRON_RUN,
+  [verifyToken(["AP"])],
+  errHandle(getDailyIPO)
+);
+
 router.get(
   routes.v1.KORP.getDailyTurnOverBrokerageReportForAllAP,
   [],

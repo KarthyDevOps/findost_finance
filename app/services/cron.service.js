@@ -1,12 +1,18 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
+const { IPOAPIServices } = require("../externalServices");
+
 const {
   TurnoverBrokerageReport,
 } = require("../models/turnoverBrokerageReport");
 const {
   FranchiseBrokerageReport,
 } = require("../models/franchiseBrokerageReport");
+const {
+  cmsIpoDates,
+} = require("../models/cmsIpoDates");
+
 const moment = require("moment");
 let xmlParser = require("xml2json");
 function convertToArray(value) {
@@ -203,7 +209,53 @@ const getDailyFranchiseBrokerageReportForAllAPService = async (params) => {
     };
   }
 };
+const getDailyIPOService = async (params) => {
+  let tokenResp = await IPOAPIServices.ipoLoginAPI(params);
+  if (tokenResp && tokenResp.status =="success") {
+    params.token = tokenResp.token
+    let resp = await IPOAPIServices.ipoMasterAPI(params.token, params);
+    console.log('resp',resp)
+    let insertRecord = [];
+    let oldIPOIds ={}
+    if (resp && resp.data && resp.data.length > 0) {
+      let cmsIpoDatesList = await cmsIpoDates.find({ isDeleted: false });
+      cmsIpoDatesList =JSON.parse(JSON.stringify(cmsIpoDatesList))
+      cmsIpoDatesList.map((data) => {
+        oldIPOIds[data.ipoisinNumber] = {
+          ...data,
+        };
+      });
+      result = resp.data.map((data) => {
+        if (oldIPOIds[data.isin]) {
+          
+        } else {
+          data.ipoisinNumber = data.isin
+          insertRecord.push(data) 
+        }
+      })
+    }
+    if(insertRecord.length >0)
+    {
+      await cmsIpoDates.insertMany(insertRecord);
+    }
+
+    return {
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
+      data: [],
+    };
+  } else {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_NOT_FOUND,
+      message: messages?.error,
+      data: [],
+    };
+  }
+};
 module.exports = {
   getDailyTurnOverBrokerageReportForAllAPService,
   getDailyFranchiseBrokerageReportForAllAPService,
+  getDailyIPOService
 };

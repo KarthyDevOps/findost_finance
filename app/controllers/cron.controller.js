@@ -4,7 +4,8 @@ const {
   } = require("../response/response");
   const {
     getDailyTurnOverBrokerageReportForAllAPService,
-    getDailyFranchiseBrokerageReportForAllAPService
+    getDailyFranchiseBrokerageReportForAllAPService,
+    getDailyIPOService
   } = require("../services/cron.service");
   
   const getDailyTurnOverBrokerageReportForAllAP = async (req, res) => {
@@ -48,9 +49,30 @@ const {
     );
   };
   
+  const getDailyIPO = async (req, res) => {
+    let params = req?.query;
+    const result = await getDailyIPOService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   
   module.exports = {
     getDailyTurnOverBrokerageReportForAllAP,
-    getDailyFranchiseBrokerageReportForAllAP
+    getDailyFranchiseBrokerageReportForAllAP,
+    getDailyIPO
   };
   

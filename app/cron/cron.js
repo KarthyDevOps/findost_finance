@@ -1,5 +1,9 @@
 const cron = require("node-cron");
-const {getDailyTurnOverBrokerageReportForAllAP,getDailyFranchiseBrokerageReportForAllAP} = require("../controllers/cron.controller");
+const {
+  getDailyTurnOverBrokerageReportForAllAP,
+  getDailyFranchiseBrokerageReportForAllAP,
+  getDailyIPO
+} = require("../controllers/cron.controller");
 module.exports = {
   getDailyTurnOverBrokerageReportForAllAP: function () {
     console.log("getDailyTurnOverBrokerageReportForAllAP running ---->");
@@ -32,5 +36,18 @@ module.exports = {
       }
     );
   },
-  
+  getDailyIPO: function () {
+    cron.schedule(
+      "12 15 * * *",
+      async () => {
+        console.log("getDailyIPO start ---->");
+        await getDailyIPO();
+        console.log("getDailyIPO end ---->");
+      },
+      {
+        scheduled: true,
+        timezone: "Asia/kolkata",
+      }
+    );
+  },
 };

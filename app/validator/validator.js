@@ -193,7 +193,33 @@ const sipValidation = (req, res, next) => {
   });
   return bodyParamValidation(req, res, next, schema);
 };
+const buyIPOValidation = (req, res, next) => {
+  const schema = joi.object({
+    ipoisinNumber: joi.string().required(),
+    clientName: joi.string().required(),
+    clientCode: joi.string().required(),
+    clientBenId: joi.string().required(),
+    symbol: joi.string().required(),
+    upi: joi.string().required(),
+    quantity: joi.string().required(),
+    atCutOff: joi.boolean().required(),
+    price: joi.boolean().optional(),
+    amount: joi.boolean().optional(),
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
 
+const cmsIpoUpdateValidation = (req, res, next) => {
+  const schema = joi.object({
+    applicationNo: joi.array().required(),
+    ipoisinNumber: joi.string().required(),
+    ipoDoc: joi.string().required(),
+    allotmnetDate: joi.date().required(),
+    refundInitiation: joi.date().required(),
+    listingOnExchange: joi.date().required()
+  });
+  return bodyParamValidation(req, res, next, schema);
+};
 
 module.exports = {
   bodyParamValidation,
@@ -207,5 +233,7 @@ module.exports = {
   deleteProductIpoValidation,
   leadListValidation,
   lumpsumValidation,
-  sipValidation
+  sipValidation,
+  buyIPOValidation,
+  cmsIpoUpdateValidation
 };

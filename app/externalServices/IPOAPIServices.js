@@ -1,6 +1,7 @@
 let { Rest } = require("./../restCalls");
 let { IPOAPI } = require("../configs");
 const qs = require("qs");
+const moment = require("moment");
 
 const ipoLoginAPI = async (data) => {
   let apiConfig = JSON.parse(JSON.stringify(IPOAPI.ipoLoginAPI));
@@ -15,14 +16,16 @@ const ipoLoginAPI = async (data) => {
   return await Rest.callApi(apiConfig);
 };
 
-const ipoTransactionListAPI = async (token, data=new Date()) => {
+const ipoTransactionListAPI = async (token, date=new Date('2023/04/01')) => {
+  console.log('token -------',token)
   let apiConfig = JSON.parse(JSON.stringify(IPOAPI.ipoTransactionListAPI));
 
   apiConfig.url = process.env.IPO_BASE_URL + "/v1/transactions/";
-  const queryString = `${data.date || new Date()}`;
+  let queryString = `${date || new Date()}`;
+  queryString = moment(queryString).format("DD-MM-YYYY") + '%2000:00:00'
   apiConfig.url = apiConfig.url + queryString;
-  apiConfig.headers["Authorization"] = `Bearer ${token}`;
-  apiConfig.data = data;
+  apiConfig.headers["Access-Token"] = token;
+  //apiConfig.data = data;
   console.log("apiConfig====", apiConfig);
   return await Rest.callApi(apiConfig);
 };

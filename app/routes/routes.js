@@ -78,6 +78,7 @@ const routes = {
     IPO: {
       LOGIN: "/v1/ipo/login",
       IPO_MASTER: "/v1/ipo/master",
+      CRON_RUN: "/v1/ipo/cronRun",
       TRANSACTION_ADD: "/v1/ipo/transactionAdd",
       TRANSACTION_LIST: "/v1/ipo/transactionList",
       CMS_IPO_UPDATED: "/v1/ipo/cmsIpoUpdate",

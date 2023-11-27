@@ -26,25 +26,25 @@ const ipoTransactionAddService = async (params) => {
 };
 const ipoTransactionListService = async (params) => {
   let resp = await IPOAPIServices.ipoTransactionListAPI(params.token);
-  if(resp && resp.status=='success')
-  {
+  if (resp && resp.status == "success") {
+    if(resp.rejectApplication ==true || 'true')
+    {
+     // if(resp.)
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
       data: resp,
     };
-  }
-  else
-  {
+  } else {
     return {
-      status: false,
-      statusCode: statusCodes?.HTTP_BAD_REQUEST,
-      message: messages?.error,
+      status: true,
+      statusCode: statusCodes?.HTTP_OK,
+      message: messages?.success,
       data: [],
     };
   }
- 
 };
 const cmsIpoUpdateService = async (params) => {
   let cmsIpoDatesList = await cmsIpoDates.findOneAndUpdate(
@@ -96,6 +96,8 @@ const ipoMasterService = async (params) => {
       if (isUsedISINnoObj[data.ipoisinNumber]) {
         data.balanceApplicationNoCount =
           +total - +isUsedISINnoObj[data.ipoisinNumber].lenght;
+      } else {
+        data.balanceApplicationNoCount = total;
       }
     }
     return { ...data };
@@ -109,7 +111,7 @@ const ipoMasterService = async (params) => {
 };
 const buyIPOService = async (params) => {
   let applicationNumber = null;
-  let cmsIpoDatesResp = cmsIpoDates
+  let cmsIpoDatesResp = await cmsIpoDates
     .findOne({ ipoisinNumber: params.ipoisinNumber })
     .lean();
   let ipoApplicationNoResp = await ipoApplicationNo
@@ -120,120 +122,133 @@ const buyIPOService = async (params) => {
     if (!isUsedISINnoObj[data.ipoisinNumber]) {
       isUsedISINnoObj[data.ipoisinNumber] = [];
     }
-    isUsedISINnoObj[data.ipoisinNumber].push(data.applicationNo);
+    isUsedISINnoObj[data.ipoisinNumber].push(+data.applicationNo);
   });
-  function returnValue(d1) {
-    for (let i = +d1.from; i <= +d1.to; i++) {
-      if(isUsedISINnoObj[data.ipoisinNumber].indexOf(i) ==-1)
-      {
-        return i
-      }
-    }
-    return null
-  }
-  if (cmsIpoDatesResp) {
-    result = resp.map((data) => {
-      if (isUsedISINnoObj[data.ipoisinNumber]) {
-        if (data.applicationNo && data.applicationNo.length > 0) {
-          let total = 0;
-          data.applicationNo.map((d1) => {
-            applicationNumber = returnValue(d1)
-          });
-        
+  function findNextNumber(applicationNo, usedNumbers) {
+    let nextNumber = null;
+    for (let i = 0; i < applicationNo.length; i++) {
+      for (let num = applicationNo[i].from; num <= applicationNo[i].to; num++) {
+        if (!usedNumbers.includes(num)) {
+          nextNumber = num;
+          break;
         }
       }
-    });
+      if (nextNumber !== null) {
+        break;
+      }
+    }
+    return nextNumber;
   }
-  console.log('applicationNumber',applicationNumber)
-  let payload = {
-    symbol: params.symbol || "IREDA",
-    applicationNumber: params.applicationNumber || "54694153",
-    category: params.category || "IND", // individual - retail, HNI (via its own PAN)
-    clientName: params.clientName || "Ankit Yadav",
-    depository: params.depository || "NSDL",
-    dpId: params.dpId || "IN304088", // NSDL = IN304088 or CDSL = 12081601, dematID - IN30408810009261
-    clientBenId: params.clientBenId || "10090076", // client holder id
-    nonASBA: false, // false – ASBA (default)
-    pan: params.pan || "AZKPY9523B",
-    referenceNumber: "MYREF0001", // NON-MANDATORY for UPI bid
-    allotmentMode: "demat",
-    upiFlag: "Y",
-    upi: params.upi || "8630832186@paytm", // client master at edelwiess available, look into it
-    bankCode: null, //
-    locationCode: null, //
-    timestamp: moment().format("DD-MM-YYYY HH:MM:SSS"),
-    subBrokerCode: params.APId || "17HS", // important to include
-    bids: [
-      {
-        activityType: "new",
-        quantity: params.quantity || 460, // > min qty
-        atCutOff: params.atCutOff || true,
-        remark: params.APId,
-      },
-    ],
-  };
-  if (params.atCutOff == false) {
-    payload.bids[0].price = params.price;
-    payload.bids[0].amount = params.amount;
-  }
-  console.log("payload----", payload);
-  // let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
-  let resp = {
-    symbol: "IREDA",
-    applicationNumber: "54694149",
-    clientName: "Ankit Yadav",
-    chequeNumber: "",
-    referenceNumber: "MYREF0001",
-    dpVerStatusFlag: "P",
-    subBrokerCode: "17HS",
-    depository: "NSDL",
-    pan: "AZKPY9523B",
-    ifsc: "AHD",
-    timestamp: "22-11-2023 10:42:28",
-    bankAccount: "",
-    bankCode: "",
-    dpVerReason: "",
-    dpId: "IN304088",
-    upi: "8630832186@paytm",
-    upiAmtBlocked: null,
-    bids: [
-      {
-        atCutOff: true,
-        amount: 14720,
-        quantity: 460,
-        bidReferenceNumber: 2023112201153223,
-        series: "",
-        price: 999999.99,
-        remark: "BD/000001/testingAnkit",
-        activityType: "new",
-        status: "success",
-      },
-    ],
-    allotmentMode: "demat",
-    dpVerFailCode: "",
-    nonASBA: false,
-    upiFlag: "Y",
-    category: "IND",
-    locationCode: "",
-    clientBenId: "10090076",
-    status: "success",
-  };
-  if (resp) {
-    if (resp.status == "success") {
-      await IPO.create(resp);
-      return {
-        status: false,
-        statusCode: statusCodes?.HTTP_NOT_FOUND,
-        message: resp.reason,
-        data: resp,
+  if (cmsIpoDatesResp) {
+    if (
+      cmsIpoDatesResp.applicationNo &&
+      cmsIpoDatesResp.applicationNo.length > 0
+    ) {
+      let balanceApplicationNoCount = 0;
+      let total = 0;
+      cmsIpoDatesResp.applicationNo.map((d1) => {
+        total = total + (+d1.to - +d1.from);
+      });
+      if (isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber]) {
+        balanceApplicationNoCount =
+          +total - +isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber].lenght;
+      } else {
+        balanceApplicationNoCount = total;
+      }
+      if (isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber]) {
+        if (
+          cmsIpoDatesResp.applicationNo &&
+          cmsIpoDatesResp.applicationNo.length > 0
+        ) {
+          applicationNumber = findNextNumber(
+            cmsIpoDatesResp.applicationNo,
+            isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber]
+          );
+        }
+      } else {
+        applicationNumber = cmsIpoDatesResp.applicationNo[0].from;
+      }
+      if (!applicationNumber) {
+        return {
+          status: false,
+          statusCode: statusCodes?.HTTP_NOT_FOUND,
+          message: "Application No Not Available please contact Admin...",
+          data: [],
+        };
+      }
+      params.applicationNumber = applicationNumber;
+      let payload = {
+        symbol: params.symbol || "IREDA",
+        applicationNumber: params.applicationNumber || "54694153",
+        category: params.category || "IND", // individual - retail, HNI (via its own PAN)
+        clientName: params.clientName || "Ankit Yadav",
+        depository: params.depository || "NSDL",
+        dpId: params.dpId || "IN304088", // NSDL = IN304088 or CDSL = 12081601, dematID - IN30408810009261
+        clientBenId: params.clientBenId || "10090076", // client holder id
+        nonASBA: false, // false – ASBA (default)
+        pan: params.pan || "AZKPY9523B",
+        referenceNumber: "MYREF0001", // NON-MANDATORY for UPI bid
+        allotmentMode: "demat",
+        upiFlag: "Y",
+        upi: params.upi || "8630832186@paytm", // client master at edelwiess available, look into it
+        bankCode: null, //
+        locationCode: null, //
+        timestamp: moment().format("DD-MM-YYYY HH:MM:SSS"),
+        subBrokerCode: params.APId || "17HS", // important to include
+        bids: [
+          {
+            activityType: "new",
+            quantity: params.quantity || 460, // > min qty
+            atCutOff: params.atCutOff || true,
+            remark: params.APId,
+          },
+        ],
       };
-      // update number
+      if (params.atCutOff == false) {
+        payload.bids[0].price = params.price;
+        payload.bids[0].amount = params.amount;
+      }
+      let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
+      if (resp) {
+        if (resp.status == "success") {
+          await IPO.create(resp);
+          let ipoApplicationNocreateResp = await ipoApplicationNo.create({
+            ipoisinNumber: params.ipoisinNumber,
+            applicationNo: applicationNumber,
+            clientCode: params.clientCode || "17HS",
+            apId: params.APId,
+          });
+          if (balanceApplicationNoCount < 100) {
+            // send mail alert
+          }
+          return {
+            status: false,
+            statusCode: statusCodes?.HTTP_NOT_FOUND,
+            message: resp.reason,
+            data: resp,
+          };
+        } else {
+          return {
+            status: false,
+            statusCode: statusCodes?.HTTP_NOT_FOUND,
+            message: resp.reason,
+            data: resp,
+          };
+        }
+      } else {
+        return {
+          status: false,
+          statusCode: statusCodes?.HTTP_NOT_FOUND,
+          message: messages?.error,
+          data: [],
+        };
+      }
     } else {
       return {
         status: false,
         statusCode: statusCodes?.HTTP_NOT_FOUND,
-        message: resp.reason,
-        data: resp,
+        message: "Application No Not Available please contact Admin...",
+        data: [],
       };
     }
   } else {
@@ -244,7 +259,6 @@ const buyIPOService = async (params) => {
       data: [],
     };
   }
-  console.log("resp", resp);
 };
 module.exports = {
   ipoLoginService,

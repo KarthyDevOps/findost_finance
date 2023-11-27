@@ -8,7 +8,7 @@ const {
   BSEStarAuthentication,
   verifyAdminRole,
   IPOAuthentication,
-  korpAuthentication
+  korpAuthentication,
 } = require("../middlewares/authentication");
 const {
   crmTicketListValidation,
@@ -22,9 +22,8 @@ const {
   lumpsumValidation,
   sipValidation,
   buyIPOValidation,
-  cmsIpoUpdateValidation
+  cmsIpoUpdateValidation,
 } = require("../validator/validator");
-
 const {
   createCrmTicket,
   crmTicketList,
@@ -33,28 +32,23 @@ const {
 const {
   getDailyTurnOverBrokerageReportForAllAP,
   getDailyFranchiseBrokerageReportForAllAP,
-  getDailyIPO
+  getDailyIPO,
 } = require("../controllers/cron.controller");
-
 const {
   ipoLogin,
   ipoTransactionAdd,
   ipoTransactionList,
   ipoMaster,
   cmsIpoUpdate,
-  buyIPO
+  buyIPO,
 } = require("../controllers/ipo.controller");
-
-
 const { createLeads, leadList } = require("../controllers/leads.controller");
-
 const {
   createWatchList,
   getWatchList,
   updateWatchList,
   watchListList,
 } = require("../controllers/watchList.controller");
-
 const {
   GetFundsList,
   categoryList,
@@ -94,15 +88,13 @@ const {
   clientListWithLedger,
   clientWithdrawalRequest,
   dashboardApStatusCount,
-  korpClientProfileSuperAdminToken
+  korpClientProfileSuperAdminToken,
 } = require("../controllers/korp.controller");
-
 const {
   bseStarAuthentication,
   bseStarSipCreate,
   bseStarLumpsumCreate,
 } = require("../controllers/bseStar.controller");
-
 const { errHandle } = require("../helpers/index");
 const {
   createProductIpo,
@@ -126,7 +118,6 @@ const {
   deleteAPRevenue,
   APRevenueList,
 } = require("../controllers/authorizedPersonRevenue.controller");
-
 const router = Router();
 //Ticket Management
 router.get(
@@ -144,13 +135,11 @@ router.get(
   [CRMTicketAuthentication, getCrmTicketeValidation],
   errHandle(getCrmTicket)
 );
-
 router.post(
   routes.v1.Leads.create,
   [verifyToken("AP"), CRMTicketAuthentication, leadCreateValidation],
   errHandle(createLeads)
 );
-
 router.get(
   routes.v1.Leads.list,
   [
@@ -160,9 +149,7 @@ router.get(
   ],
   errHandle(leadList)
 );
-
 //ACCORD FINTECH Management
-
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_FUNDS_LIST,
   [verifyToken("AP")],
@@ -178,13 +165,11 @@ router.get(
   [verifyToken("AP")],
   errHandle(categoryReturnsList)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST,
   [verifyToken("AP")],
   errHandle(schemesList)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.MF.SCHEME_LIST_WITH_INFO,
   [verifyToken("AP")],
@@ -195,7 +180,6 @@ router.get(
   [verifyToken("AP")],
   errHandle(GetMFNAVGraph)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_SCHEME_FILTERED_LIST,
   [verifyToken("AP")],
@@ -221,60 +205,48 @@ router.get(
   [verifyToken("AP")],
   errHandle(allHoldings)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.MF.NFO_UPDATES,
   [verifyToken("AP")],
   errHandle(nfoUpdates)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_ISSUE,
   [verifyToken("AP")],
   errHandle(ipoIssue)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_NEW_LISTING,
   [verifyToken("AP")],
   errHandle(ipoNewListing)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.IPO.IPO_SNAPSHOT,
   [verifyToken("AP")],
   errHandle(ipoSnapshot)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.MF.GET_FUND_FACT_SHEET,
   [verifyToken("AP")],
   errHandle(getFundFactsheet)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.NEWS.CORPORATE_NEWS,
   [verifyToken("AP")],
   errHandle(getCorporateNews)
 );
-
 router.get(
   routes.v1.ACCORD_FINTECH.NEWS.ECONOMY_NEWS,
   [verifyToken("AP")],
   errHandle(getEconomyNews)
 );
-
 //KORP Management
-
 router.post(routes.v1.KORP.AUTHENTICATION, [], errHandle(authentication));
-
-
 router.get(
   routes.v1.KORP.CLIENT_PROFILE_ADMIN_TOKEN,
   [korpAuthentication],
   errHandle(korpClientProfileSuperAdminToken)
 );
-
 router.get(
   routes.v1.KORP.CLIENT_LIST,
   [verifyToken("AP")],
@@ -285,7 +257,6 @@ router.get(
   [verifyToken("AP")],
   errHandle(clientListWithLedger)
 );
-
 router.get(
   routes.v1.KORP.CLIENT_DETAILS_API,
   [verifyToken("AP")],
@@ -306,7 +277,6 @@ router.get(
   [verifyToken("AP")],
   errHandle(clientWithMarginShortFall)
 );
-
 router.get(
   routes.v1.KORP.TOP_PERFORMING_CLIENT,
   [verifyToken("AP")],
@@ -337,7 +307,6 @@ router.get(
   [verifyToken("AP")],
   errHandle(myReportOverAll)
 );
-
 router.get(
   routes.v1.KORP.CLIENT_PROFILE,
   [verifyToken("AP")],
@@ -353,9 +322,7 @@ router.get(
   [verifyToken("AP")],
   errHandle(clientMaster)
 );
-
 //WATCHLIST Management
-
 router.post(
   routes.v1.WATCH_LIST.ADD,
   [verifyToken("AP"), createWatchListValidation],
@@ -376,9 +343,7 @@ router.get(
   [verifyToken("AP")],
   errHandle(updateWatchList)
 );
-
 //BSE STAR Management
-
 router.get(
   routes.v1.BSE_STAR.AUTHENTICATION,
   [BSEStarAuthentication],
@@ -386,20 +351,18 @@ router.get(
 );
 router.post(
   routes.v1.BSE_STAR.SIP_CREATE,
-  [verifyToken("AP"),BSEStarAuthentication,sipValidation],
+  [verifyToken("AP"), BSEStarAuthentication, sipValidation],
   errHandle(bseStarSipCreate)
 );
 router.post(
   routes.v1.BSE_STAR.LUMPSUM_CREATE,
-  [verifyToken("AP"),BSEStarAuthentication,lumpsumValidation],
+  [verifyToken("AP"), BSEStarAuthentication, lumpsumValidation],
   errHandle(bseStarLumpsumCreate)
 );
-
 // Product-Ipo Mobile Module
-
 router.post(
   routes.v1.PRODUCT_IPO.create,
-  [verifyToken(["ADMIN","AP"]), createProductIpoValidation],
+  [verifyToken(["ADMIN", "AP"]), createProductIpoValidation],
   errHandle(createProductIpo)
 );
 router.put(
@@ -423,9 +386,7 @@ router.get(
   errHandle(productIpoCountList)
 );
 //router.delete(routes.v1.PRODUCT_IPO.delete, [verifyToken(["AP"]),deleteProductIpoValidation], errHandle(deleteProductIpo)); for future use...
-
 // Mutual- fund Ipo Mobile Module
-
 router.post(
   routes.v1.MUTUAL_FUND.create,
   [verifyToken(["AP"])],
@@ -451,7 +412,6 @@ router.delete(
   [verifyToken(["AP"])],
   errHandle(deleteMutualFund)
 );
-
 // Mutual- fund Ipo Mobile Module
 router.post(
   routes.v1.AP_REVENUE.create,
@@ -478,7 +438,6 @@ router.delete(
   [verifyToken(["AP"])],
   errHandle(deleteAPRevenue)
 );
-
 router.post(
   routes.v1.KORP.CLIENT_WITHDRAWAL_REQUEST,
   [verifyToken(["AP"])],
@@ -489,50 +448,38 @@ router.post(
   [verifyToken(["ADMIN"])],
   errHandle(dashboardApStatusCount)
 );
-
-
-
-router.post(
-  routes.v1.IPO.LOGIN,
-  [verifyToken(["AP"])],
-  errHandle(ipoLogin)
-);
+router.post(routes.v1.IPO.LOGIN, [verifyToken(["AP"])], errHandle(ipoLogin));
 router.post(
   routes.v1.IPO.TRANSACTION_ADD,
-  [verifyToken(["AP"]),IPOAuthentication],
+  [verifyToken(["AP"]), IPOAuthentication],
   errHandle(ipoTransactionAdd)
 );
 router.get(
   routes.v1.IPO.TRANSACTION_LIST,
-  [verifyToken(["AP"]),IPOAuthentication],
+  [verifyToken(["AP"]), IPOAuthentication],
   errHandle(ipoTransactionList)
 );
 router.post(
   routes.v1.IPO.CMS_IPO_UPDATED,
-  [verifyToken(["ADMIN"]),cmsIpoUpdateValidation],
+  [verifyToken(["ADMIN"]), cmsIpoUpdateValidation],
   errHandle(cmsIpoUpdate)
 );
-
-
 router.get(
   routes.v1.IPO.IPO_MASTER,
-  [verifyToken(["AP"]),IPOAuthentication],
+  [verifyToken(["AP"]), IPOAuthentication],
   errHandle(ipoMaster)
 );
-
-
 router.post(
   routes.v1.IPO.BUY_IPO,
-  [verifyToken(["AP"]),IPOAuthentication,buyIPOValidation],
+  [verifyToken(["AP"]), IPOAuthentication, buyIPOValidation],
+  // [verifyToken(["AP"]),IPOAuthentication],
   errHandle(buyIPO)
 );
-
 router.get(
   routes.v1.IPO.CRON_RUN,
   [verifyToken(["AP"])],
   errHandle(getDailyIPO)
 );
-
 router.get(
   routes.v1.KORP.getDailyTurnOverBrokerageReportForAllAP,
   [],
@@ -543,7 +490,4 @@ router.get(
   [],
   errHandle(getDailyFranchiseBrokerageReportForAllAP)
 );
-
-
-
 module.exports = router;

@@ -315,6 +315,9 @@ const clientListService = async (params) => {
           res.StateCode = profileResp?.MasterData[0]?.StateCode || "";
           res.StateName = profileResp?.MasterData[0]?.StateName || "";
           res.CountryCode = profileResp?.MasterData[0]?.CountryCode || "";
+
+          res.DepositoryClientID = profileResp?.DPDetail[0]?.DepositoryClientID || "";
+
           result.push(res);
         }
       } else if (params.status == "INACTIVE") {

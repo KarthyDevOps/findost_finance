@@ -8,7 +8,7 @@ const {
   pageMetaService,
 } = require("../helpers/index");
 const { WatchList } = require("../models/watchList");
-
+const moment = require("moment");
 
 const GetFundsListService = async (params) => {
   let resp = await AccordFintechAPIServices.GetFundsListAPI(params);
@@ -192,6 +192,17 @@ const nfoUpdatesService = async (params) => {
 const getCorporateNewsService = async (params) => {
   let resp = await AccordFintechAPIServices.getCorporateNewsAPI(params);
   console.log(resp)
+  resp.Table = resp.Table.map((e)=>{
+    e.Newsdate =  moment(e.Newsdate).format("DD-MM-YYYY")
+    if(e.NewsTime)
+    {
+      e.NewsTime =e.NewsTime.split(" ")
+      e.NewsTime =e.NewsTime[1] + ' '+e.NewsTime[2]
+      e.NewsTime = moment(e.NewsTime, ["h:mm A"]).format("HH:mm");
+    }
+    
+    return e
+  })
   const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
   return {
     status: true,
@@ -203,6 +214,17 @@ const getCorporateNewsService = async (params) => {
 
 const getEconomyNewsService = async (params) => {
   let resp = await AccordFintechAPIServices.getEconomyNewsAPI(params);
+  resp.Table = resp.Table.map((e)=>{
+    e.Newsdate =  moment(e.Newsdate).format("DD-MM-YYYY")
+    if(e.NewsTime)
+    {
+      e.NewsTime =e.NewsTime.split(" ")
+      e.NewsTime =e.NewsTime[1] + ' '+e.NewsTime[2]
+      e.NewsTime = moment(e.NewsTime, ["h:mm A"]).format("HH:mm");
+    }
+    
+    return e
+  })
   const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
   return {
     status: true,

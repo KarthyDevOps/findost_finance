@@ -1,7 +1,7 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
-let xmlParser = require("xml2json");
+
 const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
 

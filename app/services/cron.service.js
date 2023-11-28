@@ -230,7 +230,11 @@ const getDailyIPOService = async (params) => {
           
         } else {
           data.ipoisinNumber = data.isin
-          insertRecord.push(data) 
+          if(data.issueType == "EQUITY")
+          {
+            insertRecord.push(data) 
+          }
+         
         }
       })
     }

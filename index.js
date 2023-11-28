@@ -63,6 +63,7 @@ app.use("/finance", routerService);
 let cron = require('./app/cron/cron.js')
 cron.getDailyTurnOverBrokerageReportForAllAP()
 cron.getDailyFranchiseBrokerageReportForAllAP()
+cron.getDailyIPO()
 
 
 app.listen(port, () => {

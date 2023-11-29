@@ -110,6 +110,11 @@ const cmsIpoDatesSchema = new mongoose.Schema(
       trim: true,
       default: null,
     },
+    ipoDocType: {
+      type: String,
+      trim: true,
+      default: null,
+    },
     allotmnetDate: {
       type: Date,
       trim: true,

@@ -29,7 +29,7 @@ const ipoTransactionListService = async (params) => {
   if (resp && resp.status == "success") {
     if(resp.rejectApplication ==true || 'true')
     {
-     // if(resp.)
+      
     }
     return {
       status: true,
@@ -53,6 +53,7 @@ const cmsIpoUpdateService = async (params) => {
       applicationNo: params.applicationNo || [],
       ipoisinNumber: params.ipoisinNumber,
       ipoDoc: params.ipoDoc,
+      ipoDocType : params.ipoDocType,
       allotmnetDate: params.allotmnetDate,
       refundInitiation: params.refundInitiation,
       listingOnExchange: params.listingOnExchange,

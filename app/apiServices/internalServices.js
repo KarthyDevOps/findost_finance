@@ -1,6 +1,21 @@
 const FormData = require("form-data");
 let { InternalAPIs } = require("../configs");
 let { Rest } = require("../restCalls");
+
+const sendEmail = async (data) => {
+  try {
+    console.log("The following is the data", data);
+    let urlPayload = JSON.parse(JSON.stringify(InternalAPIs.sendEmail));
+    console.log('urlPayload', urlPayload)
+    urlPayload.data = data;
+    let response = await Rest.callApi(urlPayload);
+    console.log("The following is the response", response);
+    return response.data;
+  } catch (err) {
+    console.log(">>>>>>", err);
+    throw new Error(err);
+  }
+};
 const getUserById = async (data) => {
   let apiConfig = JSON.parse(JSON.stringify(InternalAPIs.getUserById));
   apiConfig.url = process.env.USER_URL + process.env.GET_USER_BY_ID+data._id;
@@ -45,5 +60,6 @@ module.exports = {
   getAPById,
   getSequenceId,
   postLeadCreationNotification,
-  getBOUSERSById
+  getBOUSERSById,
+  sendEmail
 };

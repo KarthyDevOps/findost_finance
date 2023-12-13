@@ -27,7 +27,7 @@ const ipoTransactionAddService = async (params) => {
 const ipoTransactionListService = async (params) => {
   let resp = await IPOAPIServices.ipoTransactionListAPI(params.token);
   if (resp && resp.status == "success") {
-    if(resp.rejectApplication ==true || 'true')
+    if(params.rejectApplication ==true || 'true')
     {
       
     }
@@ -108,6 +108,12 @@ const ipoMasterService = async (params) => {
     }
     return { ...data };
   });
+  if(params.status)
+  {
+    result = result.filter((data) => data.status ==params.status)
+  }
+  
+  
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,

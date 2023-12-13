@@ -203,8 +203,8 @@ const buyIPOValidation = (req, res, next) => {
     upi: joi.string().required(),
     quantity: joi.string().required(),
     atCutOff: joi.boolean().required(),
-    price: joi.boolean().optional(),
-    amount: joi.boolean().optional(),
+    price: joi.number().optional(),
+    amount: joi.number().optional(),
   });
   return bodyParamValidation(req, res, next, schema);
 };

@@ -79,14 +79,19 @@ const ipoMasterService = async (params) => {
     }
     isUsedISINnoObj[data.ipoisinNumber].push(data);
   });
+  console.log('isUsedISINnoObj----',isUsedISINnoObj)
   resp = JSON.parse(JSON.stringify(resp));
   result = resp.map((data) => {
     data.balanceApplicationNoCount = 0;
     if (
-      new Date().getTime() > new Date(moment(data.biddingStartDate)).getTime()
+      new Date().getTime() > new Date(moment(data.biddingStartDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime() && new Date().getTime() <= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime()
     ) {
       data.status = "OPEN";
-    } else {
+    }
+    else if(new Date().getTime() >= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime()) {
+      data.status = "CLOSED";
+    } 
+    else if(new Date().getTime() < new Date(moment(data.biddingStartDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime()) {
       data.status = "UPCOMMING";
     }
     if (data.applicationNo && data.applicationNo.length > 0) {
@@ -96,7 +101,7 @@ const ipoMasterService = async (params) => {
       });
       if (isUsedISINnoObj[data.ipoisinNumber]) {
         data.balanceApplicationNoCount =
-          +total - +isUsedISINnoObj[data.ipoisinNumber].lenght;
+          +total - +isUsedISINnoObj[data.ipoisinNumber].length;
       } else {
         data.balanceApplicationNoCount = total;
       }
@@ -210,6 +215,7 @@ const buyIPOService = async (params) => {
         payload.bids[0].amount = params.amount;
       }
       let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
+      console.log('22resp' ,resp)
       if (resp) {
         if (resp.status == "success") {
           await IPO.create(resp);
@@ -224,8 +230,8 @@ const buyIPOService = async (params) => {
           }
           return {
             status: false,
-            statusCode: statusCodes?.HTTP_NOT_FOUND,
-            message: resp.reason,
+            statusCode: statusCodes?.HTTP_OK,
+            message: "IPO added",
             data: resp,
           };
         } else {

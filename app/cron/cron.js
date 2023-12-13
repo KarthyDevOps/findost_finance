@@ -37,8 +37,9 @@ module.exports = {
     );
   },
   getDailyIPO: function () {
+    console.log("getDailyIPO start -  111--->");
     cron.schedule(
-      "1 0 * * *",
+      "59 23 * * *",
       async () => {
         console.log("getDailyIPO start ---->");
         await getDailyIPO();

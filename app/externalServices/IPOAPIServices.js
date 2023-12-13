@@ -54,14 +54,20 @@ const ipoTransactionAddAPI = async (token, data) => {
 };
 
 const buyIPOAPI = async (token, data) => {
-  console.log('dtaa-----------',data)
-  let apiConfig = JSON.parse(JSON.stringify(IPOAPI.buyIPOAPI));
-  apiConfig.url = process.env.IPO_BASE_URL + "/v1/transactions/add";
-  apiConfig.headers["Access-Token"] = `${token}`;
-  let payload = data;
-  apiConfig.data = payload;
-  console.log("apiConfig====", apiConfig);
-  return await Rest.callApi(apiConfig);
+  try{
+    console.log('dtaa-----------',JSON.stringify(data))
+    let apiConfig = JSON.parse(JSON.stringify(IPOAPI.buyIPOAPI));
+    apiConfig.url = process.env.IPO_BASE_URL + "/v1/transactions/add";
+    apiConfig.headers["Access-Token"] = `${token}`;
+    let payload = data;
+    apiConfig.data = payload;
+    console.log("apiConfig====", apiConfig);
+    return await Rest.callApi(apiConfig);
+  }
+  catch (e){
+    console.log('---------------er ----',e)
+  }
+  
 };
 
 module.exports = {

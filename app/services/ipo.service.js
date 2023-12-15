@@ -30,10 +30,22 @@ const ipoTransactionAddService = async (params) => {
 };
 const ipoTransactionListService = async (params) => {
   let resp = await IPOAPIServices.ipoTransactionListAPI(params.token);
+  let cmsIpoDatesResp = await cmsIpoDates.find({ isDeleted: false });
+  let obj ={}
+  cmsIpoDatesResp.map((data) => {
+    obj[data.symbol] = data
+  })
   if (resp && resp.status == "success") {
+    resp.transactions = resp.transactions.map((e)=>{
+      if(obj[e.symbol])
+      {
+        e = {...e,...obj[e.symbol]}
+      }
+      return e
+    })
     if(params.rejectApplication ==true || 'true')
     {
-      
+      resp.transactions = resp.transactions.filter((e)=>e.status !="status")
     }
     return {
       status: true,

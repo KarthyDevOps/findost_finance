@@ -39,7 +39,7 @@ const ipoTransactionListService = async (params) => {
     resp.transactions = resp.transactions.map((e)=>{
       if(obj[e.symbol])
       {
-        e = {...e,...obj[e.symbol]}
+        e = {...obj[e.symbol],...e}
       }
       return e
     })

@@ -5,7 +5,11 @@ const { cmsIpoDates } = require("../models/cmsIpoDates");
 const { ipoApplicationNo } = require("../models/ipoApplicationNo");
 const { IPO } = require("../models/ipo");
 const moment = require("moment");
+const {sendEmail} = require("../apiServices/internalServices");
+
+
 const { pageMetaService } = require("../helpers/index");
+const { getMaxListeners } = require("process");
 const ipoLoginService = async (params) => {
   let resp = await IPOAPIServices.ipoLoginAPI(params);
   return {
@@ -113,7 +117,6 @@ const ipoMasterService = async (params) => {
     result = result.filter((data) => data.status ==params.status)
   }
   
-  
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -191,7 +194,7 @@ const buyIPOService = async (params) => {
       params.applicationNumber = applicationNumber;
       let payload = {
         symbol: params.symbol || "IREDA",
-        applicationNumber: params.applicationNumber || "54694153",
+        applicationNumber: params.oldApplicationNumber || params.applicationNumber || "54694153",
         category: params.category || "IND", // individual - retail, HNI (via its own PAN)
         clientName: params.clientName || "Ankit Yadav",
         depository: params.depository || "NSDL",
@@ -220,6 +223,12 @@ const buyIPOService = async (params) => {
         payload.bids[0].price = params.price;
         payload.bids[0].amount = params.amount;
       }
+
+      if(params.activityType == "cancel")
+      {
+        payload.bids[0].activityType = 'cancel',
+        payload.bids[0].bidReferenceNumber = params.bidReferenceNumber
+      }
       let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
       console.log('22resp' ,resp)
       if (resp) {
@@ -233,11 +242,18 @@ const buyIPOService = async (params) => {
           });
           if (balanceApplicationNoCount < 100) {
             // send mail alert
+            sendEmail({
+              to : process.env.IPO_APPLICATION_COUNT_ALERT_MAIL,
+              subject: "Login Credentials",
+              template: "forgot_password",
+              count:balanceApplicationNoCount,
+              name : cmsIpoDatesResp.name
+            })
           }
           return {
             status: false,
             statusCode: statusCodes?.HTTP_OK,
-            message: "IPO added",
+            message: "IPO added Successfully...",
             data: resp,
           };
         } else {

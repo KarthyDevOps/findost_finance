@@ -30,7 +30,7 @@ const ipoTransactionAddService = async (params) => {
 };
 const ipoTransactionListService = async (params) => {
   let resp = await IPOAPIServices.ipoTransactionListAPI(params.token);
-  let cmsIpoDatesResp = await cmsIpoDates.find({ isDeleted: false });
+  let cmsIpoDatesResp = await cmsIpoDates.find({ isDeleted: false }).lean();
   let obj ={}
   cmsIpoDatesResp.map((data) => {
     obj[data.symbol] = data
@@ -84,7 +84,7 @@ const cmsIpoUpdateService = async (params) => {
   };
 };
 const ipoMasterService = async (params) => {
-  let resp = await cmsIpoDates.find({ isDeleted: false });
+  let resp = await cmsIpoDates.find({ isDeleted: false }).lean();
   let ipoApplicationNoResp = await ipoApplicationNo
     .find({ isDeleted: false })
     .lean();

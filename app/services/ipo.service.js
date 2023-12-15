@@ -43,7 +43,7 @@ const ipoTransactionListService = async (params) => {
       }
       return e
     })
-    if(params.rejectApplication ==true || 'true')
+    if(params.rejectApplication ==true ||  params.rejectApplication =='true')
     {
       resp.transactions = resp.transactions.filter((e)=>e.status !="success")
     }

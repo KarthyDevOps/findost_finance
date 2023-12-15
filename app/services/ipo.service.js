@@ -100,14 +100,14 @@ const ipoMasterService = async (params) => {
   result = resp.map((data) => {
     data.balanceApplicationNoCount = 0;
     if (
-      new Date().getTime() > new Date(moment(data.biddingStartDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime() && new Date().getTime() <= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime()
+      new Date().getTime() > new Date(moment(data.biddingStartDate,'DD-MM-YYYY').startOf('day')).getTime() && new Date().getTime() <= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').endOf('day')).getTime()
     ) {
       data.status = "OPEN";
     }
-    else if(new Date().getTime() >= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime()) {
+    else if(new Date().getTime() >= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').endOf('day')).getTime()) {
       data.status = "CLOSED";
     } 
-    else if(new Date().getTime() < new Date(moment(data.biddingStartDate,'DD-MM-YYYY').format('YYYY-MM-DD')).getTime()) {
+    else if(new Date().getTime() < new Date(moment(data.biddingStartDate,'DD-MM-YYYY').startOf('day')).getTime()) {
       data.status = "UPCOMMING";
     }
     if (data.applicationNo && data.applicationNo.length > 0) {

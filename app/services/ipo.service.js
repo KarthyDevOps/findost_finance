@@ -84,7 +84,7 @@ const cmsIpoUpdateService = async (params) => {
   };
 };
 const ipoMasterService = async (params) => {
-  let resp = await cmsIpoDates.find({ isDeleted: false }).lean();
+  let resp = await cmsIpoDates.find({ isDeleted: false });
   let ipoApplicationNoResp = await ipoApplicationNo
     .find({ isDeleted: false })
     .lean();

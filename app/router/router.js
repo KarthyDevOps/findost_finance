@@ -89,6 +89,7 @@ const {
   clientWithdrawalRequest,
   dashboardApStatusCount,
   korpClientProfileSuperAdminToken,
+  validateUPI
 } = require("../controllers/korp.controller");
 const {
   bseStarAuthentication,
@@ -490,4 +491,14 @@ router.get(
   [],
   errHandle(getDailyFranchiseBrokerageReportForAllAP)
 );
+
+
+
+
+router.get(
+  routes.v1.VALIDATE_UPI,
+  [verifyToken(["AP"])],
+  errHandle(validateUPI)
+);
+
 module.exports = router;

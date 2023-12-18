@@ -25,7 +25,8 @@ const {
     clientListWithLedgerService,
     clientWithdrawalRequestService,
     dashboardApStatusCountService,
-    korpClientProfileSuperAdminTokenService
+    korpClientProfileSuperAdminTokenService,
+    validateUPIService
   } = require("../services/korp.service");
   
   const authentication = async (req, res) => {
@@ -534,6 +535,28 @@ const {
       result?.data
     );
   };
+
+  const validateUPI = async (req, res) => {
+    let params = req?.query;
+    const result = await validateUPIService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+  
   
   
   module.exports = {
@@ -555,6 +578,7 @@ const {
     clientListWithLedger,
     clientWithdrawalRequest,
     dashboardApStatusCount,
-    korpClientProfileSuperAdminToken
+    korpClientProfileSuperAdminToken,
+    validateUPI
   };
   

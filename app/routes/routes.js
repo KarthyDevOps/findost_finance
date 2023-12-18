@@ -105,7 +105,8 @@ const routes = {
       get: "/v1/AP-REVENUE/get",
       update: "/v1/AP-REVENUE/update",
       delete: "/v1/AP-REVENUE/delete",
-    }
+    },
+    VALIDATE_UPI:"/v1/validateUPI",
   },
 };
 

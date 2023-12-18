@@ -205,28 +205,28 @@ const buyIPOService = async (params) => {
       }
       params.applicationNumber = applicationNumber;
       let payload = {
-        symbol: params.symbol || "IREDA",
-        applicationNumber: params.oldApplicationNumber || params.applicationNumber || "54694153",
+        symbol: params.symbol ,
+        applicationNumber: params.oldApplicationNumber || params.applicationNumber ,
         category: params.category || "IND", // individual - retail, HNI (via its own PAN)
-        clientName: params.clientName || "Ankit Yadav",
-        depository: params.depository || "NSDL",
+        clientName: params.clientName ,
+        depository: params.depository ,
         dpId: params.dpId || "IN304088", // NSDL = IN304088 or CDSL = 12081601, dematID - IN30408810009261
-        clientBenId: params.clientBenId || "10090076", // client holder id
+        clientBenId: params.clientBenId , // client holder id
         nonASBA: false, // false – ASBA (default)
-        pan: params.pan || "AZKPY9523B",
+        pan: params.pan ,
         referenceNumber: "MYREF0001", // NON-MANDATORY for UPI bid
         allotmentMode: "demat",
         upiFlag: "Y",
-        upi: params.upi || "8630832186@paytm", // client master at edelwiess available, look into it
+        upi: params.upi , // client master at edelwiess available, look into it
         bankCode: null, //
         locationCode: null, //
         timestamp: moment().format("DD-MM-YYYY HH:MM:SSS"),
-        subBrokerCode: params.APId || "17HS", // important to include
+        subBrokerCode: params.APId , // important to include
         bids: [
           {
             activityType: "new",
-            quantity: params.quantity || 460, // > min qty
-            atCutOff: params.atCutOff || true,
+            quantity: params.quantity , // > min qty
+            atCutOff: params.atCutOff ,
             remark: params.APId,
           },
         ],

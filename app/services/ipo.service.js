@@ -209,7 +209,7 @@ const buyIPOService = async (params) => {
         applicationNumber: params.oldApplicationNumber || params.applicationNumber ,
         category: params.category || "IND", // individual - retail, HNI (via its own PAN)
         clientName: params.clientName ,
-        depository: params.depository ,
+        depository: params.depository || "NSDL" ,
         dpId: params.dpId || "IN304088", // NSDL = IN304088 or CDSL = 12081601, dematID - IN30408810009261
         clientBenId: params.clientBenId , // client holder id
         nonASBA: false, // false – ASBA (default)
@@ -241,6 +241,7 @@ const buyIPOService = async (params) => {
         payload.bids[0].activityType = 'cancel',
         payload.bids[0].bidReferenceNumber = params.bidReferenceNumber
       }
+      console.log('payload---',payload)
       let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
       console.log('22resp' ,resp)
       if (resp) {

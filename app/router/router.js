@@ -28,6 +28,8 @@ const {
   createCrmTicket,
   crmTicketList,
   getCrmTicket,
+  accountOpeningDashboardList
+
 } = require("../controllers/crmTicketManagement.controller");
 const {
   getDailyTurnOverBrokerageReportForAllAP,
@@ -500,5 +502,14 @@ router.get(
   [verifyToken(["AP"])],
   errHandle(validateUPI)
 );
+
+
+router.get(
+  routes.v1.ACCOUNT_OPENING_DASHBOARD.LIST,
+  [verifyToken(["AP"]),CRMTicketAuthentication],
+  errHandle(accountOpeningDashboardList)
+);
+
+
 
 module.exports = router;

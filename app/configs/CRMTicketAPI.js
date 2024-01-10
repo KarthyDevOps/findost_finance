@@ -27,6 +27,17 @@ module.exports = {
             contentType: 'application/json',
         },
     },
+    accountOpeningDashboardListAPI: {
+        data: {
+            
+        },
+        method: "POST",
+        url:"",
+        headers: {
+            contentType: 'application/json',
+        },
+    },
+    
     
     
 }

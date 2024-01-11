@@ -175,6 +175,28 @@ const accountOpeningDashboardListService = async (params) => {
      // e.status = params.status !="ALL" ? params.status : "Completed" // currently is dummy data
       return e
     })
+    result = JSON.parse(JSON.stringify(result))
+    if (result.length > 0) {
+      if (params.sort == "ascending") {
+        result.sort((a, b) =>
+          a.Panname > b.Panname
+            ? 1
+            : b.Panname > a.Panname
+            ? -1
+            : 0
+        );
+      } else if (params.sort == "descending") {
+        result.sort((a, b) =>
+          a.Panname > b.Panname
+            ? -1
+            : b.Panname > a.Panname
+            ? 1
+            : 0
+        );
+      }
+    }
+  
+
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,

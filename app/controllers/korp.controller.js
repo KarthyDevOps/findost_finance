@@ -496,6 +496,7 @@ const {
   };
   const dashboardApStatusCount = async (req, res) => {
     const params = req?.query;
+    params.token =req.user.korpAccessToken
     const result = await dashboardApStatusCountService(params);
     if (!result.status) {
       return sendErrorResponse(

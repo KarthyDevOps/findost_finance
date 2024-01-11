@@ -77,7 +77,6 @@ const routes = {
     },
     ACCOUNT_OPENING_DASHBOARD: {
       LIST: "/v1/account-opening-dashboard/list",
-      
     },
     IPO: {
       LOGIN: "/v1/ipo/login",

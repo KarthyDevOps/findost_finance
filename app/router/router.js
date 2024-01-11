@@ -448,7 +448,7 @@ router.post(
 );
 router.post(
   routes.v1.KORP.DASHBOARD_AP_STATUS_COUNT,
-  [verifyToken(["ADMIN"])],
+  [verifyToken(["ADMIN"]),korpAuthentication],
   errHandle(dashboardApStatusCount)
 );
 router.post(routes.v1.IPO.LOGIN, [verifyToken(["AP"])], errHandle(ipoLogin));

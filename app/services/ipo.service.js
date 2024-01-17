@@ -117,9 +117,9 @@ const ipoMasterService = async (params) => {
       });
       if (isUsedISINnoObj[data.ipoisinNumber]) {
         data.balanceApplicationNoCount =
-          +total - +isUsedISINnoObj[data.ipoisinNumber].length;
+          (+total - +isUsedISINnoObj[data.ipoisinNumber].length)  + 1;
       } else {
-        data.balanceApplicationNoCount = total;
+        data.balanceApplicationNoCount = total + 1;
       }
     }
     return { ...data };

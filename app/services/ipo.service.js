@@ -156,8 +156,8 @@ const buyIPOService = async (params) => {
   function findNextNumber(applicationNo, usedNumbers) {
     let nextNumber = null;
     for (let i = 0; i < applicationNo.length; i++) {
-      for (let num = applicationNo[i].from; num <= applicationNo[i].to; num++) {
-        if (!usedNumbers.includes(num)) {
+      for (let num = +applicationNo[i].from; num <= +applicationNo[i].to; num++) {
+        if (!usedNumbers.includes(num.toString())) {
           nextNumber = num;
           break;
         }
@@ -214,7 +214,7 @@ const buyIPOService = async (params) => {
       
       let payload = {
         symbol: params.symbol ,
-        applicationNumber: params.oldApplicationNumber || params.applicationNumber ,
+        applicationNumber:(params.oldApplicationNumber || params.applicationNumber).toString() ,
         category: params.category || "IND", // individual - retail, HNI (via its own PAN)
         clientName: params.clientName ,
         depository: params.depository || "NSDL" ,
@@ -233,7 +233,7 @@ const buyIPOService = async (params) => {
         bids: [
           {
             activityType: "new",
-            quantity: params.quantity , // > min qty
+            quantity: +params.quantity , // > min qty
             atCutOff: params.atCutOff ,
             remark: params.APId,
           },

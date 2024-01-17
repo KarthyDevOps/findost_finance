@@ -45,7 +45,15 @@ const ipoTransactionListService = async (params) => {
     })
     if(params.rejectApplication ==true ||  params.rejectApplication =='true')
     {
-      resp.transactions = resp.transactions.filter((e)=>e.status !="success")
+      resp.transactions = resp.transactions.filter((e)=>e.upiPaymentStatusFlag !=0 && e.upiPaymentStatusFlag !=100 )
+    }
+    if(params.successApplication ==true ||  params.successApplication =='true')
+    {
+      resp.transactions = resp.transactions.filter((e)=>e.upiPaymentStatusFlag ==11)
+    }
+    if(params.pendingApplication ==true ||  params.pendingApplication =='true')
+    {
+      resp.transactions = resp.transactions.filter((e)=>e.upiPaymentStatusFlag ==100)
     }
     return {
       status: true,
@@ -208,7 +216,7 @@ const buyIPOService = async (params) => {
           data: [],
         };
       }
-      //applicationNumber = applicationNumber +1
+      
       params.applicationNumber = applicationNumber;
       console.log('applicationNumber-------',applicationNumber)
       

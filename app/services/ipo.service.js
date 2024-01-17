@@ -39,7 +39,9 @@ const ipoTransactionListService = async (params) => {
     resp.transactions = resp.transactions.map((e)=>{
       if(obj[e.symbol])
       {
+        e.accountStatus = e.upiPaymentStatusFlag ==100 ? 'Success' : e.upiPaymentStatusFlag ==0 ? 'Inprogress' : 'Rejected'
         e = {...obj[e.symbol],...e}
+
       }
       return e
     })

@@ -251,7 +251,7 @@ const buyIPOService = async (params) => {
       }
      // console.log('payload---',payload)
       let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
-     //console.log('22resp' ,resp)
+     console.log('22resp' ,resp)
       if (resp) {
         if (resp.status == "success") {
           await IPO.create(resp);

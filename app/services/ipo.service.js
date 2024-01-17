@@ -149,8 +149,10 @@ const buyIPOService = async (params) => {
     if (!isUsedISINnoObj[data.ipoisinNumber]) {
       isUsedISINnoObj[data.ipoisinNumber] = [];
     }
-    isUsedISINnoObj[data.ipoisinNumber].push(+data.applicationNo);
+    isUsedISINnoObj[data.ipoisinNumber].push(data.applicationNo);
   });
+
+  console.log('isUsedISINnoObj',isUsedISINnoObj)
   function findNextNumber(applicationNo, usedNumbers) {
     let nextNumber = null;
     for (let i = 0; i < applicationNo.length; i++) {
@@ -183,16 +185,19 @@ const buyIPOService = async (params) => {
         balanceApplicationNoCount = total;
       }
       if (isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber]) {
+        console.log('111')
         if (
           cmsIpoDatesResp.applicationNo &&
           cmsIpoDatesResp.applicationNo.length > 0
         ) {
+          console.log('sssssssss--- ',cmsIpoDatesResp.applicationNo,isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber])
           applicationNumber = findNextNumber(
             cmsIpoDatesResp.applicationNo,
             isUsedISINnoObj[cmsIpoDatesResp.ipoisinNumber]
           );
         }
       } else {
+        console.log('222')
         applicationNumber = cmsIpoDatesResp.applicationNo[0].from;
       }
       if (!applicationNumber) {
@@ -203,7 +208,10 @@ const buyIPOService = async (params) => {
           data: [],
         };
       }
+      //applicationNumber = applicationNumber +1
       params.applicationNumber = applicationNumber;
+      console.log('applicationNumber-------',applicationNumber)
+      
       let payload = {
         symbol: params.symbol ,
         applicationNumber: params.oldApplicationNumber || params.applicationNumber ,
@@ -241,9 +249,9 @@ const buyIPOService = async (params) => {
         payload.bids[0].activityType = 'cancel',
         payload.bids[0].bidReferenceNumber = params.bidReferenceNumber
       }
-      console.log('payload---',payload)
+     // console.log('payload---',payload)
       let resp = await IPOAPIServices.buyIPOAPI(params.token, payload);
-      console.log('22resp' ,resp)
+     console.log('22resp' ,resp)
       if (resp) {
         if (resp.status == "success") {
           await IPO.create(resp);

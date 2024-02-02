@@ -6,7 +6,8 @@ const {
     crmTicketListService,
     createCrmTicketService,
     getCrmTicketService,
-    crmTicketUpdateStatusService
+    crmTicketUpdateStatusService,
+    accountOpeningDashboardListService
   } = require("../services/crmTicket.service");
   
   const createCrmTicket = async (req, res) => {
@@ -102,11 +103,33 @@ const {
       result?.data
     );
   };
-  
+  const accountOpeningDashboardList = async (req, res) => {
+    let params = req.query;
+    params.token = req.user.CRMAccessToken
+    params.APId = req?.user?.APId;
+    const result = await accountOpeningDashboardListService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
   module.exports = {
     createCrmTicket,
     getCrmTicket,
     crmTicketList,
-    crmTicketUpdateStatus
+    crmTicketUpdateStatus,
+    accountOpeningDashboardList
   };
   

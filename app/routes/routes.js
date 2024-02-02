@@ -75,6 +75,9 @@ const routes = {
       SIP_CREATE: "/v1/bse-star/sipCreate",
       LUMPSUM_CREATE: "/v1/bse-star/lumpsumCreate",
     },
+    ACCOUNT_OPENING_DASHBOARD: {
+      LIST: "/v1/account-opening-dashboard/list",
+    },
     IPO: {
       LOGIN: "/v1/ipo/login",
       IPO_MASTER: "/v1/ipo/master",
@@ -105,7 +108,8 @@ const routes = {
       get: "/v1/AP-REVENUE/get",
       update: "/v1/AP-REVENUE/update",
       delete: "/v1/AP-REVENUE/delete",
-    }
+    },
+    VALIDATE_UPI:"/v1/validateUPI",
   },
 };
 

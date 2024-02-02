@@ -28,6 +28,8 @@ const {
   createCrmTicket,
   crmTicketList,
   getCrmTicket,
+  accountOpeningDashboardList
+
 } = require("../controllers/crmTicketManagement.controller");
 const {
   getDailyTurnOverBrokerageReportForAllAP,
@@ -89,6 +91,7 @@ const {
   clientWithdrawalRequest,
   dashboardApStatusCount,
   korpClientProfileSuperAdminToken,
+  validateUPI
 } = require("../controllers/korp.controller");
 const {
   bseStarAuthentication,
@@ -445,7 +448,7 @@ router.post(
 );
 router.post(
   routes.v1.KORP.DASHBOARD_AP_STATUS_COUNT,
-  [verifyToken(["ADMIN"])],
+  [verifyToken(["ADMIN"]),korpAuthentication],
   errHandle(dashboardApStatusCount)
 );
 router.post(routes.v1.IPO.LOGIN, [verifyToken(["AP"])], errHandle(ipoLogin));
@@ -490,4 +493,23 @@ router.get(
   [],
   errHandle(getDailyFranchiseBrokerageReportForAllAP)
 );
+
+
+
+
+router.get(
+  routes.v1.VALIDATE_UPI,
+  [verifyToken(["AP"])],
+  errHandle(validateUPI)
+);
+
+
+router.get(
+  routes.v1.ACCOUNT_OPENING_DASHBOARD.LIST,
+  [verifyToken(["AP"]),CRMTicketAuthentication],
+  errHandle(accountOpeningDashboardList)
+);
+
+
+
 module.exports = router;

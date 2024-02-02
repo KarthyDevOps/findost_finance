@@ -1,6 +1,7 @@
 const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
+const { verifyUPI, VerifyVPA  } = require('bhimupijs');
 
 const moment = require("moment");
 const { pageMetaService } = require("../helpers/index");
@@ -1015,6 +1016,24 @@ const korpClientProfileSuperAdminTokenService = async (params) => {
   };
 };
 
+const validateUPIService = async (params) => {
+  const upiId = params.upi ||  'sumithemmadi@paytm';
+
+  try {
+      const response = await verifyUPI(upiId);
+      console.log(response)
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_OK,
+        message: messages?.success,
+        data: response,
+      };
+  } catch (error) {
+      console.error('Error:', error.message);
+  }
+  
+};
+
 
 
 module.exports = {
@@ -1036,5 +1055,6 @@ module.exports = {
   clientListWithLedgerService,
   clientWithdrawalRequestService,
   dashboardApStatusCountService,
-  korpClientProfileSuperAdminTokenService
+  korpClientProfileSuperAdminTokenService,
+  validateUPIService
 };

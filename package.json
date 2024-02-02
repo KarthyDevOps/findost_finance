@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm i && nodemon index.js DEV",
+    "start": "nodemon index.js DEV",
     "preprod": "npm i && nodemon index.js PREPROD",
     "dev": "nodemon index.js LOCAL",
     "prod": "nodemon index.js PROD"
@@ -16,6 +16,7 @@
     "aws-sdk": "^2.1490.0",
     "axios": "^0.27.2",
     "bcryptjs": "^2.4.3",
+    "bhimupijs": "^2.0.0",
     "body-parser": "^1.20.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",

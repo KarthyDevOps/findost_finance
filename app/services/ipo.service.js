@@ -7,7 +7,9 @@ const { IPO } = require("../models/ipo");
 const moment = require("moment");
 const {sendEmail} = require("../apiServices/internalServices");
 
-
+const {
+  getDailyIPOService
+} = require("../services/cron.service");
 const { pageMetaService } = require("../helpers/index");
 const { getMaxListeners } = require("process");
 const ipoLoginService = async (params) => {
@@ -94,6 +96,10 @@ const cmsIpoUpdateService = async (params) => {
   };
 };
 const ipoMasterService = async (params) => {
+
+
+   await getDailyIPOService(params);
+
   let resp = await cmsIpoDates.find({ isDeleted: false });
   let ipoApplicationNoResp = await ipoApplicationNo
     .find({ isDeleted: false })

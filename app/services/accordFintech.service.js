@@ -126,7 +126,7 @@ const getMFSnapshotDetailsService = async (params) => {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
       message: messages?.success,
-      data: resp || null
+      data: resp || []
     };
 };
 const getSystematicInvestmentpatternService = async (params) => {

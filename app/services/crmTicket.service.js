@@ -176,6 +176,24 @@ const accountOpeningDashboardListService = async (params) => {
       return e
     })
     result = JSON.parse(JSON.stringify(result))
+    result = result.filter((e)=>{
+      if(params.status =="ALL")
+      {
+        return e
+      }
+      if(params.status =="Completed")
+      {
+        return e.status=="Completed"
+      }
+      if(params.status =="InProcess")
+      {
+        return e.status=="InProcess"
+      }
+      if(params.status =="Rejected")
+      {
+        return e.status=="Rejected"
+      }
+    })
     if (result.length > 0) {
       if (params.sort == "ascending") {
         result.sort((a, b) =>

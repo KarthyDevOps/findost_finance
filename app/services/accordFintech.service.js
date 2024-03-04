@@ -122,12 +122,26 @@ const getSchemeNAVDetailsService = async (params) => {
 };
 const getMFSnapshotDetailsService = async (params) => {
     let resp = await AccordFintechAPIServices.getMFSnapshotDetailsAPI(params);
-    return {
-      status: true,
-      statusCode: statusCodes?.HTTP_OK,
-      message: messages?.success,
-      data: resp || []
-    };
+    console.log('resp',resp)
+    if(resp != "Bad Request")
+    {
+      return {
+        status: true,
+        statusCode: statusCodes?.HTTP_OK,
+        message: messages?.success,
+        data: resp || []
+      };
+    }
+    else
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data:[]
+      };
+    }
+    
 };
 const getSystematicInvestmentpatternService = async (params) => {
     let resp = await AccordFintechAPIServices.getSystematicInvestmentpatternAPI(params);

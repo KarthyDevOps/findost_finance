@@ -44,7 +44,7 @@ const accountOpeningDashboardListAPI = async (token ,data) => {
     "FromDate":"01-04-2023",
     "Todate":moment().format("DD-MM-YYYY"),
     "Status":data.status || "ALL",//ALL/Rejected/InProcess/Completed
-    "SubbrokerID": data.APId || "17HS"
+    //"SubbrokerID": data.APId || "17HS"
     }
   apiConfig.data = payload;
   console.log("apiConfig====", apiConfig);

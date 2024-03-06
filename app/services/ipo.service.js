@@ -115,6 +115,8 @@ const ipoMasterService = async (params) => {
   resp = JSON.parse(JSON.stringify(resp));
   result = resp.map((data) => {
     data.balanceApplicationNoCount = 0;
+    data.biddingStartDate = moment(data.biddingStartDate,'YYYY-MM-DD')
+    data.biddingEndDate = moment(data.biddingEndDate,'YYYY-MM-DD')
     if (
       new Date().getTime() > new Date(moment(data.biddingStartDate,'DD-MM-YYYY').startOf('day')).getTime() && new Date().getTime() <= new Date(moment(data.biddingEndDate,'DD-MM-YYYY').endOf('day')).getTime()
     ) {
@@ -144,7 +146,8 @@ const ipoMasterService = async (params) => {
   {
     result = result.filter((data) => data.status ==params.status)
   }
-  
+  result = result.sort((a, b) => new Date(b.biddingStartDate) - new Date(a.biddingStartDate));
+
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,

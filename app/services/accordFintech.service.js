@@ -12,6 +12,15 @@ const moment = require("moment");
 
 const GetFundsListService = async (params) => {
   let resp = await AccordFintechAPIServices.GetFundsListAPI(params);
+  if(resp == "Bad Request")
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: "Bad Request",
+      data: resp
+    };
+  }
   //console.log(resp)
   return {
     status: true,
@@ -22,6 +31,15 @@ const GetFundsListService = async (params) => {
 };
 const categoryListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryListAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     //console.log(resp)
     return {
       status: true,
@@ -32,6 +50,15 @@ const categoryListService = async (params) => {
 };
 const categoryReturnsListService = async (params) => {
     let resp = await AccordFintechAPIServices.categoryReturnsAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
     return {
       status: true,
@@ -43,6 +70,15 @@ const categoryReturnsListService = async (params) => {
 
 const schemesListService = async (params) => {
     let resp = await AccordFintechAPIServices.schemesListAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -54,6 +90,15 @@ const schemesListService = async (params) => {
 
 const getSchemeWithInfoService = async (params) => {
   let resp = await AccordFintechAPIServices.getSchemeWithInfoAPI(params);
+  if(resp == "Bad Request")
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: "Bad Request",
+      data: resp
+    };
+  }
   let getMyWatchlist =  await WatchList.find({apId : params.apId,isDeleted:false});
   let myschemeCodes = getMyWatchlist.map((data)=>data.schemeCode)
   if(resp?.Table)
@@ -78,8 +123,17 @@ const getSchemeWithInfoService = async (params) => {
 
 const getFundFactsheetService = async (params) => {
     let resp = await AccordFintechAPIServices.getFundFactsheetAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     let getMyWatchlist =  await WatchList.findOne({apId : params.apId,isDeleted:false,schemeCode:params.Schemecode});
-    if(resp && resp.snapshot_summary[0])
+    if(resp && resp?.snapshot_summary?.[0])
     {
       resp.snapshot_summary[0].isAlreadyExistMyWatchlist = getMyWatchlist ? true : false
     }
@@ -93,6 +147,15 @@ const getFundFactsheetService = async (params) => {
 
 const GetMFNAVGraphService = async (params) => {
   let resp = await AccordFintechAPIServices.GetMFNAVGraphAPI(params);
+  if(resp == "Bad Request")
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: "Bad Request",
+      data: resp
+    };
+  }
   return {
     status: true,
     statusCode: statusCodes?.HTTP_OK,
@@ -104,6 +167,15 @@ const GetMFNAVGraphService = async (params) => {
 
 const getSchemesFilteredListService = async (params) => {
     let resp = await AccordFintechAPIServices.getSchemesFilteredListAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -113,6 +185,15 @@ const getSchemesFilteredListService = async (params) => {
 };
 const getSchemeNAVDetailsService = async (params) => {
     let resp = await AccordFintechAPIServices.getSchemeNAVDetailsAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -122,6 +203,7 @@ const getSchemeNAVDetailsService = async (params) => {
 };
 const getMFSnapshotDetailsService = async (params) => {
     let resp = await AccordFintechAPIServices.getMFSnapshotDetailsAPI(params);
+    
     console.log('resp',resp)
     if(resp != "Bad Request")
     {
@@ -138,13 +220,22 @@ const getMFSnapshotDetailsService = async (params) => {
         status: false,
         statusCode: statusCodes?.HTTP_BAD_REQUEST,
         message: "Bad Request",
-        data:[]
+        data:resp
       };
     }
     
 };
 const getSystematicInvestmentpatternService = async (params) => {
     let resp = await AccordFintechAPIServices.getSystematicInvestmentpatternAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -154,6 +245,15 @@ const getSystematicInvestmentpatternService = async (params) => {
 };
 const allHoldingsService = async (params) => {
     let resp = await AccordFintechAPIServices.allHoldingsAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -164,6 +264,15 @@ const allHoldingsService = async (params) => {
 
 const ipoIssueService = async (params) => {
     let resp = await AccordFintechAPIServices.ipoIssueAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     const pageMeta = await pageMetaService(params, resp?.Table1[0]?.TotalRows || 0);
     return {
       status: true,
@@ -174,6 +283,15 @@ const ipoIssueService = async (params) => {
 
 const ipoNewListingService = async (params) => {
     let resp = await AccordFintechAPIServices.ipoNewListingAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -184,6 +302,15 @@ const ipoNewListingService = async (params) => {
 
 const ipoSnapshotService = async (params) => {
     let resp = await AccordFintechAPIServices.ipoSnapshotAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -194,6 +321,15 @@ const ipoSnapshotService = async (params) => {
 
 const nfoUpdatesService = async (params) => {
     let resp = await AccordFintechAPIServices.NFOUpdatesAPI(params);
+    if(resp == "Bad Request")
+    {
+      return {
+        status: false,
+        statusCode: statusCodes?.HTTP_BAD_REQUEST,
+        message: "Bad Request",
+        data: resp
+      };
+    }
     return {
       status: true,
       statusCode: statusCodes?.HTTP_OK,
@@ -205,6 +341,15 @@ const nfoUpdatesService = async (params) => {
 
 const getCorporateNewsService = async (params) => {
   let resp = await AccordFintechAPIServices.getCorporateNewsAPI(params);
+  if(resp == "Bad Request")
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: "Bad Request",
+      data: resp
+    };
+  }
   console.log(resp)
   resp.Table = resp.Table.map((e)=>{
     e.Newsdate =  moment(e.Newsdate).format("DD-MM-YYYY")
@@ -228,6 +373,15 @@ const getCorporateNewsService = async (params) => {
 
 const getEconomyNewsService = async (params) => {
   let resp = await AccordFintechAPIServices.getEconomyNewsAPI(params);
+  if(resp == "Bad Request")
+  {
+    return {
+      status: false,
+      statusCode: statusCodes?.HTTP_BAD_REQUEST,
+      message: "Bad Request",
+      data: resp
+    };
+  }
   resp.Table = resp.Table.map((e)=>{
     e.Newsdate =  moment(e.Newsdate).format("DD-MM-YYYY")
     if(e.NewsTime)

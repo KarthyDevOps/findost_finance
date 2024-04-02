@@ -32,6 +32,7 @@ const ipoTransactionAddService = async (params) => {
 };
 const ipoTransactionListService = async (params) => {
   let resp = await IPOAPIServices.ipoTransactionListAPI(params.token);
+
   let cmsIpoDatesResp = await cmsIpoDates.find({ isDeleted: false }).lean();
   let obj ={}
   cmsIpoDatesResp.map((data) => {
@@ -114,6 +115,20 @@ const ipoMasterService = async (params) => {
   console.log('isUsedISINnoObj----',isUsedISINnoObj)
   resp = JSON.parse(JSON.stringify(resp));
   result = resp.map((data) => {
+    data.investorType = []
+    data.categoryDetails.map((da) => {
+      if(da.code == "RETAIL" && da.startTime !="" && da.endTime !="" )
+      {
+        data.investorType.push("individual")
+      }
+      if(da.code == "EMPRET" && da.startTime !="" && da.endTime !="" )
+      {
+        data.investorType.push("employee")
+      }
+    })
+    data.minInvestment = 1 * +data.lotSize * +data.minPrice
+    let maxlot = 50000 / (+data.lotSize * +data.maxPrice);
+    data.maxInvestment = maxlot * +data.lotSize * +data.maxPrice;
     data.balanceApplicationNoCount = 0;
    
     if (

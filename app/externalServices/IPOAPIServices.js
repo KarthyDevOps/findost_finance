@@ -21,7 +21,7 @@ const ipoTransactionListAPI = async (token, date=new Date('2023/04/01')) => {
   let apiConfig = JSON.parse(JSON.stringify(IPOAPI.ipoTransactionListAPI));
 
   apiConfig.url = process.env.IPO_BASE_URL + "/v1/transactions/";
-  let queryString = `${date || new Date()}`;
+  let queryString = `${date || new Date("2023-04-01")}`;
   queryString = moment(queryString).format("DD-MM-YYYY") + '%2000:00:00'
   apiConfig.url = apiConfig.url + queryString;
   apiConfig.headers["Access-Token"] = token;

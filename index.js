@@ -90,6 +90,7 @@ let cron = require('./app/cron/cron.js')
 cron.getDailyTurnOverBrokerageReportForAllAP()
 cron.getDailyFranchiseBrokerageReportForAllAP()
 cron.getDailyIPO()
+cron.getDailyTransactionList()
 
 
 app.listen(port, () => {

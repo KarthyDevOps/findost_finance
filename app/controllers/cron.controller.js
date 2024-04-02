@@ -5,7 +5,8 @@ const {
   const {
     getDailyTurnOverBrokerageReportForAllAPService,
     getDailyFranchiseBrokerageReportForAllAPService,
-    getDailyIPOService
+    getDailyIPOService,
+    getDailyTransactionListService
   } = require("../services/cron.service");
   
   const getDailyTurnOverBrokerageReportForAllAP = async (req, res) => {
@@ -70,9 +71,31 @@ const {
     );
   };
   
+  const getDailyTransactionList = async (req, res) => {
+    let params = req?.query;
+    const result = await getDailyTransactionListService(params);
+    if (!result.status) {
+      return sendErrorResponse(
+        req,
+        res,
+        result?.statusCode,
+        result?.message,
+        result?.data
+      );
+    }
+    return sendSuccessResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  };
+
   module.exports = {
     getDailyTurnOverBrokerageReportForAllAP,
     getDailyFranchiseBrokerageReportForAllAP,
-    getDailyIPO
+    getDailyIPO,
+    getDailyTransactionList
   };
   

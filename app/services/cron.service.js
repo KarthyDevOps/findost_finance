@@ -2,6 +2,7 @@ const { statusCodes } = require("../response/httpStatusCodes");
 const { messages } = require("../response/customMesages");
 const { KORPAPIServices } = require("../externalServices");
 const { IPOAPIServices } = require("../externalServices");
+const {ipoTransactionList} = require("../models/ipoTranscationsList")
 
 const {
   TurnoverBrokerageReport,
@@ -258,8 +259,74 @@ const getDailyIPOService = async (params) => {
     };
   }
 };
+
+const getDailyTransactionListService = async (params) => {
+  let tokenResp = await IPOAPIServices.ipoLoginAPI(params);
+  if (tokenResp && tokenResp.status == "success") {
+    params.token = tokenResp.token;
+    let result = await IPOAPIServices.ipoTransactionListAPI(params.token);
+    if (result && result.status == "success" && result.transactions) {
+      const applicationNumbers = result.transactions.map(
+        (transaction) => transaction.applicationNumber
+      );
+
+      const existingTransactions = await ipoTransactionList.find({
+        applicationNumber: { $in: applicationNumbers },
+      });
+
+      const newTransactions = result.transactions.filter(
+        (transaction) =>
+          !existingTransactions.some(
+            (existingTransaction) =>
+              existingTransaction.applicationNumber ===
+              transaction.applicationNumber
+          )
+      );
+
+      if (newTransactions.length > 0) {
+        newTransactions.forEach((transaction) => {
+          const [date, time] = transaction.timestamp.split(" ");
+          const [day, month, year] = date.split("-");
+          const [hour, minute, second] = time.split(":");
+          transaction.timestamp = new Date(
+            year,
+            month - 1,
+            day,
+            hour,
+            minute,
+            second
+          );
+        });
+        let data = await ipoTransactionList.insertMany(newTransactions);
+        console.log(data);
+      }
+
+      return {
+        status: true,
+        statusCode: statusCodes.HTTP_OK,
+        message: messages.success,
+        data: [],
+      };
+    } else {
+      return {
+        status: false,
+        statusCode: statusCodes.HTTP_NOT_FOUND,
+        message: messages.error,
+        data: [],
+      };
+    }
+  } else {
+    return {
+      status: false,
+      statusCode: statusCodes.HTTP_NOT_FOUND,
+      message: messages.error,
+      data: [],
+    };
+  }
+};
+
 module.exports = {
   getDailyTurnOverBrokerageReportForAllAPService,
   getDailyFranchiseBrokerageReportForAllAPService,
-  getDailyIPOService
+  getDailyIPOService,getDailyTransactionListService
 };

@@ -143,6 +143,9 @@ const cmsIpoDatesSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    discountValue:{
+      type:String,
+    },
     isActive: {
       type: Boolean,
       default: true,

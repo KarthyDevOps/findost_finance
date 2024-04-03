@@ -4,6 +4,7 @@ const { IPOAPIServices } = require("../externalServices");
 const { cmsIpoDates } = require("../models/cmsIpoDates");
 const { ipoApplicationNo } = require("../models/ipoApplicationNo");
 const { IPO } = require("../models/ipo");
+const {ipoTransactionList} = require("../models/ipoTranscationsList");
 const moment = require("moment");
 const {sendEmail} = require("../apiServices/internalServices");
 
@@ -86,6 +87,7 @@ const cmsIpoUpdateService = async (params) => {
       allotmnetDate: params.allotmnetDate,
       refundInitiation: params.refundInitiation,
       listingOnExchange: params.listingOnExchange,
+      discountValue: params.discountValue
     },
     { upsert: true, new: true }
   );
@@ -114,7 +116,7 @@ const ipoMasterService = async (params) => {
   });
   console.log('isUsedISINnoObj----',isUsedISINnoObj)
   resp = JSON.parse(JSON.stringify(resp));
-  result = resp.map((data) => {
+  result = await Promise.all(resp.map(async (data) => {
     data.investorType = []
     data.categoryDetails.map((da) => {
       if(da.code == "RETAIL" && da.startTime !="" && da.endTime !="" )
@@ -156,8 +158,9 @@ const ipoMasterService = async (params) => {
         data.balanceApplicationNoCount = total + 1;
       }
     }
+    data.total = await ipoTransactionList.countDocuments({ symbol: data.symbol });
     return { ...data };
-  });
+  }));
   if(params.status)
   {
     result = result.filter((data) => data.status ==params.status)

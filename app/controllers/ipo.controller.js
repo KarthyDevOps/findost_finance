@@ -8,7 +8,9 @@ const {
   ipoTransactionListService,
   ipoMasterService,
   cmsIpoUpdateService,
-  buyIPOService
+  buyIPOService,
+  updateIPOService,
+  cancelIPOService
 } = require("../services/ipo.service");
 
 const ipoLogin = async (req, res) => {
@@ -167,6 +169,52 @@ const buyIPO = async (req, res) => {
     result?.data
   );
 };
+const updateIPO = async (req, res) => {
+  let params = req?.body;
+  params.token = req.user.IPOAccessToken
+  params.APId = req.user.BOUserId
+  params.APName = req.user.accountName
+  const result = await updateIPOService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
+const cancelIPO = async (req, res) => {
+  let params = req?.body;
+  params.token = req.user.IPOAccessToken
+  params.APId = req.user.BOUserId
+  params.APName = req.user.accountName
+  const result = await cancelIPOService(params);
+  if (!result.status) {
+    return sendErrorResponse(
+      req,
+      res,
+      result?.statusCode,
+      result?.message,
+      result?.data
+    );
+  }
+  return sendSuccessResponse(
+    req,
+    res,
+    result?.statusCode,
+    result?.message,
+    result?.data
+  );
+};
 
 
 module.exports = {
@@ -175,5 +223,7 @@ module.exports = {
   ipoTransactionList,
   ipoMaster,
   cmsIpoUpdate,
-  buyIPO
+  buyIPO,
+  updateIPO,
+  cancelIPO,
 };

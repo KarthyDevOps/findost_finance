@@ -43,6 +43,8 @@ const {
   ipoMaster,
   cmsIpoUpdate,
   buyIPO,
+  updateIPO,
+  cancelIPO,
 } = require("../controllers/ipo.controller");
 const { createLeads, leadList } = require("../controllers/leads.controller");
 const {
@@ -477,6 +479,18 @@ router.post(
   [verifyToken(["AP"]), IPOAuthentication, buyIPOValidation],
   // [verifyToken(["AP"]),IPOAuthentication],
   errHandle(buyIPO)
+);
+router.post(
+  routes.v1.IPO.UPDATE_IPO,
+  [verifyToken(["AP"]), IPOAuthentication, buyIPOValidation],
+  // [verifyToken(["AP"]),IPOAuthentication],
+  errHandle(updateIPO)
+);
+router.post(
+  routes.v1.IPO.CANCEL_IPO,
+  [verifyToken(["AP"]), IPOAuthentication, buyIPOValidation],
+  // [verifyToken(["AP"]),IPOAuthentication],
+  errHandle(cancelIPO)
 );
 router.get(
   routes.v1.IPO.CRON_RUN,

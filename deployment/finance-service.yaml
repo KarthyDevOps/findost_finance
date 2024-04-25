@@ -1,0 +1,13 @@
+#Service-yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: findoc-finance
+spec:
+  type: NodePort
+  selector:
+    app: findoc-finance
+  ports:
+  - port: 2276
+    targetPort: 2276

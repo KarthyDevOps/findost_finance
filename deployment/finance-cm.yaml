@@ -1,0 +1,49 @@
+#Findost-finanace configmap yaml
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: Findost-finance-configmap
+data:
+  SERVICE_NAME: "Findost-Finance-Service"
+  MONGO_URI: "mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_communication"
+  JWT_ADMIN_SECRET: "1234_admin_findost"
+  JWT_authorizedPerson_SECRET: "1234_authorizedPerson_findost"
+  GET_USER_BY_ID: "/user/api/v1/admin/getAdmin?id="
+  GET_AP_BY_ID: "/user/api/v1/authorizedPerson/getProfileById?id="
+  GET_BO_USERS_BY_ID: "/user/api/v1/BOUSERS/get?id="
+  USER_URL: "http://doodlebluelive.com:2811"
+  env: "development"
+  PORT: "2276"
+  COMMUNICATION: "http://doodlebluelive.com:2275/communication"
+  SEND_EMAIL: "/v1/sendMail"
+  COMMUNICATION_URL: "http://doodlebluelive.com:2275" # Corrected URL
+  CMS_URL: "http://doodlebluelive.com:2274"
+  FINANCE_URL: "http://doodlebluelive.com:2276"
+  GET_SEQUENCE_ID: "/user/api/v1/get/sequenceId"
+  ADMIN_NOTIFICATION: "/communication/v1/admin-notification-management/create"
+  ACCORD_FINTECH_LOGIN_TOKEN: "VhbjCOV2kEQQIYY8KgcNETS6SmoPp2v4"
+  KORP_BASE_URL: "http://122.160.148.72:15000/api" # Enclosed URL in double quotes
+  KORP_USER_NAME: "API_RS"
+  KORP_PASSWORD: "FinDoc3Gzd&$" # Enclosed password in double quotes
+  KORP_FIRMID: "1001" # Enclosed Firm ID in double quotes
+  KORP_FINANCIALYEAR: "2023-2024" # Enclosed Financial Year in double quotes
+  KORP_BRANCHID: "17HS" # Enclosed Branch ID in double quotes
+  CRM_TICKET_BASE_URL: "https://uat-crm.myfindoc.com/xapi" # Enclosed URL in double quotes
+  CRM_TICKET_USER_NAME: "api"
+  CRM_TICKET_PASSWORD: "Pass@123" # Enclosed password in double quotes
+  CRM_TICKET_USER_ID: "562" # Enclosed User ID in double quotes
+  AWS_BUCKET: "findoc-development"
+  AWS_ACCESS_KEY: "AKIARS5OYL26JGKUYGRR"
+  AWS_SECRET_KEY: "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"
+  S3_IMAGES_PATH: "images"
+  S3_DOCUMENTS_PATH: "documents"
+  S3_MEDIA_PATH: "media"
+  BSE_STAR_USERID: "1231601" # Enclosed User ID in double quotes
+  BSE_STAR_MEMBERID: "12316" # Enclosed Member ID in double quotes
+  BSE_STAR_PASSSWORD: "IBhf@351" # Enclosed password in double quotes
+  BSE_STAR_PASSKEY: "abc123" # Enclosed password in double quotes
+  IPO_BASE_URL: "https://eipo.nseindia.com/eipo" # Enclosed URL in double quotes
+  IPO_LOGIN_ID: "102847" # Enclosed Login ID in double quotes
+  IPO_PASSWORD: "Findocipo@116" # Enclosed password in double quotes
+  IPO_MEMBERID: "13116" # Enclosed Member ID in double quotes

@@ -1,0 +1,27 @@
+#Deployment Yaml for Findoc-cms
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: findoc-finance
+spec:
+  selector:
+    matchLabels:
+      app: findoc-finance
+  template:
+    metadata:
+      labels:
+        app: findoc-finance
+    spec:
+      containers:
+      - name: findoc-finance
+        image: 471112580006.dkr.ecr.ap-south-1.amazonaws.com/findost_finance
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 2276
+        envFrom:
+        - configMapRef:
+            name: Findost-finanace-configmap

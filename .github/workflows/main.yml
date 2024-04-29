@@ -37,20 +37,15 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./deployment/dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-
-
-
       - name: Update deployment.yaml
         run: | 
           sed -i "s|KarthyDevops/cms-dep.*|KarthyDevops/${{env.IMAGE_NAME}}:${{github.run_number}}|g" deployment/finance-deployment.yaml
-
           cat deployment/finance-deployment.yaml
       - name: commit changes
         run: |
-          git config --local user.mail "karthy.shunmugam@gmail.com"
-          git config --local user.name "KarthyDevops"
+          git config --global user.mail "karthy.shunmugam@gmail.com"
+          git config --global user.name "KarthyDevops"
           git add .
           git commit -m "Update deployment.yaml with new Docker image [skip ci]"
-
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}

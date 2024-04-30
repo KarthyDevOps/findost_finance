@@ -36,7 +36,7 @@ jobs:
           IMAGE_TAG: ${{ github.run_number }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }} -f ./deployment/dockerfile .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$ {{ github.run_number }}
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}
       - name: Update deployment.yaml
         run: | 
           sed -i "s|KarthyDevops/findost-finance.*|$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}|g" deployment/finance-deployment.yaml

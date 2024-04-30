@@ -47,5 +47,6 @@ jobs:
           git config --global user.name "KarthyDevops"
           git add .
           git commit -m "Update deployment.yaml with new Docker image [skip ci]"
+          git push origin HEAD:${{ github.ref }
         env:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}

@@ -39,7 +39,7 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}
       - name: Update deployment.yaml
         run: | 
-          sed -i "s|KarthyDevops/findost-finance.*|$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}|g" deployment/finance-deployment.yaml
+          sed -i 's|KarthyDevops/findost-finance.*|'"$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}"'|g' deployment/finance-deployment.yaml
           cat deployment/finance-deployment.yaml
       - name: commit changes
         run: |

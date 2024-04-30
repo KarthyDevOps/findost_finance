@@ -35,11 +35,11 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPO }}
           IMAGE_TAG: latest
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./deployment/dockerfile .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$github.run_number -f ./deployment/dockerfile .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$github.run_number
       - name: Update deployment.yaml
         run: | 
-          sed -i "s|KarthyDevops/findost-finance.*|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/finance-deployment.yaml
+          sed -i "s|KarthyDevops/findost-finance.*|$ECR_REGISTRY/$ECR_REPOSITORY:${{ github.run_number }}|g" deployment/finance-deployment.yaml
           cat deployment/finance-deployment.yaml
       - name: commit changes
         run: |

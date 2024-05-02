@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: Findost-finance-configmap
+  name: findost-finance-configmap
 data:
   SERVICE_NAME: "Findost-Finance-Service"
   MONGO_URI: "mongodb+srv://findoc_user:nQKMemhPm0N4maIJ@cluster0.kr4lh0f.mongodb.net/findoc_communication"

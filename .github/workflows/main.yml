@@ -8,6 +8,8 @@ on:
 
 env:
   IMAGE_NAME: findost-finance
+  ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPO }}
+  IMAGE_TAG: ${{ github.run_number }}
   
 jobs:
   build:
@@ -27,18 +29,10 @@ jobs:
       - name: Login to Amazon ECR
         id: login-pf-aws-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Debug ECR details
-        run: |
-          echo "ECR_REGISTRY: $ECR_REGISTRY"
-          echo "ECR_REPOSITORY: $ECR_REPOSITORY"
-          echo "ECR Login output: ${{ steps.login-pf-aws-ecr.outputs.registry }}"
         
       - name: Build and push
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPO }}
-          IMAGE_TAG: ${{ github.run_number }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:${IMAGE_TAG} -f ./deployment/dockerfile .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:${IMAGE_TAG}
@@ -46,8 +40,6 @@ jobs:
       - name: Update deployment.yaml
         env:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
-          ECR_REPOSITORY: ${{ secrets.AWS_ECR_REPO }}
-          IMAGE_TAG: ${{ github.run_number }}
         run: |
           echo "ECR_REPOSITORY: $ECR_REPOSITORY"
           sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/finance-deployment.yaml

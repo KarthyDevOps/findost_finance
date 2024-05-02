@@ -42,7 +42,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
         run: |
           echo "ECR_REPOSITORY: $ECR_REPOSITORY"
-          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/finance-deployment.yaml
+          sed -i.bak "s|$ECR_REGISTRY/$ECR_REPOSITORY*|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/finance-deployment.yaml
           cat deployment/finance-deployment.yaml
 
       - name: Commit changes

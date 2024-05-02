@@ -24,4 +24,4 @@ spec:
         - containerPort: 2276
         envFrom:
         - configMapRef:
-            name: Findost-finanace-configmap
+            name: findost-finanace-configmap

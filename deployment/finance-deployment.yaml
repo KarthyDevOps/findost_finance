@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: findoc-finance
-        image: DOCKER_IMAGE
+        image: /:
         resources:
           limits:
             memory: "128Mi"

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: findoc-finance
-        image: 471112580006.dkr.ecr.ap-south-1.amazonaws.com/findost_finance:54
+        image: 471112580006.dkr.ecr.ap-south-1.amazonaws.com/findost_finance:*
         resources:
           limits:
             memory: "128Mi"
